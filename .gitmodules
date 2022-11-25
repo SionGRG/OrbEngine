@@ -1,0 +1,3 @@
+[submodule "OrbEngine/vendor/spdlog"]
+	path = OrbEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
