@@ -1,5 +1,8 @@
 #include "App.h"
 
+#include "OrbE/Events/AppEvent.h"
+#include "OrbE/Log.h"
+
 namespace ORB {
 
 	App::App()
@@ -12,6 +15,9 @@ namespace ORB {
 
 	void App::Run()
 	{
+		WindowResizeEvent e(1280, 720);
+		ORBE_TRACE(e);
+
 		while (true);
 	}
 

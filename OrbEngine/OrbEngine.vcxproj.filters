@@ -4,6 +4,9 @@
     <Filter Include="OrbE">
       <UniqueIdentifier>{4D538A7C-398A-8B0D-E276-7110CE8C070F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="OrbE\Events">
+      <UniqueIdentifier>{91A691F0-FD5B-0AE6-8650-04BDF20401EA}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\OrbE.h" />
@@ -15,6 +18,18 @@
     </ClInclude>
     <ClInclude Include="src\OrbE\EntryPoint.h">
       <Filter>OrbE</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrbE\Events\AppEvent.h">
+      <Filter>OrbE\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrbE\Events\Event.h">
+      <Filter>OrbE\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrbE\Events\KeyEvent.h">
+      <Filter>OrbE\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrbE\Events\MouseEvent.h">
+      <Filter>OrbE\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\OrbE\Log.h">
       <Filter>OrbE</Filter>

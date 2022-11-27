@@ -9,3 +9,5 @@
 #else
 	#error Orb Engine Only support windows!
 #endif // ORBE_PLATFORM_WINDOWS
+
+#define BIT(x) (1 << x)
