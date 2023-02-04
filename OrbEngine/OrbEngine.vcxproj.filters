@@ -34,6 +34,7 @@
     <ClInclude Include="src\OrbE\Log.h">
       <Filter>OrbE</Filter>
     </ClInclude>
+    <ClInclude Include="src\OrbPCH.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OrbE\App.cpp">
@@ -42,5 +43,6 @@
     <ClCompile Include="src\OrbE\Log.cpp">
       <Filter>OrbE</Filter>
     </ClCompile>
+    <ClCompile Include="src\OrbPCH.cpp" />
   </ItemGroup>
 </Project>

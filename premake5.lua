@@ -19,6 +19,9 @@ project "OrbEngine"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "OrbPCH.h"
+	pchsource "OrbEngine/src/OrbPCH.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",

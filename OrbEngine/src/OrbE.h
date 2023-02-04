@@ -1,6 +1,6 @@
 #pragma once
 
-// For use bt the Orb Engine Applications
+// For use by the Orb Engine Applications
 
 #include "OrbE/App.h"
 #include "OrbE/Log.h"
