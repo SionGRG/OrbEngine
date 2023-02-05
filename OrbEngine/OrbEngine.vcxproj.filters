@@ -7,6 +7,12 @@
     <Filter Include="OrbE\Events">
       <UniqueIdentifier>{91A691F0-FD5B-0AE6-8650-04BDF20401EA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{73f9dc5b-df8c-4703-bafe-371520533eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{28aef840-74a4-423e-9e59-c59f3a640d04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\OrbE.h" />
@@ -35,6 +41,12 @@
       <Filter>OrbE</Filter>
     </ClInclude>
     <ClInclude Include="src\OrbPCH.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrbE\Window.h">
+      <Filter>OrbE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OrbE\App.cpp">
@@ -44,5 +56,8 @@
       <Filter>OrbE</Filter>
     </ClCompile>
     <ClCompile Include="src\OrbPCH.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

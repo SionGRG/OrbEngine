@@ -11,6 +11,12 @@ workspace "OrbEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "OrbEngine/vendor/GLFW/include"
+
+include "OrbEngine/vendor/GLFW"
+
 project "OrbEngine"
 	location "OrbEngine"
 	kind "SharedLib"
@@ -31,7 +37,14 @@ project "OrbEngine"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links 
+	{ 
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"

@@ -2,12 +2,14 @@
 #include "App.h"
 
 #include "OrbE/Events/AppEvent.h"
-#include "OrbE/Log.h"
+
+#include <GLFW/glfw3.h>
 
 namespace ORB {
 
 	App::App()
 	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 
 	App::~App()
@@ -16,10 +18,12 @@ namespace ORB {
 
 	void App::Run()
 	{
-		WindowResizeEvent e(1280, 720);
-		ORBE_TRACE(e);
-
-		while (true);
+		while (m_Running)
+		{
+			glClearColor(0.2, 0.2, 0.2, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_Window->OnUpdate();
+		}
 	}
 
 }

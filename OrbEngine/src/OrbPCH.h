@@ -13,6 +13,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+// Logging Class
+#include "OrbE/Log.h"
 
 #ifdef ORBE_PLATFORM_WINDOWS
 	#include <Windows.h>
