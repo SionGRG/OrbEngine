@@ -22,6 +22,7 @@ namespace ORB {
 	// Key pressed event class
 	class ORBE_API KeyPressedEvent : public KeyEvent
 	{
+	public:
 		KeyPressedEvent(int keycode, int repeatCount)
 			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
 
