@@ -65,14 +65,17 @@ project "OrbEngine"
 
 	filter "configurations:Debug"
 		defines "ORBE_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 	
 	filter "configurations:Release"
 		defines "ORBE_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "ORBE_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 project "SandOrb"
@@ -112,12 +115,15 @@ project "SandOrb"
 
 	filter "configurations:Debug"
 		defines "ORBE_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 	
 	filter "configurations:Release"
 		defines "ORBE_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "ORBE_DIST"
+		buildoptions "/MD"
 		optimize "On"

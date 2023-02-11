@@ -8,10 +8,10 @@
       <UniqueIdentifier>{91A691F0-FD5B-0AE6-8650-04BDF20401EA}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform">
-      <UniqueIdentifier>{73f9dc5b-df8c-4703-bafe-371520533eaa}</UniqueIdentifier>
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform\Windows">
-      <UniqueIdentifier>{28aef840-74a4-423e-9e59-c59f3a640d04}</UniqueIdentifier>
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,19 +37,31 @@
     <ClInclude Include="src\OrbE\Events\MouseEvent.h">
       <Filter>OrbE\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\OrbE\Layer.h">
+      <Filter>OrbE</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrbE\LayerStack.h">
+      <Filter>OrbE</Filter>
+    </ClInclude>
     <ClInclude Include="src\OrbE\Log.h">
+      <Filter>OrbE</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OrbE\Window.h">
       <Filter>OrbE</Filter>
     </ClInclude>
     <ClInclude Include="src\OrbPCH.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\OrbE\Window.h">
-      <Filter>OrbE</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OrbE\App.cpp">
+      <Filter>OrbE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrbE\Layer.cpp">
+      <Filter>OrbE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OrbE\LayerStack.cpp">
       <Filter>OrbE</Filter>
     </ClCompile>
     <ClCompile Include="src\OrbE\Log.cpp">
