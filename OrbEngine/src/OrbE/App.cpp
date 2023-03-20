@@ -1,7 +1,7 @@
 #include "OrbPCH.h"
 #include "App.h"
 
-#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace ORB {
 
@@ -53,6 +53,7 @@ namespace ORB {
 			m_Window->OnUpdate();
 		}
 	}
+
 	bool App::OnWindowClose(WindowCloseEvent& e)
 	{
 		m_Running = false;

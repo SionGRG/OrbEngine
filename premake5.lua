@@ -14,8 +14,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "OrbEngine/vendor/GLFW/include"
+IncludeDir["Glad"] = "OrbEngine/vendor/Glad/include"
 
 include "OrbEngine/vendor/GLFW"
+include "OrbEngine/vendor/Glad"
 
 project "OrbEngine"
 	location "OrbEngine"
@@ -38,12 +40,14 @@ project "OrbEngine"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links 
 	{ 
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -55,7 +59,8 @@ project "OrbEngine"
 		defines
 		{
 			"ORBE_PLATFORM_WINDOWS",
-			"ORBE_BUILD_DLL"
+			"ORBE_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
