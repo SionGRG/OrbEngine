@@ -26,6 +26,7 @@ public:
 	SandOrb() 
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new ORB::ImGuiLayer());
 	}
 	~SandOrb() {}
 
