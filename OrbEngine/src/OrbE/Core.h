@@ -10,6 +10,10 @@
 	#error Orb Engine Only support windows!
 #endif // ORBE_PLATFORM_WINDOWS
 
+#ifdef ORBE_DEBUG
+	#define ORBE_ENABLE_ASSERTS
+#endif // ORBE_DEBUG
+
 #ifdef ORBE_ENABLE_ASSERTS
 	#define ORBE_ASSERT(x, ...) { if(!(x)) { ORBE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
 	#define ORBE_CORE_ASSERT(x, ...) { if(!(x)) { ORBE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
@@ -19,3 +23,5 @@
 #endif
 
 #define BIT(x) (1 << x)
+
+#define ORBE_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)

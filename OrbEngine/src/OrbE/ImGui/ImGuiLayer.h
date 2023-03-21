@@ -2,6 +2,10 @@
 
 #include "OrbE/Layer.h"
 
+#include "OrbE/Events/AppEvent.h"
+#include "OrbE/Events/KeyEvent.h"
+#include "OrbE/Events/MouseEvent.h"
+
 namespace ORB {
 
 	class ORBE_API ImGuiLayer : public Layer
@@ -14,6 +18,15 @@ namespace ORB {
 		void OnDetach();
 		void OnUpdate();
 		void OnEvent(Event& event);
+	private:
+		bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+		bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+		bool OnMouseMovedEvent(MouseMovedEvent& e);
+		bool OnMouseScrolledEvent(MouseScrolledEvent& e);
+		bool OnKeyPressedEvent(KeyPressedEvent& e);
+		bool OnKeyReleasedEvent(KeyReleasedEvent& e);
+		bool OnKeyTypedPressedEvent(KeyTypedEvent& e);
+		bool OnWindowResizeEvent(WindowResizeEvent& e);
 	private:
 		float m_Time = 0.0f;
 	};

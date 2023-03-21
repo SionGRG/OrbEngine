@@ -25,6 +25,7 @@ project "OrbEngine"
 	location "OrbEngine"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -74,23 +75,24 @@ project "OrbEngine"
 
 	filter "configurations:Debug"
 		defines "ORBE_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 	
 	filter "configurations:Release"
 		defines "ORBE_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "ORBE_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 project "SandOrb"
 	location "SandOrb"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -124,15 +126,15 @@ project "SandOrb"
 
 	filter "configurations:Debug"
 		defines "ORBE_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 	
 	filter "configurations:Release"
 		defines "ORBE_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "ORBE_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
