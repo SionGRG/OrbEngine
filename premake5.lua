@@ -17,9 +17,12 @@ IncludeDir["GLFW"] = "OrbEngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "OrbEngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "OrbEngine/vendor/ImGui"
 
-include "OrbEngine/vendor/GLFW"
-include "OrbEngine/vendor/Glad"
-include "OrbEngine/vendor/ImGui"
+group "Dependencies"
+	include "OrbEngine/vendor/GLFW"
+	include "OrbEngine/vendor/Glad"
+	include "OrbEngine/vendor/ImGui"
+
+group ""
 
 project "OrbEngine"
 	location "OrbEngine"
@@ -58,7 +61,6 @@ project "OrbEngine"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -70,7 +72,7 @@ project "OrbEngine"
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandOrb")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/SandOrb/\"")
 		}
 
 	filter "configurations:Debug"
