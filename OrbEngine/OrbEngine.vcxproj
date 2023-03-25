@@ -161,12 +161,14 @@
     <ClInclude Include="src\OrbE\Events\KeyEvent.h" />
     <ClInclude Include="src\OrbE\Events\MouseEvent.h" />
     <ClInclude Include="src\OrbE\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\OrbE\Input.h" />
     <ClInclude Include="src\OrbE\Layer.h" />
     <ClInclude Include="src\OrbE\LayerStack.h" />
     <ClInclude Include="src\OrbE\Log.h" />
     <ClInclude Include="src\OrbE\Window.h" />
     <ClInclude Include="src\OrbPCH.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +181,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
