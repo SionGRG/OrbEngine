@@ -10,12 +10,20 @@ public:
 
 	void OnUpdate() override
 	{
-		ORBE_INFO("ExampleLayer::Update");
+		if (ORB::Input::IsKeyPressed(ORBE_KEY_TAB))
+			ORBE_TRACE("Tab key is pressed (poll)!");
 	}
 
 	void OnEvent(ORB::Event& event) override
 	{
-		ORBE_TRACE("{0}", event);
+		if (event.GetEventType() == ORB::EventType::KeyPressed)
+		{
+			ORB::KeyPressedEvent& e = (ORB::KeyPressedEvent&)event;
+			if(e.GetKeyCode() == ORBE_KEY_TAB)
+				ORBE_TRACE("Tab key is pressed (event)!");
+			else
+				ORBE_TRACE("{0}", (char)e.GetKeyCode());
+		}
 	}
 };
 

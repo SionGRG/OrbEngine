@@ -71,6 +71,8 @@
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\OrbE\KeyCodes.h" />
+    <ClInclude Include="src\OrbE\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OrbE\App.cpp">

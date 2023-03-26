@@ -162,9 +162,11 @@
     <ClInclude Include="src\OrbE\Events\MouseEvent.h" />
     <ClInclude Include="src\OrbE\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\OrbE\Input.h" />
+    <ClInclude Include="src\OrbE\KeyCodes.h" />
     <ClInclude Include="src\OrbE\Layer.h" />
     <ClInclude Include="src\OrbE\LayerStack.h" />
     <ClInclude Include="src\OrbE\Log.h" />
+    <ClInclude Include="src\OrbE\MouseButtonCodes.h" />
     <ClInclude Include="src\OrbE\Window.h" />
     <ClInclude Include="src\OrbPCH.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />

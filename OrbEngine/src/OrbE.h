@@ -6,6 +6,10 @@
 #include "OrbE/Layer.h"
 #include "OrbE/Log.h"
 
+#include "OrbE/Input.h"
+#include "OrbE/KeyCodes.h"
+#include "OrbE/MouseButtonCodes.h"
+
 #include "OrbE/ImGui/ImGuiLayer.h"
 
 // ---------------- Entry Point -----------------
