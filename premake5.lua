@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "OrbEngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "OrbEngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "OrbEngine/vendor/ImGui"
+IncludeDir["glm"] = "OrbEngine/vendor/glm"
 
 group "Dependencies"
 	include "OrbEngine/vendor/GLFW"
@@ -39,7 +40,9 @@ project "OrbEngine"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs
@@ -48,7 +51,8 @@ project "OrbEngine"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links 
@@ -108,7 +112,8 @@ project "SandOrb"
 	includedirs
 	{
 		"OrbEngine/vendor/spdlog/include",
-		"OrbEngine/src"
+		"OrbEngine/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links
