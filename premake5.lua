@@ -27,9 +27,10 @@ group ""
 
 project "OrbEngine"
 	location "OrbEngine"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++20"
+	staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -43,6 +44,11 @@ project "OrbEngine"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl"
+	}
+
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	includedirs
@@ -64,7 +70,6 @@ project "OrbEngine"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 		defines
@@ -72,11 +77,6 @@ project "OrbEngine"
 			"ORBE_PLATFORM_WINDOWS",
 			"ORBE_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
-		}
-
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/SandOrb/\"")
 		}
 
 	filter "configurations:Debug"
@@ -98,7 +98,8 @@ project "SandOrb"
 	location "SandOrb"
 	kind "ConsoleApp"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++20"
+	staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -113,6 +114,7 @@ project "SandOrb"
 	{
 		"OrbEngine/vendor/spdlog/include",
 		"OrbEngine/src",
+		"OrbEngine/vendor",
 		"%{IncludeDir.glm}"
 	}
 
@@ -122,7 +124,6 @@ project "SandOrb"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 		defines

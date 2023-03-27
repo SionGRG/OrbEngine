@@ -6,6 +6,8 @@
 #include "Events/Event.h"
 #include "OrbE/Events/AppEvent.h"
 
+#include "OrbE/ImGui/ImGuiLayer.h"
+
 namespace ORB {
 
 	class ORBE_API App
@@ -27,6 +29,7 @@ namespace ORB {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 

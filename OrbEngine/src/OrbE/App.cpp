@@ -18,6 +18,9 @@ namespace ORB {
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	App::~App()
@@ -27,13 +30,11 @@ namespace ORB {
 	void App::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
-		layer->OnAttach();
 	}
 
 	void App::PushOverlay(Layer* overlay)
 	{
 		m_LayerStack.PushOverlay(overlay);
-		overlay->OnAttach();
 	}
 
 	void App::OnEvent(Event& e)
@@ -58,6 +59,11 @@ namespace ORB {
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+			
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}
