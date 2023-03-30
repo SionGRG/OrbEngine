@@ -54,7 +54,7 @@ namespace ORB {
 	{
 		while (m_Running)
 		{
-			glClearColor(0.2, 0.2, 0.2, 1);
+			glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (Layer* layer : m_LayerStack)

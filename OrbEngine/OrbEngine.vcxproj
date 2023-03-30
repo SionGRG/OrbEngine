@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\OrbE.h" />
     <ClInclude Include="src\OrbE\App.h" />
     <ClInclude Include="src\OrbE\Core.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="src\OrbE\LayerStack.h" />
     <ClInclude Include="src\OrbE\Log.h" />
     <ClInclude Include="src\OrbE\MouseButtonCodes.h" />
+    <ClInclude Include="src\OrbE\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\OrbE\Window.h" />
     <ClInclude Include="src\OrbPCH.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -580,6 +582,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\OrbE\App.cpp" />
     <ClCompile Include="src\OrbE\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\OrbE\ImGui\ImGuiLayer.cpp" />

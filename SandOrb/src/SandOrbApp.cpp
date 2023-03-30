@@ -1,6 +1,6 @@
 #include <OrbE.h>
 
-#include "../ImGui/imgui.h"
+#include "ImGui/imgui.h"
 
 class ExampleLayer : public ORB::Layer
 {

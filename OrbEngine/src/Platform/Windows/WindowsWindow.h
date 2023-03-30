@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OrbE/Window.h"
+#include "OrbE/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -29,7 +30,7 @@ namespace ORB {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
-
+		GraphicsContext* m_Context;
 		struct WindowData
 		{
 			std::string Title;
