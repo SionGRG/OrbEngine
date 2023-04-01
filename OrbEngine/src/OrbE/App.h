@@ -7,6 +7,7 @@
 #include "OrbE/Events/AppEvent.h"
 
 #include "OrbE/ImGui/ImGuiLayer.h"
+#include "OrbE/Renderer/Shader.h"
 
 namespace ORB {
 
@@ -34,6 +35,7 @@ namespace ORB {
 		LayerStack m_LayerStack;
 
 		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		std::unique_ptr<Shader> m_Shader;
 	private:
 		static App* s_Instance;
 	};

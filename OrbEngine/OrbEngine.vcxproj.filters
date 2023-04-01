@@ -1349,6 +1349,7 @@
     </ClInclude>
     <ClInclude Include="src\OrbE\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\OrbE\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OrbE\App.cpp">
@@ -1379,5 +1380,6 @@
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\OrbE\Renderer\Shader.cpp" />
   </ItemGroup>
 </Project>
