@@ -10,6 +10,7 @@
 
 #include "OrbE/Renderer/Shader.h"
 #include "OrbE/Renderer/Buffer.h"
+#include "OrbE/Renderer/VertexArray.h"
 
 namespace ORB {
 
@@ -36,10 +37,12 @@ namespace ORB {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		unsigned int m_VertexArray;
-		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<IndexBuffer> m_IndexBuffer;
+		std::shared_ptr<Shader> m_Shader;
+		std::shared_ptr<VertexArray> m_VertexArray;
+
+		std::shared_ptr<Shader> m_SquareShader;
+		std::shared_ptr<VertexArray> m_SquareVA;
+
 	private:
 		static App* s_Instance;
 	};
