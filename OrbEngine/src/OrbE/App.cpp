@@ -3,7 +3,7 @@
 
 #include "Input.h"
 
-#include <glad/glad.h>
+#include "OrbE/Renderer/Renderer.h"
 
 namespace ORB {
 
@@ -173,18 +173,20 @@ namespace ORB {
 	{
 		while (m_Running)
 		{
-			glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
+			RenderCommand::Clear();
 
+			Renderer::BeginScene();
+			
 			// Draw square
 			m_SquareShader->Bind();
-			m_SquareVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-
+			Renderer::Submit(m_SquareVA);		// Submit meshes/Geomentry
+			
 			// Draw Triangle
 			m_Shader->Bind();
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArray);	// Submit meshes/Geomentry
+
+			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
