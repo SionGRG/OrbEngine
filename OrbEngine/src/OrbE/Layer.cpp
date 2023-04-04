@@ -8,8 +8,4 @@ namespace ORB {
 	{
 	}
 
-	Layer::~Layer()
-	{
-	}
-
 }

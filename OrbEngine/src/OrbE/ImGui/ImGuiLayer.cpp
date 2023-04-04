@@ -18,10 +18,6 @@ namespace ORB {
 	{
 	}
 
-	ImGuiLayer::~ImGuiLayer()
-	{
-	}
-
 	void ImGuiLayer::OnAttach()
 	{
         // setup Dear ImGui context

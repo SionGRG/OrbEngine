@@ -12,6 +12,18 @@
 
 #include "OrbE/ImGui/ImGuiLayer.h"
 
+// ----------------- Renderer -------------------
+#include "OrbE/Renderer/Renderer.h"
+#include "OrbE/Renderer/RenderCommand.h"
+
+#include "OrbE/Renderer/Buffer.h"
+#include "OrbE/Renderer/Shader.h"
+#include "OrbE/Renderer/VertexArray.h"
+
+#include "OrbE/Maths/BasicMath.h"
+#include "OrbE/Renderer/OrthographicCamera.h"
+// ----------------------------------------------
+
 // ---------------- Entry Point -----------------
 #include "OrbE/EntryPoint.h"
 // ----------------------------------------------

@@ -8,11 +8,6 @@
 
 #include "OrbE/ImGui/ImGuiLayer.h"
 
-#include "OrbE/Renderer/Shader.h"
-#include "OrbE/Renderer/Buffer.h"
-#include "OrbE/Renderer/VertexArray.h"
-
-#include "OrbE/Renderer/OrthographicCamera.h"
 
 namespace ORB {
 
@@ -20,7 +15,7 @@ namespace ORB {
 	{
 	public:
 		App();
-		virtual ~App();
+		virtual ~App() = default;
 
 		void Run();
 		
@@ -31,6 +26,7 @@ namespace ORB {
 
 		inline Window& GetWindow() { return *m_Window; }
 		inline static App& Get() { return *s_Instance; }
+
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
@@ -38,15 +34,7 @@ namespace ORB {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-		std::shared_ptr<Shader> m_SquareShader;
-		std::shared_ptr<VertexArray> m_SquareVA;
-
-		OrthographicCamera m_Camera;
-
+	
 	private:
 		static App* s_Instance;
 	};

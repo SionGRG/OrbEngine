@@ -18,6 +18,7 @@ namespace ORB {
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		ORBE_CORE_ASSERT(status, "Failed to initialize Glad!");
 
+		// Print the GPU Details to the console
 		ORBE_CORE_INFO("OpenGL Info:");
 		ORBE_CORE_INFO("  Vendor:	{0}", (char*)glGetString(GL_VENDOR));
 		ORBE_CORE_INFO("  Renderer:	{0}", (char*)glGetString(GL_RENDERER));
