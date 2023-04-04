@@ -12,6 +12,8 @@
 #include "OrbE/Renderer/Buffer.h"
 #include "OrbE/Renderer/VertexArray.h"
 
+#include "OrbE/Renderer/OrthographicCamera.h"
+
 namespace ORB {
 
 	class ORBE_API App
@@ -42,6 +44,8 @@ namespace ORB {
 
 		std::shared_ptr<Shader> m_SquareShader;
 		std::shared_ptr<VertexArray> m_SquareVA;
+
+		OrthographicCamera m_Camera;
 
 	private:
 		static App* s_Instance;

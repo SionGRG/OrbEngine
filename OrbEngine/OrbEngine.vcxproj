@@ -143,6 +143,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\OrbE\Maths\BasicMath.h" />
+    <ClInclude Include="src\OrbE\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\OrbE\Renderer\RenderCommand.h" />
     <ClInclude Include="src\OrbE\Renderer\RendererAPI.h" />
@@ -591,6 +593,7 @@
     <ClInclude Include="src\OrbE\Renderer\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\OrbE\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\OrbE\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\OrbE\Renderer\RendererAPI.cpp" />

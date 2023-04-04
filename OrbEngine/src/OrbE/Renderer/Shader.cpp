@@ -3,6 +3,8 @@
 
 #include <glad/glad.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace ORB {
 
 	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
@@ -121,5 +123,11 @@ namespace ORB {
 	void Shader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	void Shader::UploadUniformMat4(std::string_view name, const m4& matrix)
+	{
+		GLint location = glGetUniformLocation(m_RenderID, name.data());
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-
+#include "OrbE/Maths/BasicMath.h"
 namespace ORB {
 
 	class Shader
@@ -12,6 +12,8 @@ namespace ORB {
 
 		void Bind() const;
 		void Unbind() const;
+
+		void UploadUniformMat4(std::string_view name, const m4& matrix);
 	private:
 
 		uint32_t m_RenderID;
