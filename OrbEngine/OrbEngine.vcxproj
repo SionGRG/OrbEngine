@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\OrbE\Core\Timestep.h" />
     <ClInclude Include="src\OrbE\Maths\BasicMath.h" />
     <ClInclude Include="src\OrbE\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />

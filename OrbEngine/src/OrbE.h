@@ -6,6 +6,8 @@
 #include "OrbE/Layer.h"
 #include "OrbE/Log.h"
 
+#include "OrbE/Core/Timestep.h"
+
 #include "OrbE/Input.h"
 #include "OrbE/KeyCodes.h"
 #include "OrbE/MouseButtonCodes.h"

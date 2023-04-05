@@ -132,24 +132,24 @@ public:
 		m_SquareShader.reset(new ORB::Shader(squareShaderVertexSrc, squareShaderFragmentSrc));
 	}
 
-	void OnUpdate() override
+	void OnUpdate(ORB::Timestep ts) override
 	{
 		// Camera Movement
 		if (ORB::Input::IsKeyPressed(ORBE_KEY_LEFT))
-			m_CameraPosition.x -= m_CameraMoveSpeed;
+			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
 		else if (ORB::Input::IsKeyPressed(ORBE_KEY_RIGHT))
-			m_CameraPosition.x += m_CameraMoveSpeed;
+			m_CameraPosition.x += m_CameraMoveSpeed * ts;
 
 		if (ORB::Input::IsKeyPressed(ORBE_KEY_DOWN))
-			m_CameraPosition.y -= m_CameraMoveSpeed;
+			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 		else if (ORB::Input::IsKeyPressed(ORBE_KEY_UP))
-			m_CameraPosition.y += m_CameraMoveSpeed;
+			m_CameraPosition.y += m_CameraMoveSpeed * ts;
 
 		// Camera Rotation
 		if (ORB::Input::IsKeyPressed(ORBE_KEY_A))
-			m_CameraRotation += m_CameraRotationSpeed;
+			m_CameraRotation += m_CameraRotationSpeed * ts;
 		else if (ORB::Input::IsKeyPressed(ORBE_KEY_D))
-			m_CameraRotation -= m_CameraRotationSpeed;
+			m_CameraRotation -= m_CameraRotationSpeed * ts;
 
 
 		ORB::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
@@ -184,10 +184,10 @@ private:
 
 	ORB::OrthographicCamera m_Camera;
 	ORB::v3 m_CameraPosition;
-	float m_CameraMoveSpeed = 0.05f;
+	float m_CameraMoveSpeed = 5.0f;
 
 	float m_CameraRotation = 0.0f;
-	float m_CameraRotationSpeed = 2.0f;
+	float m_CameraRotationSpeed = 120.0f;
 };
 
 

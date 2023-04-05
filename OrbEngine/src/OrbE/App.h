@@ -6,6 +6,8 @@
 #include "Events/Event.h"
 #include "OrbE/Events/AppEvent.h"
 
+#include "OrbE/Core/Timestep.h"
+
 #include "OrbE/ImGui/ImGuiLayer.h"
 
 
@@ -30,11 +32,12 @@ namespace ORB {
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
+	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-	
+		float m_LastFrameTime = 0.0f;
 	private:
 		static App* s_Instance;
 	};
