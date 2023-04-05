@@ -2,11 +2,13 @@
 
 #include "ImGui/imgui.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class ExampleLayer : public ORB::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f * 1.5, 1.6f * 1.5, -0.9f * 1.5, 0.9f * 1.5), m_CameraPosition(0.0f)
+		: Layer("Example"), m_Camera(-1.6f * 1.5, 1.6f * 1.5, -0.9f * 1.5, 0.9f * 1.5), m_CameraPosition(0.0f), m_TrianglePosition(0.0f)
 	{
 		// Draw a triangle
 		m_VertexArray.reset(ORB::VertexArray::Create());
@@ -38,10 +40,10 @@ public:
 		m_SquareVA.reset(ORB::VertexArray::Create());
 
 		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			-0.75f,  0.75f, 0.0f
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
 		};
 
 		std::shared_ptr<ORB::VertexBuffer> squareVB;
@@ -69,6 +71,7 @@ public:
 			layout(location = 1) in vec4 a_Color;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
 			out vec4 v_Color;
@@ -77,7 +80,7 @@ public:
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}		
 		)";
 
@@ -105,13 +108,14 @@ public:
 			layout(location = 0) in vec3 a_Position;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
 
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}		
 		)";
 
@@ -151,17 +155,39 @@ public:
 		else if (ORB::Input::IsKeyPressed(ORBE_KEY_D))
 			m_CameraRotation -= m_CameraRotationSpeed * ts;
 
+		// Triangle Position Movement controls
+		if (ORB::Input::IsKeyPressed(ORBE_KEY_J))
+			m_TrianglePosition.x -= m_TriangleMoveSpeed * ts;
+		else if (ORB::Input::IsKeyPressed(ORBE_KEY_L))
+			m_TrianglePosition.x += m_TriangleMoveSpeed * ts;
+
+		if (ORB::Input::IsKeyPressed(ORBE_KEY_K))
+			m_TrianglePosition.y -= m_TriangleMoveSpeed * ts;
+		else if (ORB::Input::IsKeyPressed(ORBE_KEY_I))
+			m_TrianglePosition.y += m_TriangleMoveSpeed * ts;
 
 		ORB::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
 		ORB::RenderCommand::Clear();
 
-		ORB::Renderer::BeginScene(m_Camera);
-
 		m_Camera.SetPosition(m_CameraPosition);
 		m_Camera.SetRotation(m_CameraRotation);
 
-		ORB::Renderer::Submit(m_SquareShader, m_SquareVA);	// Draw square
-		ORB::Renderer::Submit(m_Shader, m_VertexArray);		// Draw Triangle
+		ORB::Renderer::BeginScene(m_Camera);
+
+		static ORB::m4 squareScale = glm::scale(ORB::m4(1.0f), ORB::v3(0.1f));
+
+		for (int y = 0; y < 20; y++)
+		{
+			for (int x = 0; x < 20; x++)
+			{
+				ORB::v3 pos(x * 0.11f, y * 0.11f, 0.0f);
+				ORB::m4 squareTransform = glm::translate(ORB::m4(1.0f), pos) * squareScale;
+				ORB::Renderer::Submit(m_SquareShader, m_SquareVA, squareTransform);		// Draw squares
+			}
+		}
+
+		ORB::m4 triangleTransform = glm::translate(ORB::m4(1.0f), m_TrianglePosition);
+		ORB::Renderer::Submit(m_Shader, m_VertexArray, triangleTransform);		// Draw Triangle
 
 		ORB:: Renderer::EndScene();
 
@@ -188,6 +214,9 @@ private:
 
 	float m_CameraRotation = 0.0f;
 	float m_CameraRotationSpeed = 120.0f;
+	
+	ORB::v3 m_TrianglePosition;
+	float m_TriangleMoveSpeed = 1.0f;
 };
 
 
