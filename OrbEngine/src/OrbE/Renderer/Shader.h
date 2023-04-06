@@ -13,6 +13,7 @@ namespace ORB {
 		void Bind() const;
 		void Unbind() const;
 
+		void UploadUniformFloat4(std::string_view name, const v4& values);
 		void UploadUniformMat4(std::string_view name, const m4& matrix);
 	private:
 

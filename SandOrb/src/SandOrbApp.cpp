@@ -126,9 +126,11 @@ public:
 
 			in vec3 v_Position;
 
+			uniform vec4 u_Color;
+
 			void main()
 			{
-				o_Color = vec4(0.1, 0.6, 0.6, 1.0);
+				o_Color = u_Color;
 			}
 		
 		)";
@@ -176,13 +178,44 @@ public:
 
 		static ORB::m4 squareScale = glm::scale(ORB::m4(1.0f), ORB::v3(0.1f));
 
-		for (int y = 0; y < 20; y++)
+		ORB::v4 grayColor(0.4f, 0.4f, 0.4f, 1.0f);
+		ORB::v4 whiteColor(0.9f, 0.9f, 0.9f, 1.0f);
+		ORB::v4 cyanColor(0.2f, 0.8f, 0.8f, 1.0f);
+		ORB::v4 redColor(0.8f, 0.3f, 0.2f, 1.0f);
+		ORB::v4 blueColor(0.2f, 0.3f, 0.6f, 1.0f);
+
+		// ORB::MaterialRef material = new ORB::Material(m_SquareShader);
+		// ORB::MaterialInstanceRef m1 = new ORB::MaterialInstance(material);
+
+		// material->Set("u_Color", grayColor);
+		// material->SetTexture("u_AlbedoMap", texture);
+		// squareMesh->SetMaterial(m1);
+
+		for (int y = -10; y < 10; y++)
 		{
-			for (int x = 0; x < 20; x++)
+			for (int x = -10; x < 10; x++)
 			{
 				ORB::v3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				ORB::m4 squareTransform = glm::translate(ORB::m4(1.0f), pos) * squareScale;
+				
+				// Set alternating colours
+				if (x % 2 == 0)
+				{
+					if ((y > -7 && y < 7) && (x > -7 && x < 7))
+						m_SquareShader->UploadUniformFloat4("u_Color", cyanColor);
+					else
+						m_SquareShader->UploadUniformFloat4("u_Color", grayColor);
+				}
+				else
+				{
+					if ((y > -7 && y < 7) && (x > -7 && x < 7))
+						m_SquareShader->UploadUniformFloat4("u_Color", blueColor);
+					else
+						m_SquareShader->UploadUniformFloat4("u_Color", whiteColor);
+				}
+
 				ORB::Renderer::Submit(m_SquareShader, m_SquareVA, squareTransform);		// Draw squares
+				// ORB::Renderer::Submit(m1, m_SquareVA, squareTransform);		// Draw squares with a material
 			}
 		}
 

@@ -125,6 +125,12 @@ namespace ORB {
 		glUseProgram(0);
 	}
 
+	void Shader::UploadUniformFloat4(std::string_view name, const v4& values)
+	{
+		GLint location = glGetUniformLocation(m_RenderID, name.data());
+		glUniform4f(location, values.x, values.y, values.z, values.w);
+	}
+
 	void Shader::UploadUniformMat4(std::string_view name, const m4& matrix)
 	{
 		GLint location = glGetUniformLocation(m_RenderID, name.data());
