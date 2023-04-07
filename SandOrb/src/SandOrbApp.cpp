@@ -22,7 +22,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.4f, 0.9f, 0.9f, 1.0f
 		};
 
-		std::shared_ptr<ORB::VertexBuffer> vertexBuffer;
+		ORB::Ref<ORB::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(ORB::VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		ORB::BufferLayout layout = {
@@ -35,7 +35,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<ORB::IndexBuffer> indexBuffer;
+		ORB::Ref<ORB::IndexBuffer> indexBuffer;
 		indexBuffer.reset(ORB::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
@@ -49,7 +49,7 @@ public:
 			-0.5f,  0.5f, 0.0f
 		};
 
-		std::shared_ptr<ORB::VertexBuffer> squareVB;
+		ORB::Ref<ORB::VertexBuffer> squareVB;
 		squareVB.reset(ORB::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 
 		squareVB->SetLayout({
@@ -61,7 +61,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<ORB::IndexBuffer> squareIB;
+		ORB::Ref<ORB::IndexBuffer> squareIB;
 		squareIB.reset(ORB::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 
 		m_SquareVA->SetIndexBuffer(squareIB);
@@ -222,11 +222,11 @@ public:
 	}
 
 private:
-	std::shared_ptr<ORB::Shader> m_Shader;
-	std::shared_ptr<ORB::VertexArray> m_VertexArray;
+	ORB::Ref<ORB::Shader> m_Shader;
+	ORB::Ref<ORB::VertexArray> m_VertexArray;
 
-	std::shared_ptr<ORB::Shader> m_SquareShader;
-	std::shared_ptr<ORB::VertexArray> m_SquareVA;
+	ORB::Ref<ORB::Shader> m_SquareShader;
+	ORB::Ref<ORB::VertexArray> m_SquareVA;
 
 	ORB::OrthographicCamera m_Camera;
 	ORB::v3 m_CameraPosition;
