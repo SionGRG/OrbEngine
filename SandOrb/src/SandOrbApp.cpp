@@ -1,8 +1,11 @@
 #include <OrbE.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "ImGui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public ORB::Layer
 {
@@ -99,7 +102,7 @@ public:
 		
 		)";
 
-		m_Shader.reset(new ORB::Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(ORB::Shader::Create(vertexSrc, fragmentSrc));
 
 		// Shaders for the square
 		std::string squareShaderVertexSrc = R"(
@@ -126,16 +129,16 @@ public:
 
 			in vec3 v_Position;
 
-			uniform vec4 u_Color;
+			uniform vec3 u_Color;
 
 			void main()
 			{
-				o_Color = u_Color;
+				o_Color = vec4(u_Color, 1.0);
 			}
 		
 		)";
 
-		m_SquareShader.reset(new ORB::Shader(squareShaderVertexSrc, squareShaderFragmentSrc));
+		m_SquareShader.reset(ORB::Shader::Create(squareShaderVertexSrc, squareShaderFragmentSrc));
 	}
 
 	void OnUpdate(ORB::Timestep ts) override
@@ -178,18 +181,15 @@ public:
 
 		static ORB::m4 squareScale = glm::scale(ORB::m4(1.0f), ORB::v3(0.1f));
 
-		ORB::v4 grayColor(0.4f, 0.4f, 0.4f, 1.0f);
-		ORB::v4 whiteColor(0.9f, 0.9f, 0.9f, 1.0f);
-		ORB::v4 cyanColor(0.2f, 0.8f, 0.8f, 1.0f);
-		ORB::v4 redColor(0.8f, 0.3f, 0.2f, 1.0f);
-		ORB::v4 blueColor(0.2f, 0.3f, 0.6f, 1.0f);
-
 		// ORB::MaterialRef material = new ORB::Material(m_SquareShader);
 		// ORB::MaterialInstanceRef m1 = new ORB::MaterialInstance(material);
 
 		// material->Set("u_Color", grayColor);
 		// material->SetTexture("u_AlbedoMap", texture);
 		// squareMesh->SetMaterial(m1);
+		
+		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_SquareShader)->Bind();
+		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_SquareShader)->UploadUniformFloat3("u_Color", m_SquareColor);
 
 		for (int y = -10; y < 10; y++)
 		{
@@ -197,24 +197,8 @@ public:
 			{
 				ORB::v3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				ORB::m4 squareTransform = glm::translate(ORB::m4(1.0f), pos) * squareScale;
-				
-				// Set alternating colours
-				if (x % 2 == 0)
-				{
-					if ((y > -7 && y < 7) && (x > -7 && x < 7))
-						m_SquareShader->UploadUniformFloat4("u_Color", cyanColor);
-					else
-						m_SquareShader->UploadUniformFloat4("u_Color", grayColor);
-				}
-				else
-				{
-					if ((y > -7 && y < 7) && (x > -7 && x < 7))
-						m_SquareShader->UploadUniformFloat4("u_Color", blueColor);
-					else
-						m_SquareShader->UploadUniformFloat4("u_Color", whiteColor);
-				}
-
 				ORB::Renderer::Submit(m_SquareShader, m_SquareVA, squareTransform);		// Draw squares
+				
 				// ORB::Renderer::Submit(m1, m_SquareVA, squareTransform);		// Draw squares with a material
 			}
 		}
@@ -228,6 +212,9 @@ public:
 
 	virtual void OnImGuiRender() override
 	{
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 
 	void OnEvent(ORB::Event& event) override
@@ -250,6 +237,8 @@ private:
 	
 	ORB::v3 m_TrianglePosition;
 	float m_TriangleMoveSpeed = 1.0f;
+
+	ORB::v3 m_SquareColor = { 0.4f, 0.9f, 0.9f };
 };
 
 
