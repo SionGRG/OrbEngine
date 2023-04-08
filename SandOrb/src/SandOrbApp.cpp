@@ -179,6 +179,7 @@ public:
 		m_TextureShader = ORB::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc);
 
 		m_Texture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_DeOrbLogoTexture = ORB::Texture2D::Create("assets/textures/DeOrb_Logo.png");
 		
 		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -247,9 +248,12 @@ public:
 			}
 		}
 		
-		// Bind the square texture
-		m_Texture->Bind();
-		// Draw a square to texture
+		// Draw a textured square 
+		m_Texture->Bind();		// Bind the square texture
+		ORB::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(ORB::m4(1.0f), ORB::v3(1.5f)));
+		
+		// Draw DeOrb Logo Texture
+		m_DeOrbLogoTexture->Bind();		// Bind the square texture
 		ORB::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(ORB::m4(1.0f), ORB::v3(1.5f)));
 
 		// Draw Triangle
@@ -278,7 +282,7 @@ private:
 	ORB::Ref<ORB::Shader> m_SquareShader, m_TextureShader;
 	ORB::Ref<ORB::VertexArray> m_SquareVA;
 
-	ORB::Ref<ORB::Texture2D> m_Texture;
+	ORB::Ref<ORB::Texture2D> m_Texture, m_DeOrbLogoTexture;
 
 	ORB::OrthographicCamera m_Camera;
 	ORB::v3 m_CameraPosition;
