@@ -20,6 +20,7 @@
 
 #include "OrbE/Renderer/Buffer.h"
 #include "OrbE/Renderer/Shader.h"
+#include "OrbE/Renderer/Texture.h"
 #include "OrbE/Renderer/VertexArray.h"
 
 #include "OrbE/Maths/BasicMath.h"

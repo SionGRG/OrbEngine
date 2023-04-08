@@ -14,7 +14,7 @@ public:
 		: Layer("Example"), m_Camera(-1.6f * 1.5, 1.6f * 1.5, -0.9f * 1.5, 0.9f * 1.5), m_CameraPosition(0.0f), m_TrianglePosition(0.0f)
 	{
 		// Draw a triangle
-		m_VertexArray.reset(ORB::VertexArray::Create());
+		m_VertexArray = ORB::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.9f, 0.6f, 0.1f, 1.0f,
@@ -23,7 +23,7 @@ public:
 		};
 
 		ORB::Ref<ORB::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(ORB::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = ORB::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		ORB::BufferLayout layout = {
 			{ ORB::ShaderDataType::Float3, "a_Posision"},
@@ -36,33 +36,34 @@ public:
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		ORB::Ref<ORB::IndexBuffer> indexBuffer;
-		indexBuffer.reset(ORB::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = ORB::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		// Draw a square
-		m_SquareVA.reset(ORB::VertexArray::Create());
+		m_SquareVA = ORB::VertexArray::Create();
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		ORB::Ref<ORB::VertexBuffer> squareVB;
-		squareVB.reset(ORB::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVB = ORB::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
 		squareVB->SetLayout({
 			{ ORB::ShaderDataType::Float3, "a_Posision"},
-			//{ ShaderDataType::Float4, "a_Color"}
-			//{ ShaderDataType::Float3, "a_Normal"}
+			{ ORB::ShaderDataType::Float2, "a_TexCoord"}
+			//{ ORB::ShaderDataType::Float4, "a_Color"}
+			//{ ORB::ShaderDataType::Float3, "a_Normal"}
 			});
 
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 		ORB::Ref<ORB::IndexBuffer> squareIB;
-		squareIB.reset(ORB::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = ORB::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
 		m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -102,7 +103,7 @@ public:
 		
 		)";
 
-		m_Shader.reset(ORB::Shader::Create(vertexSrc, fragmentSrc));
+		m_Shader = ORB::Shader::Create(vertexSrc, fragmentSrc);
 
 		// Shaders for the square
 		std::string squareShaderVertexSrc = R"(
@@ -138,7 +139,50 @@ public:
 		
 		)";
 
-		m_SquareShader.reset(ORB::Shader::Create(squareShaderVertexSrc, squareShaderFragmentSrc));
+		m_SquareShader = ORB::Shader::Create(squareShaderVertexSrc, squareShaderFragmentSrc);
+
+		// Shader for the texture
+		std::string textureShaderVertexSrc = R"(
+			#version 330 core
+ 
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+			}		
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 o_Color;
+
+			in vec2 v_TexCoord;
+
+			uniform sampler2D u_Texture;
+
+			void main()
+			{
+				o_Color = texture(u_Texture, v_TexCoord);
+			}
+		
+		)";
+
+		m_TextureShader = ORB::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc);
+
+		m_Texture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
+		
+		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+
 	}
 
 	void OnUpdate(ORB::Timestep ts) override
@@ -202,9 +246,15 @@ public:
 				// ORB::Renderer::Submit(m1, m_SquareVA, squareTransform);		// Draw squares with a material
 			}
 		}
+		
+		// Bind the square texture
+		m_Texture->Bind();
+		// Draw a square to texture
+		ORB::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(ORB::m4(1.0f), ORB::v3(1.5f)));
 
+		// Draw Triangle
 		ORB::m4 triangleTransform = glm::translate(ORB::m4(1.0f), m_TrianglePosition);
-		ORB::Renderer::Submit(m_Shader, m_VertexArray, triangleTransform);		// Draw Triangle
+		//ORB::Renderer::Submit(m_Shader, m_VertexArray, triangleTransform);
 
 		ORB:: Renderer::EndScene();
 
@@ -225,8 +275,10 @@ private:
 	ORB::Ref<ORB::Shader> m_Shader;
 	ORB::Ref<ORB::VertexArray> m_VertexArray;
 
-	ORB::Ref<ORB::Shader> m_SquareShader;
+	ORB::Ref<ORB::Shader> m_SquareShader, m_TextureShader;
 	ORB::Ref<ORB::VertexArray> m_SquareVA;
+
+	ORB::Ref<ORB::Texture2D> m_Texture;
 
 	ORB::OrthographicCamera m_Camera;
 	ORB::v3 m_CameraPosition;
