@@ -3,12 +3,16 @@
 #include "OrbE/Renderer/Shader.h"
 #include "OrbE/Maths/BasicMath.h"
 
+// TODO: REMOVE!
+typedef unsigned int GLenum;
+
 namespace ORB {
 
 	class OpenGLShader : public Shader
 	{
 	public:
-		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+		OpenGLShader(std::string_view filepath);
+		OpenGLShader(std::string_view vertexSrc, std::string_view fragmentSrc);
 		virtual ~OpenGLShader();
 
 		virtual void Bind() const override;
@@ -23,6 +27,11 @@ namespace ORB {
 
 		void UploadUniformMat3(std::string_view name, const m3& matrix);
 		void UploadUniformMat4(std::string_view name, const m4& matrix);
+
+	private:
+		std::string ReadFile(std::string_view filepath);
+		std::unordered_map<GLenum, std::string> PreProcess(std::string_view source);
+		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 
 	private:
 		uint32_t m_RenderID;
