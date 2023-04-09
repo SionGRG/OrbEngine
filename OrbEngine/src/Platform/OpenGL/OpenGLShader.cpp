@@ -24,9 +24,17 @@ namespace ORB {
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
+
+		// Extract name from filepath
+		auto lastSlash = filepath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string_view::npos ? 0 : lastSlash + 1;
+		auto lastDot = filepath.rfind('.');
+		auto count = lastDot == std::string_view::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
+		m_Name = filepath.substr(lastSlash, count);
 	}
 
-	OpenGLShader::OpenGLShader(std::string_view vertexSrc, std::string_view fragmentSrc)
+	OpenGLShader::OpenGLShader(std::string_view name, std::string_view vertexSrc, std::string_view fragmentSrc)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -94,7 +102,7 @@ namespace ORB {
 	std::string OpenGLShader::ReadFile(std::string_view filepath)
 	{
 		std::string result;
-		std::ifstream in(filepath.data(), std::ios::in, std::ios::binary);
+		std::ifstream in(filepath.data(), std::ios::in | std::ios::binary);
 		if (in)
 		{
 			in.seekg(0, std::ios::end);
@@ -141,7 +149,9 @@ namespace ORB {
 	{
 		// Get a program object.
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(shaderSources.size());
+		ORBE_CORE_ASSERT(shaderSources.size() <= 2, "We only support a maximum amount of 2 shaders!");
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIDIndex = 0;
 
 		for (auto& kv : shaderSources)
 		{
@@ -183,7 +193,7 @@ namespace ORB {
 			// Now time to link it together into a program.
 			glAttachShader(program, shader);
 
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDIndex++] = shader;
 		}
 
 		// Link our program

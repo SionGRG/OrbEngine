@@ -12,11 +12,14 @@ namespace ORB {
 	{
 	public:
 		OpenGLShader(std::string_view filepath);
-		OpenGLShader(std::string_view vertexSrc, std::string_view fragmentSrc);
+		OpenGLShader(std::string_view name, std::string_view vertexSrc, std::string_view fragmentSrc);
 		virtual ~OpenGLShader();
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual const std::string_view GetName() const override { return m_Name; }
+
 
 		void UploadUniformInt(std::string_view name, int value);
 		
@@ -35,5 +38,6 @@ namespace ORB {
 
 	private:
 		uint32_t m_RenderID;
+		std::string m_Name;
 	};
 }

@@ -103,7 +103,7 @@ public:
 		
 		)";
 
-		m_Shader = ORB::Shader::Create(vertexSrc, fragmentSrc);
+		m_Shader = ORB::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
 		// Shaders for the square
 		std::string squareShaderVertexSrc = R"(
@@ -139,15 +139,15 @@ public:
 		
 		)";
 
-		m_SquareShader = ORB::Shader::Create(squareShaderVertexSrc, squareShaderFragmentSrc);
+		m_SquareShader = ORB::Shader::Create("SquareColor", squareShaderVertexSrc, squareShaderFragmentSrc);
 
-		m_TextureShader = ORB::Shader::Create("assets/shaders/Texture.glsl");
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_DeOrbLogoTexture = ORB::Texture2D::Create("assets/textures/DeOrb_Logo.png");
 		
-		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<ORB::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<ORB::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 
 	}
 
@@ -212,14 +212,16 @@ public:
 				// ORB::Renderer::Submit(m1, m_SquareVA, squareTransform);		// Draw squares with a material
 			}
 		}
+
+		auto textureShader = m_ShaderLibrary.Get("Texture");
 		
 		// Draw a textured square 
 		m_Texture->Bind();		// Bind the square texture
-		ORB::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(ORB::m4(1.0f), ORB::v3(1.5f)));
+		ORB::Renderer::Submit(textureShader, m_SquareVA, glm::scale(ORB::m4(1.0f), ORB::v3(1.5f)));
 		
 		// Draw DeOrb Logo Texture
 		m_DeOrbLogoTexture->Bind();		// Bind the square texture
-		ORB::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(ORB::m4(1.0f), ORB::v3(1.5f)));
+		ORB::Renderer::Submit(textureShader, m_SquareVA, glm::scale(ORB::m4(1.0f), ORB::v3(1.5f)));
 
 		// Draw Triangle
 		ORB::m4 triangleTransform = glm::translate(ORB::m4(1.0f), m_TrianglePosition);
@@ -241,10 +243,11 @@ public:
 	}
 
 private:
+	ORB::ShaderLibrary m_ShaderLibrary;
 	ORB::Ref<ORB::Shader> m_Shader;
 	ORB::Ref<ORB::VertexArray> m_VertexArray;
 
-	ORB::Ref<ORB::Shader> m_SquareShader, m_TextureShader;
+	ORB::Ref<ORB::Shader> m_SquareShader;
 	ORB::Ref<ORB::VertexArray> m_SquareVA;
 
 	ORB::Ref<ORB::Texture2D> m_Texture, m_DeOrbLogoTexture;
