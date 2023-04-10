@@ -1,7 +1,7 @@
 #pragma once
 
 #include "OrbPCH.h"
-#include "OrbE/Core.h"
+#include "OrbE/Core/Core.h"
 
 
 namespace ORB {

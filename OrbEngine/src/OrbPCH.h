@@ -15,7 +15,7 @@
 #include <unordered_set>
 
 // Logging Class
-#include "OrbE/Log.h"
+#include "OrbE/Core/Log.h"
 
 #ifdef ORBE_PLATFORM_WINDOWS
 	#include <Windows.h>

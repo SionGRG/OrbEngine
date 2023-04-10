@@ -1,8 +1,8 @@
 #include "OrbPCH.h"
 #include "OrthographicCameraController.h"
 
-#include "OrbE/Input.h"
-#include "OrbE/KeyCodes.h"
+#include "OrbE/Core/Input.h"
+#include "OrbE/Core/KeyCodes.h"
 
 namespace ORB {
 

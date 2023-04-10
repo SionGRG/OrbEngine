@@ -2,16 +2,16 @@
 
 // For use by the Orb Engine Applications
 
-#include "OrbE/App.h"
-#include "OrbE/Layer.h"
-#include "OrbE/Log.h"
+#include "OrbE/Core/App.h"
+#include "OrbE/Core/Layer.h"
+#include "OrbE/Core/Log.h"
 
 #include "OrbE/Core/Timestep.h"
 
-#include "OrbE/Input.h"
-#include "OrbE/KeyCodes.h"
-#include "OrbE/MouseButtonCodes.h"
-#include "OrbE/OrthographicCameraController.h"
+#include "OrbE/Core/Input.h"
+#include "OrbE/Core/KeyCodes.h"
+#include "OrbE/Core/MouseButtonCodes.h"
+#include "OrbE/Renderer/OrthographicCameraController.h"
 
 #include "OrbE/ImGui/ImGuiLayer.h"
 
@@ -29,5 +29,5 @@
 // ----------------------------------------------
 
 // ---------------- Entry Point -----------------
-#include "OrbE/EntryPoint.h"
+#include "OrbE/Core/EntryPoint.h"
 // ----------------------------------------------

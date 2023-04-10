@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OrbE/Input.h"
+#include "OrbE/Core/Input.h"
 
 namespace ORB {
 

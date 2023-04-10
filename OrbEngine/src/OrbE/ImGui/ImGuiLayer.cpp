@@ -5,7 +5,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
 
-#include "OrbE/App.h"
+#include "OrbE/Core/App.h"
 
 // TEMPORARY - quick fix to add key imputs 
 #include <GLFW/glfw3.h>

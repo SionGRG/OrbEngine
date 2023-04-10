@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OrbE/Window.h"
+#include "OrbE/Core/Window.h"
 #include "OrbE/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

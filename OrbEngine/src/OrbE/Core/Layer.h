@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OrbE/Core.h"
+#include "OrbE/Core/Core.h"
 #include "OrbE/Events/Event.h"
 
 #include "OrbE/Core/Timestep.h"

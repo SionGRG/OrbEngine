@@ -2,8 +2,8 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "OrbE/LayerStack.h"
-#include "Events/Event.h"
+#include "OrbE/Core/LayerStack.h"
+#include "OrbE/Events/Event.h"
 #include "OrbE/Events/AppEvent.h"
 
 #include "OrbE/Core/Timestep.h"
