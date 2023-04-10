@@ -11,7 +11,7 @@ class ExampleLayer : public ORB::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f * 1.5, 1.6f * 1.5, -0.9f * 1.5, 0.9f * 1.5), m_CameraPosition(0.0f), m_TrianglePosition(0.0f)
+		: Layer("Example"), m_CameraController(1280.0f / 720.0f), m_TrianglePosition(0.0f)
 	{
 		// Draw a triangle
 		m_VertexArray = ORB::VertexArray::Create();
@@ -153,22 +153,8 @@ public:
 
 	void OnUpdate(ORB::Timestep ts) override
 	{
-		// Camera Movement
-		if (ORB::Input::IsKeyPressed(ORBE_KEY_LEFT))
-			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-		else if (ORB::Input::IsKeyPressed(ORBE_KEY_RIGHT))
-			m_CameraPosition.x += m_CameraMoveSpeed * ts;
-
-		if (ORB::Input::IsKeyPressed(ORBE_KEY_DOWN))
-			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
-		else if (ORB::Input::IsKeyPressed(ORBE_KEY_UP))
-			m_CameraPosition.y += m_CameraMoveSpeed * ts;
-
-		// Camera Rotation
-		if (ORB::Input::IsKeyPressed(ORBE_KEY_A))
-			m_CameraRotation += m_CameraRotationSpeed * ts;
-		else if (ORB::Input::IsKeyPressed(ORBE_KEY_D))
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
+		// Update --------------------------------------------------------------
+		m_CameraController.OnUpdate(ts);
 
 		// Triangle Position Movement controls
 		if (ORB::Input::IsKeyPressed(ORBE_KEY_J))
@@ -181,13 +167,11 @@ public:
 		else if (ORB::Input::IsKeyPressed(ORBE_KEY_I))
 			m_TrianglePosition.y += m_TriangleMoveSpeed * ts;
 
+		// Render --------------------------------------------------------------
 		ORB::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
 		ORB::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		ORB::Renderer::BeginScene(m_Camera);
+		ORB::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		static ORB::m4 squareScale = glm::scale(ORB::m4(1.0f), ORB::v3(0.1f));
 
@@ -238,8 +222,9 @@ public:
 		ImGui::End();
 	}
 
-	void OnEvent(ORB::Event& event) override
+	void OnEvent(ORB::Event& e) override
 	{
+		m_CameraController.OnEvent(e);
 	}
 
 private:
@@ -252,12 +237,7 @@ private:
 
 	ORB::Ref<ORB::Texture2D> m_Texture, m_DeOrbLogoTexture;
 
-	ORB::OrthographicCamera m_Camera;
-	ORB::v3 m_CameraPosition;
-	float m_CameraMoveSpeed = 5.0f;
-
-	float m_CameraRotation = 0.0f;
-	float m_CameraRotationSpeed = 120.0f;
+	ORB::OrthographicCameraController m_CameraController;;
 	
 	ORB::v3 m_TrianglePosition;
 	float m_TriangleMoveSpeed = 1.0f;

@@ -9,6 +9,8 @@ namespace ORB {
 	public: 
 		OrthographicCamera(float left, float right, float bottom, float top);
 
+		void SetProjection(float left, float right, float bottom, float top);
+
 		const v3& GetPosition() const { return m_Position; }
 		void SetPosition(const v3& position) { m_Position = position; RecalculateViewMatrix(); }
 

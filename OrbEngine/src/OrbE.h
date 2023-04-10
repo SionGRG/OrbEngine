@@ -11,6 +11,7 @@
 #include "OrbE/Input.h"
 #include "OrbE/KeyCodes.h"
 #include "OrbE/MouseButtonCodes.h"
+#include "OrbE/OrthographicCameraController.h"
 
 #include "OrbE/ImGui/ImGuiLayer.h"
 
