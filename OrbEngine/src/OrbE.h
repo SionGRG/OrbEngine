@@ -27,7 +27,3 @@
 #include "OrbE/Maths/BasicMath.h"
 #include "OrbE/Renderer/OrthographicCamera.h"
 // ----------------------------------------------
-
-// ---------------- Entry Point -----------------
-#include "OrbE/Core/EntryPoint.h"
-// ----------------------------------------------

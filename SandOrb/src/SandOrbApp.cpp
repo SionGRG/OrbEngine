@@ -1,4 +1,5 @@
 #include <OrbE.h>
+#include <OrbE/Core/EntryPoint.h>
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
@@ -6,6 +7,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "SandOrb2D.h"
 
 class ExampleLayer : public ORB::Layer
 {
@@ -237,7 +240,7 @@ private:
 
 	ORB::Ref<ORB::Texture2D> m_Texture, m_DeOrbLogoTexture;
 
-	ORB::OrthographicCameraController m_CameraController;;
+	ORB::OrthographicCameraController m_CameraController;
 	
 	ORB::v3 m_TrianglePosition;
 	float m_TriangleMoveSpeed = 1.0f;
@@ -251,7 +254,8 @@ class SandOrb : public ORB::App
 public:
 	SandOrb() 
 	{
-		PushLayer(new ExampleLayer());
+		// PushLayer(new ExampleLayer());
+		PushLayer(new SandOrb2D());
 	}
 	~SandOrb() {}
 
