@@ -17,6 +17,7 @@
 
 // ----------------- Renderer -------------------
 #include "OrbE/Renderer/Renderer.h"
+#include "OrbE/Renderer/Renderer2D.h"
 #include "OrbE/Renderer/RenderCommand.h"
 
 #include "OrbE/Renderer/Buffer.h"

@@ -12,33 +12,7 @@ SandOrb2D::SandOrb2D()
 }
 
 void SandOrb2D::OnAttach()
-{
-	// Draw a square
-	m_SquareVA = ORB::VertexArray::Create();
-
-	float squareVertices[3 * 4] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
-	};
-
-	ORB::Ref<ORB::VertexBuffer> squareVB;
-	squareVB = ORB::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
-
-	squareVB->SetLayout({
-		{ ORB::ShaderDataType::Float3, "a_Posision" }
-	});
-
-	m_SquareVA->AddVertexBuffer(squareVB);
-
-	uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-	ORB::Ref<ORB::IndexBuffer> squareIB;
-	squareIB = ORB::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-
-	m_SquareVA->SetIndexBuffer(squareIB);
-
-	m_FlatColorShader = ORB::Shader::Create("assets/shaders/FlatColor.glsl");
+{	
 }
 
 void SandOrb2D::OnDetach()
@@ -54,14 +28,13 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 	ORB::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
 	ORB::RenderCommand::Clear();
 
-	ORB::Renderer::BeginScene(m_CameraController.GetCamera());
-
-	std::dynamic_pointer_cast<ORB::OpenGLShader>(m_FlatColorShader)->Bind();
-	std::dynamic_pointer_cast<ORB::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
-
-	ORB::Renderer::Submit(m_FlatColorShader, m_SquareVA, glm::scale(ORB::m4(1.0f), ORB::v3(1.5f)));
-
-	ORB::Renderer::EndScene();
+	ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	ORB::Renderer2D::EndScene();
+	
+	// TODO: Add these functions - Shader::SetMat4, Shader::Set::SetFloat4
+	// std::dynamic_pointer_cast<ORB::OpenGLShader>(m_FlatColorShader)->Bind();
+	// std::dynamic_pointer_cast<ORB::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 }
 
 void SandOrb2D::OnImGuiRender()
