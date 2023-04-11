@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "OrbE/Maths/BasicMath.h"
+
 namespace ORB {
 
 	class Shader
@@ -12,6 +14,10 @@ namespace ORB {
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
+
+		virtual void SetFloat3(std::string_view name, const v3& value) = 0;
+		virtual void SetFloat4(std::string_view name, const v4& value) = 0;
+		virtual void SetMat4(std::string_view name, const m4& value) = 0;
 
 		virtual const std::string_view GetName() const = 0;
 

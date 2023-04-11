@@ -4,8 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
 SandOrb2D::SandOrb2D()
 	: Layer("SandOrb2D"), m_CameraController(1280.0f / 720.0f)
 {
@@ -29,12 +27,9 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 	ORB::RenderCommand::Clear();
 
 	ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	ORB::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	ORB::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.4f, 0.8f, 0.8f, 1.0f });
 	ORB::Renderer2D::EndScene();
-	
-	// TODO: Add these functions - Shader::SetMat4, Shader::Set::SetFloat4
-	// std::dynamic_pointer_cast<ORB::OpenGLShader>(m_FlatColorShader)->Bind();
-	// std::dynamic_pointer_cast<ORB::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 }
 
 void SandOrb2D::OnImGuiRender()

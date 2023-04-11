@@ -57,6 +57,21 @@ namespace ORB {
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetFloat3(std::string_view name, const v3& value)
+	{
+		UploadUniformFloat3(name, value);
+	}
+
+	void OpenGLShader::SetFloat4(std::string_view name, const v4& value)
+	{
+		UploadUniformFloat4(name, value);
+	}
+
+	void OpenGLShader::SetMat4(std::string_view name, const m4& value)
+	{
+		UploadUniformMat4(name, value);
+	}
+
 	void OpenGLShader::UploadUniformInt(std::string_view name, int value)
 	{
 		GLint location = glGetUniformLocation(m_RenderID, name.data());
