@@ -83,7 +83,6 @@ project "OrbEngine"
 
 		defines
 		{
-			"ORBE_PLATFORM_WINDOWS",
 			"ORBE_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
@@ -134,11 +133,6 @@ project "SandOrb"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines
-		{
-			"ORBE_PLATFORM_WINDOWS"
-		}
 
 	filter "configurations:Debug"
 		defines "ORBE_DEBUG"

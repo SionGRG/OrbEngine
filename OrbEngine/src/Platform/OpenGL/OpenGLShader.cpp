@@ -106,10 +106,18 @@ namespace ORB {
 		if (in)
 		{
 			in.seekg(0, std::ios::end);
-			result.resize(in.tellg());
-			in.seekg(0, std::ios::beg);
-			in.read(&result[0], result.size());
-			in.close();
+			size_t size = in.tellg();
+			if (size != -1)
+			{
+				result.resize(size);
+				in.seekg(0, std::ios::beg);
+				in.read(&result[0], size);
+				in.close();
+			}
+			else
+			{
+				ORBE_CORE_ASSERT("Could no read from file '{0}'", filepath);
+			}
 		}
 		else
 		{
@@ -126,20 +134,18 @@ namespace ORB {
 		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
 
-		size_t pos = source.find(typeToken, 0);
+		size_t pos = source.find(typeToken, 0); //Start of shader type declaration line
 		while (pos != std::string::npos)
 		{
-			size_t eol = source.find_first_of("\r\n", pos);
+			size_t eol = source.find_first_of("\r\n", pos);//End of shader type declaration line
 			ORBE_CORE_ASSERT(eol != std::string::npos, "Syntax error");
-			size_t begin = pos + typeTokenLength + 1;
+			size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after "#type " keyword)
 			std::string_view type = source.substr(begin, eol - begin);
 			ORBE_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified!");
 
-			size_t nextLinePos = source.find_first_not_of("|r|n", eol);
-			pos = source.find(typeToken, nextLinePos);
-			shaderSources[ShaderTypeFromString(type)] = source.substr(
-				nextLinePos, 
-				pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+			size_t nextLinePos = source.find_first_not_of("|r|n", eol);//Start of shader code after shader type declaration line
+			pos = source.find(typeToken, nextLinePos); //Start of next shader type declaration line
+			shaderSources[ShaderTypeFromString(type)] = (pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
 		}
 
 		return shaderSources;
@@ -226,7 +232,10 @@ namespace ORB {
 
 		// Always detach shaders after a successful link
 		for (auto id : glShaderIDs)
+		{
 			glDetachShader(program, id);
+			glDeleteShader(id);
+		}
 
 		// Assign the program object to the RenderID.
 		m_RenderID = program;
