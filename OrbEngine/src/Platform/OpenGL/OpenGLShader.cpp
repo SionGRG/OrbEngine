@@ -57,6 +57,11 @@ namespace ORB {
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetInt(std::string_view name, int value)
+	{
+		UploadUniformInt(name, value);
+	}
+
 	void OpenGLShader::SetFloat3(std::string_view name, const v3& value)
 	{
 		UploadUniformFloat3(name, value);

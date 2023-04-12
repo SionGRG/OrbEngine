@@ -18,6 +18,7 @@ namespace ORB {
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
+		virtual void SetInt(std::string_view name, int value) override;
 		virtual void SetFloat3(std::string_view name, const v3& value) override;
 		virtual void SetFloat4(std::string_view name, const v4& value) override;
 		virtual void SetMat4(std::string_view name, const m4& value) override;
