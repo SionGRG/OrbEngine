@@ -1,9 +1,7 @@
 #include <OrbE.h>
 #include <OrbE/Core/EntryPoint.h>
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
-#include "ImGui/imgui.h"
+#include <ImGui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -25,8 +23,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.4f, 0.9f, 0.9f, 1.0f
 		};
 
-		ORB::Ref<ORB::VertexBuffer> vertexBuffer;
-		vertexBuffer = ORB::VertexBuffer::Create(vertices, sizeof(vertices));
+		ORB::Ref<ORB::VertexBuffer> vertexBuffer = ORB::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		ORB::BufferLayout layout = {
 			{ ORB::ShaderDataType::Float3, "a_Posision"},
@@ -38,8 +35,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		ORB::Ref<ORB::IndexBuffer> indexBuffer;
-		indexBuffer = ORB::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+		ORB::Ref<ORB::IndexBuffer> indexBuffer = ORB::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		// Draw a square
@@ -149,9 +145,8 @@ public:
 		m_Texture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_DeOrbLogoTexture = ORB::Texture2D::Create("assets/textures/DeOrb_Logo.png");
 		
-		std::dynamic_pointer_cast<ORB::OpenGLShader>(textureShader)->Bind();
-		std::dynamic_pointer_cast<ORB::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
-
+		textureShader->Bind();
+		textureShader->SetInt("u_Texture", 0);
 	}
 
 	void OnUpdate(ORB::Timestep ts) override
@@ -185,8 +180,8 @@ public:
 		// material->SetTexture("u_AlbedoMap", texture);
 		// squareMesh->SetMaterial(m1);
 		
-		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_SquareShader)->Bind();
-		std::dynamic_pointer_cast<ORB::OpenGLShader>(m_SquareShader)->UploadUniformFloat3("u_Color", m_SquareColor);
+		m_SquareShader->Bind();
+		m_SquareShader->SetFloat3("u_Color", m_SquareColor);
 
 		for (int y = -10; y < 10; y++)
 		{
@@ -254,14 +249,14 @@ class SandOrb : public ORB::App
 public:
 	SandOrb() 
 	{
-		// PushLayer(new ExampleLayer());
-		PushLayer(new SandOrb2D());
+		// PushLayer(ORB::CreateRef<ExampleLayer>());
+		PushLayer(ORB::CreateRef<SandOrb2D>());
 	}
 	~SandOrb() {}
 
 };
 
-ORB::App* ORB::CreateApplication()
+ORB::Scope<ORB::App> ORB::CreateApplication()
 {
-	return new SandOrb();
+	return ORB::CreateScope<SandOrb>();
 }

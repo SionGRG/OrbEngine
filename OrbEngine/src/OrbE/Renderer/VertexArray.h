@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "Buffer.h"
+#include "OrbE/Renderer/Buffer.h"
 
 namespace ORB {
 

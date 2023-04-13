@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Event.h"
-
+#include "OrbE/Events/Event.h"
 
 namespace ORB {
 
 	// Key Event base class
-	class ORBE_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -20,7 +19,7 @@ namespace ORB {
 	};
 
 	// Key pressed event class
-	class ORBE_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
@@ -41,7 +40,7 @@ namespace ORB {
 	};
 
 	// Key released event class
-	class ORBE_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
@@ -58,7 +57,7 @@ namespace ORB {
 	};
 
 	// Key Typeed event class
-	class ORBE_API KeyTypedEvent : public KeyEvent
+	class KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int keycode)

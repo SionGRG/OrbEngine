@@ -2,6 +2,8 @@
 
 // For use by the Orb Engine Applications
 
+#include "OrbE/Core/Core.h"
+
 #include "OrbE/Core/App.h"
 #include "OrbE/Core/Layer.h"
 #include "OrbE/Core/Log.h"

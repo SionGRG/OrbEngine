@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RenderCommand.h"
-#include "OrthographicCamera.h";
-#include "Shader.h"
+#include "OrbE/Renderer/RenderCommand.h"
+#include "OrbE/Renderer/OrthographicCamera.h";
+#include "OrbE/Renderer/Shader.h"
 
 namespace ORB {
 
@@ -10,6 +10,7 @@ namespace ORB {
 	{
 	public:
 		static void Init();
+		static void Terminate();
 		static void OnWindowResize(uint32_t width, uint32_t height);
 
 		static void BeginScene(OrthographicCamera& camera); 

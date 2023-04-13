@@ -1,7 +1,7 @@
 #include "OrbPCH.h"
-#include "Texture.h"
+#include "OrbE/Renderer/Texture.h"
 
-#include "Renderer.h"
+#include "OrbE/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace ORB {

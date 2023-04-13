@@ -1,15 +1,13 @@
 #include "OrbPCH.h"
-#include "App.h"
+#include "OrbE/Core/App.h"
 
 #include "OrbE/Renderer/Renderer.h"
 
-#include "Input.h"
+#include "OrbE/Core/Input.h"
 
 #include <GLFW/glfw3.h>
 
 namespace ORB {
-
-#define BIND_EVENT_FN(x) std::bind(&App::x, this, std::placeholders::_1)
 
 	App* App::s_Instance = nullptr;
 
@@ -18,21 +16,26 @@ namespace ORB {
 		ORBE_CORE_ASSERT(!s_Instance, "Application already exists!")
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window = Window::Create();
+		m_Window->SetEventCallback(ORBE_BIND_EVENT_FN(App::OnEvent));
 
 		Renderer::Init();
 
-		m_ImGuiLayer = new ImGuiLayer();
+		m_ImGuiLayer = CreateRef<ImGuiLayer>();
 		PushOverlay(m_ImGuiLayer);
 	}
 
-	void App::PushLayer(Layer* layer)
+	App::~App()
+	{
+		Renderer::Terminate();
+	}
+
+	void App::PushLayer(Ref<Layer> layer)
 	{
 		m_LayerStack.PushLayer(layer);
 	}
 
-	void App::PushOverlay(Layer* overlay)
+	void App::PushOverlay(Ref<Layer> overlay)
 	{
 		m_LayerStack.PushOverlay(overlay);
 	}
@@ -40,8 +43,8 @@ namespace ORB {
 	void App::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(ORBE_BIND_EVENT_FN(App::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(ORBE_BIND_EVENT_FN(App::OnWindowResize));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
@@ -61,12 +64,12 @@ namespace ORB {
 
 			if (!m_Minimized)
 			{
-				for (Layer* layer : m_LayerStack)
+				for (auto layer : m_LayerStack)
 					layer->OnUpdate(timestep);
 			}
 			
 			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
+			for (auto layer : m_LayerStack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
 

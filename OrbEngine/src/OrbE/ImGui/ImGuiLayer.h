@@ -8,7 +8,7 @@
 
 namespace ORB {
 
-	class ORBE_API ImGuiLayer : public Layer
+	class ImGuiLayer : public Layer
 	{
 	public:
 		ImGuiLayer();

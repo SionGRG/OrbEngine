@@ -1,9 +1,9 @@
 #include "OrbPCH.h"
-#include "Layer.h"
+#include "OrbE/Core/Layer.h"
 
 namespace ORB {
 	
-	Layer::Layer(const std::string& debugName)
+	Layer::Layer(std::string_view debugName)
 		: m_DebugName(debugName)
 	{
 	}

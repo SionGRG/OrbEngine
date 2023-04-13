@@ -27,7 +27,7 @@ namespace ORB {
 
 	private:
 		virtual void Init(const WindowProps& props);
-		virtual void Shutdown();
+		virtual void Terminate();
 	private:
 		GLFWwindow* m_Window;
 		Scope<GraphicsContext> m_Context;

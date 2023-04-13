@@ -7,10 +7,10 @@
 
 namespace ORB {
 
-	class ORBE_API Layer
+	class Layer
 	{
 	public:
-		Layer(const std::string& name = "Layer");
+		Layer(std::string_view name = "Layer");
 		virtual ~Layer() = default;
 
 		virtual void OnAttach() {}
@@ -19,7 +19,7 @@ namespace ORB {
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 
-		inline const std::string& GetName() const { return m_DebugName; }
+		inline std::string_view GetName() const { return m_DebugName; }
 	protected:
 		std::string m_DebugName;
 	};

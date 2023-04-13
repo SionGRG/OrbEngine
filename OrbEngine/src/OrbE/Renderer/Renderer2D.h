@@ -1,8 +1,7 @@
 #pragma once
 
-#include "OrthographicCamera.h"
-#include "Texture.h"
-#include "Texture.h"
+#include "OrbE/Renderer/OrthographicCamera.h"
+#include "OrbE/Renderer/Texture.h"
 
 namespace ORB {
 

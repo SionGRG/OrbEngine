@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Core.h"
-#include "Window.h"
+#include "OrbE/Core/Core.h"
+
+#include "OrbE/Core/Window.h"
 #include "OrbE/Core/LayerStack.h"
 #include "OrbE/Events/Event.h"
 #include "OrbE/Events/AppEvent.h"
@@ -13,18 +14,18 @@
 
 namespace ORB {
 
-	class ORBE_API App
+	class App
 	{
 	public:
 		App();
-		virtual ~App() = default;
+		virtual ~App();
 
 		void Run();
 		
 		void OnEvent(Event& e);
 
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* overlay);
+		void PushLayer(Ref<Layer> layer);
+		void PushOverlay(Ref<Layer> overlay);
 
 		inline Window& GetWindow() { return *m_Window; }
 		inline static App& Get() { return *s_Instance; }
@@ -34,8 +35,8 @@ namespace ORB {
 		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
-		std::unique_ptr<Window> m_Window;
-		ImGuiLayer* m_ImGuiLayer;
+		Scope<Window> m_Window;
+		Ref<ImGuiLayer> m_ImGuiLayer;
 		bool m_Running = true;
 		bool m_Minimized = false;
 		LayerStack m_LayerStack;
@@ -45,7 +46,7 @@ namespace ORB {
 	};
 
 	// To be defined in CLIENT
-	App* CreateApplication();
+	Scope<App> CreateApplication();
 
 
 }

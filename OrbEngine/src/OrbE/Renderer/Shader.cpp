@@ -1,7 +1,7 @@
 #include "OrbPCH.h"
-#include "Shader.h"
+#include "OrbE/Renderer/Shader.h"
 
-#include "Renderer.h"
+#include "OrbE/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace ORB {
@@ -17,7 +17,7 @@ namespace ORB {
 			ORBE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(filepath);
+			return CreateRef<OpenGLShader>(filepath);
 		}
 
 		ORBE_CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -32,7 +32,7 @@ namespace ORB {
 			ORBE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+			return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
 		ORBE_CORE_ASSERT(false, "Unknown RendererAPI!");

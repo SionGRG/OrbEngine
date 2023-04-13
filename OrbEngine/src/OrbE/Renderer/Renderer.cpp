@@ -1,9 +1,7 @@
 #include "OrbPCH.h"
-#include "Renderer.h"
+#include "OrbE/Renderer/Renderer.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
-#include "Renderer2D.h"
+#include "OrbE/Renderer/Renderer2D.h"
 
 namespace ORB {
 
@@ -13,6 +11,11 @@ namespace ORB {
 	{
 		RenderCommand::Init();
 		Renderer2D::Init();
+	}
+
+	void Renderer::Terminate()
+	{
+		Renderer2D::Terminate();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)

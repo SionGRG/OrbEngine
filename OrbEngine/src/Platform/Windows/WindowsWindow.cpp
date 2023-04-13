@@ -1,5 +1,5 @@
 #include "OrbPCH.h"
-#include "WindowsWindow.h"
+#include "Platform/Windows/WindowsWindow.h"
 
 #include "OrbE/Events/AppEvent.h"
 #include "OrbE/Events/MouseEvent.h"
@@ -16,9 +16,9 @@ namespace ORB {
 		ORBE_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
-	Window* Window::Create(const WindowProps& props)
+	Scope<Window> Window::Create(const WindowProps& props)
 	{
-		return new WindowsWindow(props);
+		return CreateScope<WindowsWindow>(props);
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
@@ -28,7 +28,7 @@ namespace ORB {
 
 	WindowsWindow::~WindowsWindow()
 	{
-		Shutdown();
+		Terminate();
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
@@ -41,7 +41,6 @@ namespace ORB {
 
 		if (s_GLFWWindowCount == 0)
 		{
-			ORBE_CORE_INFO("Initializing GLFW!");
 			int success = glfwInit();
 			ORBE_CORE_ASSERT(success, "Could not intialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
@@ -51,7 +50,7 @@ namespace ORB {
 
 		++s_GLFWWindowCount;
 
-		m_Context = CreateScope<OpenGLContext>(m_Window);
+		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -148,14 +147,13 @@ namespace ORB {
 		});
 	}
 
-	void WindowsWindow::Shutdown()
+	void WindowsWindow::Terminate()
 	{
 		glfwDestroyWindow(m_Window);
 
 		--s_GLFWWindowCount;
 		if (s_GLFWWindowCount == 0)
 		{
-			ORBE_CORE_INFO("Terminating GLFW!");
 			glfwTerminate();
 		}
 	}

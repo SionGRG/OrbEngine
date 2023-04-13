@@ -1,8 +1,8 @@
 #pragma once
 
 #include "OrbPCH.h"
-#include "OrbE/Core/Core.h"
 
+#include "OrbE/Core/Core.h"
 
 namespace ORB {
 
@@ -38,7 +38,7 @@ namespace ORB {
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
 
-	class ORBE_API Event
+	class Event
 	{
 	public:
 		bool Handled = false;

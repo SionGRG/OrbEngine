@@ -4,7 +4,7 @@
 
 namespace ORB {
 
-	class ORBE_API Input
+	class Input
 	{
 	protected:
 		Input() = default;
