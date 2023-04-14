@@ -25,5 +25,13 @@ private:
 	ORB::Ref<ORB::Texture2D> m_CheckerboardTexture;
 
 	ORB::v4 m_SquareColor = { 0.4f, 0.9f, 0.9f, 1.0f };
+
+	struct ProfileResult
+	{
+		const char* Name;
+		float Time;
+	};
+
+	std::vector<ProfileResult> m_ProfileResults;
 };
 
