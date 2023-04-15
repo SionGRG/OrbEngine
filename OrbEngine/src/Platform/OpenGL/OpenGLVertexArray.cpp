@@ -28,26 +28,36 @@ namespace ORB {
 	
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		glCreateVertexArrays(1, &m_RenderID);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
+		ORBE_PROFILE_FUNCTION();
+	
 		glDeleteVertexArrays(1, &m_RenderID);
 	}
 
 	void OpenGLVertexArray::Bind() const
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		glBindVertexArray(m_RenderID);
 	}
 	
 	void OpenGLVertexArray::Unbind() const
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		glBindVertexArray(0);
 	}
 	
 	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 	{
+		ORBE_PROFILE_FUNCTION();
+	
 		ORBE_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
 		// Bind the Render ID for the vertex array and vertex buffer
@@ -73,6 +83,8 @@ namespace ORB {
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		// Bind the Render ID for the vertex array and index buffer
 		glBindVertexArray(m_RenderID);
 		indexBuffer->Bind();

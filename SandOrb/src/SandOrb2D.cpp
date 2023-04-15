@@ -12,12 +12,16 @@ SandOrb2D::SandOrb2D()
 
 void SandOrb2D::OnAttach()
 {
+	ORBE_PROFILE_FUNCTION();
+
 	m_CheckerboardTexture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
 
 }
 
 void SandOrb2D::OnDetach()
 {
+	ORBE_PROFILE_FUNCTION();
+
 }
 
 void SandOrb2D::OnUpdate(ORB::Timestep ts)
@@ -25,11 +29,8 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 	ORBE_PROFILE_FUNCTION();
 
 	// Update --------------------------------------------------------------
-	{
-		ORBE_PROFILE_SCOPE("CameraController::OnUpdate");
-		m_CameraController.OnUpdate(ts);
-	}
-
+	m_CameraController.OnUpdate(ts);
+	
 	// Render --------------------------------------------------------------
 	{
 		ORBE_PROFILE_SCOPE("Renderer Prep");
@@ -49,6 +50,8 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 
 void SandOrb2D::OnImGuiRender()
 {
+	ORBE_PROFILE_FUNCTION();
+
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 	ImGui::End();

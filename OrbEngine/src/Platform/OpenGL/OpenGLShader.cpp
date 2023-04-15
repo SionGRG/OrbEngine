@@ -21,6 +21,8 @@ namespace ORB {
 	
 	OpenGLShader::OpenGLShader(std::string_view filepath)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -36,6 +38,8 @@ namespace ORB {
 	OpenGLShader::OpenGLShader(std::string_view name, std::string_view vertexSrc, std::string_view fragmentSrc)
 		: m_Name(name)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -44,36 +48,50 @@ namespace ORB {
 
 	OpenGLShader::~OpenGLShader()
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		glDeleteProgram(m_RenderID);
 	}
 
 	void OpenGLShader::Bind() const
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		glUseProgram(m_RenderID);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetInt(std::string_view name, int value)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		UploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::SetFloat3(std::string_view name, const v3& value)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		UploadUniformFloat3(name, value);
 	}
 
 	void OpenGLShader::SetFloat4(std::string_view name, const v4& value)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		UploadUniformFloat4(name, value);
 	}
 
 	void OpenGLShader::SetMat4(std::string_view name, const m4& value)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		UploadUniformMat4(name, value);
 	}
 
@@ -121,6 +139,8 @@ namespace ORB {
 
 	std::string OpenGLShader::ReadFile(std::string_view filepath)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		std::string result;
 		std::ifstream in(filepath.data(), std::ios::in | std::ios::binary);
 		if (in)
@@ -149,6 +169,8 @@ namespace ORB {
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(std::string_view source)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -173,6 +195,8 @@ namespace ORB {
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		// Get a program object.
 		GLuint program = glCreateProgram();
 		ORBE_CORE_ASSERT(shaderSources.size() <= 2, "We only support a maximum amount of 2 shaders!");

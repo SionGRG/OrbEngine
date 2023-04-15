@@ -13,6 +13,8 @@ namespace ORB {
 	
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		// Camera Movement
 		if (Input::IsKeyPressed(ORBE_KEY_A))
 			m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
@@ -42,6 +44,8 @@ namespace ORB {
 	
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(ORBE_BIND_EVENT_FN(OrthographicCameraController::onMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(ORBE_BIND_EVENT_FN(OrthographicCameraController::onWindowResized));
@@ -49,6 +53,8 @@ namespace ORB {
 	
 	bool OrthographicCameraController::onMouseScrolled(MouseScrolledEvent& e)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -58,6 +64,8 @@ namespace ORB {
 	
 	bool OrthographicCameraController::onWindowResized(WindowResizeEvent& e)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight() ;
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 

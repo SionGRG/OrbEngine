@@ -9,6 +9,8 @@ namespace ORB {
 
 	void Renderer::Init()
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
 	}

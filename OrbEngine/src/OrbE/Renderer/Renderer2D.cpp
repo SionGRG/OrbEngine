@@ -20,6 +20,8 @@ namespace ORB {
 
 	void Renderer2D::Init()
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		s_Data = new Renderer2DStorage();
 
 		// Draw a square
@@ -54,17 +56,23 @@ namespace ORB {
 
 	void Renderer2D::Terminate()
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		delete s_Data;
 	}
 	
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		s_Data->TextureShader->Bind();
 		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 	
 	void Renderer2D::EndScene()
 	{
+		ORBE_PROFILE_FUNCTION();
+	
 	}
 	
 	void Renderer2D::DrawQuad(const v2& position, const v2& size, const v4& color)
@@ -74,6 +82,8 @@ namespace ORB {
 	
 	void Renderer2D::DrawQuad(const v3& position, const v2& size, const v4& color)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		s_Data->TextureShader->SetFloat4("u_Color", color);
 		s_Data->WhiteTexture->Bind();
 
@@ -90,6 +100,8 @@ namespace ORB {
 	
 	void Renderer2D::DrawQuad(const v3& position, const v2& size, const Ref<Texture2D>& texture)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		s_Data->TextureShader->SetFloat4("u_Color", v4(1.0f));
 		texture->Bind();
 

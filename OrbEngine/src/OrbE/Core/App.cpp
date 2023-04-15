@@ -13,6 +13,8 @@ namespace ORB {
 
 	App::App()
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		ORBE_CORE_ASSERT(!s_Instance, "Application already exists!")
 		s_Instance = this;
 
@@ -27,21 +29,31 @@ namespace ORB {
 
 	App::~App()
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		Renderer::Terminate();
 	}
 
 	void App::PushLayer(Ref<Layer> layer)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void App::PushOverlay(Ref<Layer> overlay)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	void App::OnEvent(Event& e)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(ORBE_BIND_EVENT_FN(App::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(ORBE_BIND_EVENT_FN(App::OnWindowResize));
@@ -56,22 +68,32 @@ namespace ORB {
 
 	void App::Run()
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		while (m_Running)
 		{
+			ORBE_PROFILE_SCOPE("Run Loop");
+			
 			float time = (float)glfwGetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_Minimized)
 			{
-				for (auto layer : m_LayerStack)
-					layer->OnUpdate(timestep);
-			}
+				{
+					ORBE_PROFILE_SCOPE("LayerStack OnUpdate");
+					for (auto layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
 			
-			m_ImGuiLayer->Begin();
-			for (auto layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
+				m_ImGuiLayer->Begin();
+				{
+					ORBE_PROFILE_SCOPE("LayerStack OnImGuiRender");
+					for (auto layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
+			}
 
 			m_Window->OnUpdate();
 		}
@@ -85,6 +107,8 @@ namespace ORB {
 
 	bool App::OnWindowResize(WindowResizeEvent& e)
 	{
+		ORBE_PROFILE_FUNCTION();
+		
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{
 			m_Minimized = true;

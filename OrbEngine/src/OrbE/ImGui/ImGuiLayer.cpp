@@ -20,6 +20,8 @@ namespace ORB {
 
 	void ImGuiLayer::OnAttach()
 	{
+        ORBE_PROFILE_FUNCTION();
+
         // setup Dear ImGui context
         IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -53,6 +55,8 @@ namespace ORB {
 
 	void ImGuiLayer::OnDetach()
 	{
+        ORBE_PROFILE_FUNCTION();
+        
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
@@ -60,6 +64,8 @@ namespace ORB {
 
     void ImGuiLayer::Begin()
     {
+        ORBE_PROFILE_FUNCTION();
+        
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -67,6 +73,8 @@ namespace ORB {
 
     void ImGuiLayer::End()
     {
+        ORBE_PROFILE_FUNCTION();
+        
         ImGuiIO& io = ImGui::GetIO();
         App& app = App::Get();
         io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());

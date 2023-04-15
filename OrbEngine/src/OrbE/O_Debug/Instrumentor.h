@@ -4,6 +4,7 @@
 #include <chrono>
 #include <algorithm>
 #include <fstream>
+#include <filesystem>
 
 #include <thread>
 
@@ -32,9 +33,19 @@ namespace ORB {
 		{
 		}
 
-		void BeginSession(const std::string& name, const std::string& filepath = "results.json")
+		void BeginSession(const std::string& name, const std::string& filepath = "results.json", const std::string& directory = "")
 		{
-			m_OutputStream.open(filepath);
+			if (directory != "")
+			{
+				std::filesystem::path dir = directory;
+				if (!std::filesystem::exists(dir))
+					std::filesystem::create_directories(dir);
+
+				m_OutputStream.open(directory + filepath);
+			}
+			else
+				m_OutputStream.open(filepath);
+
 			WriteHeader();
 			m_CurrentSession = new InstrumentationSession{ name };
 		}
@@ -124,7 +135,8 @@ namespace ORB {
 
 #define ORBE_PROFILE 1
 #if ORBE_PROFILE
-#define ORBE_PROFILE_BEGIN_SESSION(name, filepath) ::ORB::Instrumentor::Get().BeginSession(name, filepath)
+	#define ORBE_PROFILE_BEGIN_SESSION(name, filepath) ::ORB::Instrumentor::Get().BeginSession(name, filepath)
+	#define ORBE_PROFILE_BEGIN_SESSION_DIR(name, filepath, directory) ::ORB::Instrumentor::Get().BeginSession(name, filepath, directory)
 	#define ORBE_PROFILE_END_SESSION() ::ORB::Instrumentor::Get().EndSession()
 	#define ORBE_PROFILE_SCOPE(name) ::ORB::InstrumentationTimer timer##__LINE__(name);
 	#define ORBE_PROFILE_FUNCTION() ORBE_PROFILE_SCOPE(__FUNCSIG__)

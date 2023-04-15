@@ -14,6 +14,8 @@ namespace ORB {
 
 	void OpenGLContext::Init()
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		ORBE_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -37,6 +39,8 @@ namespace ORB {
 
 	void OpenGLContext::SwapBuffers()
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 
