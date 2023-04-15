@@ -46,7 +46,7 @@ namespace ORB {
 	};
 
 	// To be defined in CLIENT
-	Scope<App> CreateApplication();
+	App* CreateApplication();
 
 
 }

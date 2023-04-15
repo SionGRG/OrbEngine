@@ -17,6 +17,7 @@
 
 // Logging Class
 #include "OrbE/Core/Log.h"
+#include "OrbE/O_Debug/Instrumentor.h"
 
 #ifdef ORBE_PLATFORM_WINDOWS
 	#include <Windows.h>

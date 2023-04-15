@@ -256,7 +256,7 @@ public:
 
 };
 
-ORB::Scope<ORB::App> ORB::CreateApplication()
+ORB::App* ORB::CreateApplication()
 {
-	return ORB::CreateScope<SandOrb>();
+	return new SandOrb();
 }
