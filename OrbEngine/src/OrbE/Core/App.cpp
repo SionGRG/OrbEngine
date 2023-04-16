@@ -23,7 +23,7 @@ namespace ORB {
 
 		Renderer::Init();
 
-		m_ImGuiLayer = CreateRef<ImGuiLayer>();
+		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 	}
 
@@ -34,7 +34,7 @@ namespace ORB {
 		Renderer::Terminate();
 	}
 
-	void App::PushLayer(Ref<Layer> layer)
+	void App::PushLayer(Layer* layer)
 	{
 		ORBE_PROFILE_FUNCTION();
 		
@@ -42,7 +42,7 @@ namespace ORB {
 		layer->OnAttach();
 	}
 
-	void App::PushOverlay(Ref<Layer> overlay)
+	void App::PushOverlay(Layer* overlay)
 	{
 		ORBE_PROFILE_FUNCTION();
 
@@ -58,9 +58,9 @@ namespace ORB {
 		dispatcher.Dispatch<WindowCloseEvent>(ORBE_BIND_EVENT_FN(App::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(ORBE_BIND_EVENT_FN(App::OnWindowResize));
 
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
-			(*--it)->OnEvent(e);
+			(*it)->OnEvent(e);
 			if (e.Handled)
 				break;
 		}

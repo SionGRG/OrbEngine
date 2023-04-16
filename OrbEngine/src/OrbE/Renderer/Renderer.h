@@ -1,7 +1,7 @@
 #pragma once
 
 #include "OrbE/Renderer/RenderCommand.h"
-#include "OrbE/Renderer/OrthographicCamera.h";
+#include "OrbE/Renderer/OrthographicCamera.h"
 #include "OrbE/Renderer/Shader.h"
 
 namespace ORB {

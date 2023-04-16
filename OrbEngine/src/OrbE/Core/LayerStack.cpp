@@ -8,21 +8,22 @@ namespace ORB {
 		for (auto layer : m_Layers)
 		{
 			layer->OnDetach();
+			delete layer;
 		}
 	}
 
-	void LayerStack::PushLayer(Ref<Layer> layer)
+	void LayerStack::PushLayer(Layer* layer)
 	{
 		m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
 		m_LayerInsertIndex++;
 	}
 
-	void LayerStack::PushOverlay(Ref<Layer> overlay)
+	void LayerStack::PushOverlay(Layer* overlay)
 	{
 		m_Layers.emplace_back(overlay);
 	}
 
-	void LayerStack::PopLayer(Ref<Layer> layer)
+	void LayerStack::PopLayer(Layer* layer)
 	{
 		auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
 		if (it != m_Layers.end())
@@ -33,7 +34,7 @@ namespace ORB {
 		}
 	}
 
-	void LayerStack::PopOverlay(Ref<Layer> overlay)
+	void LayerStack::PopOverlay(Layer* overlay)
 	{
 		auto it = std::find(m_Layers.begin(), m_Layers.end(), overlay);
 		if (it != m_Layers.end() + m_LayerInsertIndex)

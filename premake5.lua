@@ -1,5 +1,5 @@
 workspace "OrbEngine"
-	architecture "x64"
+	architecture "x86_64"
 	startproject "SandOrb"
 	
 	configurations

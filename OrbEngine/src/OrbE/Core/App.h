@@ -11,6 +11,7 @@
 
 #include "OrbE/ImGui/ImGuiLayer.h"
 
+int main(int argc, char** argv);
 
 namespace ORB {
 
@@ -19,30 +20,31 @@ namespace ORB {
 	public:
 		App();
 		virtual ~App();
-
-		void Run();
-		
+				
 		void OnEvent(Event& e);
 
-		void PushLayer(Ref<Layer> layer);
-		void PushOverlay(Ref<Layer> overlay);
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* overlay);
 
 		inline Window& GetWindow() { return *m_Window; }
 		inline static App& Get() { return *s_Instance; }
 
 	private:
+		void Run();
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
 		Scope<Window> m_Window;
-		Ref<ImGuiLayer> m_ImGuiLayer;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		bool m_Minimized = false;
 		LayerStack m_LayerStack;
 		float m_LastFrameTime = 0.0f;
+
 	private:
 		static App* s_Instance;
+		friend int ::main(int argc, char** argv);
 	};
 
 	// To be defined in CLIENT
