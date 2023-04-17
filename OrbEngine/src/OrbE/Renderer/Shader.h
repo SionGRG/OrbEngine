@@ -16,6 +16,8 @@ namespace ORB {
 		virtual void Unbind() const = 0;
 
 		virtual void SetInt(std::string_view name, int value) = 0;
+		virtual void SetFloat(std::string_view name, float value) = 0;
+		virtual void SetFloat2(std::string_view name, const v2& value) = 0;
 		virtual void SetFloat3(std::string_view name, const v3& value) = 0;
 		virtual void SetFloat4(std::string_view name, const v4& value) = 0;
 		virtual void SetMat4(std::string_view name, const m4& value) = 0;

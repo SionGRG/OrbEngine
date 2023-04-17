@@ -41,9 +41,9 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 	{
 		ORBE_PROFILE_SCOPE("Renderer Draw");
 		ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		ORB::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		ORB::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.4f, 0.8f, 0.8f, 1.0f });
-		ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
+		ORB::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, glm::radians(-45.0f), { 0.8f, 0.2f, 0.3f, 1.0f });
+		ORB::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, {0.4f, 0.8f, 0.8f, 1.0f});
+		ORB::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, glm::radians(80.0f) , m_CheckerboardTexture, 10.0f, ORB::v4(1.0f, 0.9f, 0.9f, 1.0f));
 		ORB::Renderer2D::EndScene();
 	}
 }

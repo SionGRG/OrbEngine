@@ -74,6 +74,20 @@ namespace ORB {
 		UploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::SetFloat(std::string_view name, float value)
+	{
+		ORBE_PROFILE_FUNCTION();
+
+		UploadUniformFloat(name, value);
+	}
+
+	void OpenGLShader::SetFloat2(std::string_view name, const v2& value)
+	{
+		ORBE_PROFILE_FUNCTION();
+		
+		UploadUniformFloat2(name, value);
+	}
+
 	void OpenGLShader::SetFloat3(std::string_view name, const v3& value)
 	{
 		ORBE_PROFILE_FUNCTION();

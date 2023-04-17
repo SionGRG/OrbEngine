@@ -85,30 +85,78 @@ namespace ORB {
 		ORBE_PROFILE_FUNCTION();
 		
 		s_Data->TextureShader->SetFloat4("u_Color", color);
+		s_Data->TextureShader->SetFloat("u_TilingFactor", 1.0f);
 		s_Data->WhiteTexture->Bind();
 
-		m4 transform =  glm::translate(m4(1.0f), position) * /* rotation * */ glm::scale(m4(1.0f), {size.x, size.y, 1.0f});
+		m4 transform =  glm::translate(m4(1.0f), position) 
+			* glm::scale(m4(1.0f), {size.x, size.y, 1.0f});
 		s_Data->TextureShader->SetMat4("u_Transform", transform);
 		s_Data->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
 	}
 	
-	void Renderer2D::DrawQuad(const v2& position, const v2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawQuad(const v2& position, const v2& size, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
 	{
-		DrawQuad({ position.x, position.y, 0.0f}, size, texture);
+		DrawQuad({ position.x, position.y, 0.0f}, size, texture, tilingFactor, tintColor);
 	}
 	
-	void Renderer2D::DrawQuad(const v3& position, const v2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawQuad(const v3& position, const v2& size, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
 	{
 		ORBE_PROFILE_FUNCTION();
 		
-		s_Data->TextureShader->SetFloat4("u_Color", v4(1.0f));
+		s_Data->TextureShader->SetFloat4("u_Color", tintColor);
+		s_Data->TextureShader->SetFloat("u_TilingFactor", tilingFactor);
 		texture->Bind();
 
-		m4 transform = glm::translate(m4(1.0f), position) * /* rotation * */ glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
+		m4 transform = glm::translate(m4(1.0f), position) 
+			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
 		s_Data->TextureShader->SetMat4("u_Transform", transform);
 
 		s_Data->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
 	}
+
+	void Renderer2D::DrawRotatedQuad(const v2& position, const v2& size, float rotation, const v4& color)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, color);
+	}
+	
+	void Renderer2D::DrawRotatedQuad(const v3& position, const v2& size, float rotation, const v4& color)
+	{
+		ORBE_PROFILE_FUNCTION();
+
+		s_Data->TextureShader->SetFloat4("u_Color", color);
+		s_Data->TextureShader->SetFloat("u_TilingFactor", 1.0f);
+		s_Data->WhiteTexture->Bind();
+
+		m4 transform = glm::translate(m4(1.0f), position) 
+			* glm::rotate(m4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
+			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
+		s_Data->TextureShader->SetMat4("u_Transform", transform);
+		s_Data->QuadVertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+	}
+	
+	void Renderer2D::DrawRotatedQuad(const v2& position, const v2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f}, size, rotation, texture, tilingFactor, tintColor);
+	}
+	
+	void Renderer2D::DrawRotatedQuad(const v3& position, const v2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
+	{
+		ORBE_PROFILE_FUNCTION();
+
+		s_Data->TextureShader->SetFloat4("u_Color", tintColor);
+		s_Data->TextureShader->SetFloat("u_TilingFactor", tilingFactor);
+		texture->Bind();
+
+		m4 transform = glm::translate(m4(1.0f), position) 
+			* glm::rotate(m4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
+			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
+		s_Data->TextureShader->SetMat4("u_Transform", transform);
+
+		s_Data->QuadVertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+	}
+
 }
