@@ -2,6 +2,7 @@
 #include "OrbE/Core/Log.h"
 
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/basic_file_sink.h>
 
 namespace ORB {
 
@@ -10,12 +11,19 @@ namespace ORB {
 
 	void Log::Init()
 	{
-		spdlog::set_pattern("%^[%T] %n: %v%$");
+		std::vector<spdlog::sink_ptr> logSinks;
+		logSinks.emplace_back(CreateRef<spdlog::sinks::stdout_color_sink_mt>());
+		logSinks.emplace_back(CreateRef<spdlog::sinks::basic_file_sink_mt>("OrbE.log", true));
 
-		s_CoreLogger = spdlog::stdout_color_mt("ORBE");
+		logSinks[0]->set_pattern("%^[%T] %n: %v%$");
+		logSinks[1]->set_pattern("[%T] [%l] %n: %v");
+
+		s_CoreLogger = CreateRef<spdlog::logger>("ORBE", begin(logSinks), end(logSinks));
 		s_CoreLogger->set_level(spdlog::level::trace);
+		s_CoreLogger->flush_on(spdlog::level::trace);
 
-		s_ClientLogger = spdlog::stdout_color_mt("APP");
+		s_ClientLogger = CreateRef<spdlog::logger>("APP", begin(logSinks), end(logSinks));
 		s_ClientLogger->set_level(spdlog::level::trace);
+		s_ClientLogger->flush_on(spdlog::level::trace);
 	}
 }

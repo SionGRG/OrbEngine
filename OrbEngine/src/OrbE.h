@@ -12,7 +12,7 @@
 
 #include "OrbE/Core/Input.h"
 #include "OrbE/Core/KeyCodes.h"
-#include "OrbE/Core/MouseButtonCodes.h"
+#include "OrbE/Core/MouseCodes.h"
 #include "OrbE/Renderer/OrthographicCameraController.h"
 
 #include "OrbE/ImGui/ImGuiLayer.h"
