@@ -26,8 +26,8 @@ namespace ORB {
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
-		inline Window& GetWindow() { return *m_Window; }
-		inline static App& Get() { return *s_Instance; }
+		Window& GetWindow() { return *m_Window; }
+		static App& Get() { return *s_Instance; }
 
 	private:
 		void Run();

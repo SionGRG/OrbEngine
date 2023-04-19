@@ -19,7 +19,7 @@ namespace ORB {
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 
-		inline std::string_view GetName() const { return m_DebugName; }
+		std::string_view GetName() const { return m_DebugName; }
 	protected:
 		std::string m_DebugName;
 	};
