@@ -74,6 +74,13 @@ namespace ORB {
 		UploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::SetIntArray(std::string_view name, int* values, uint32_t count)
+	{
+		ORBE_PROFILE_FUNCTION();
+
+		UploadUniformIntArray(name, values, count);
+	}
+
 	void OpenGLShader::SetFloat(std::string_view name, float value)
 	{
 		ORBE_PROFILE_FUNCTION();
@@ -113,6 +120,12 @@ namespace ORB {
 	{
 		GLint location = glGetUniformLocation(m_RenderID, name.data());
 		glUniform1i(location, value);
+	}
+
+	void OpenGLShader::UploadUniformIntArray(std::string_view name, int* values, uint32_t count)
+	{
+		GLint location = glGetUniformLocation(m_RenderID, name.data());
+		glUniform1iv(location, count, values);
 	}
 
 	void OpenGLShader::UploadUniformFloat(std::string_view name, float value)

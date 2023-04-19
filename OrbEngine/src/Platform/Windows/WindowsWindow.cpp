@@ -48,7 +48,7 @@ namespace ORB {
 		{
 			ORBE_PROFILE_SCOPE("glfwInit");
 			int success = glfwInit();
-			ORBE_CORE_ASSERT(success, "Could not intialize GLFW!");
+			ORBE_CORE_ASSERT(success, "Could not intitialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
 		}
 

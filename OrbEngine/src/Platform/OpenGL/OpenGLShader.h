@@ -19,6 +19,7 @@ namespace ORB {
 		virtual void Unbind() const override;
 
 		virtual void SetInt(std::string_view name, int value) override;
+		virtual void SetIntArray(std::string_view name, int* values, uint32_t count) override;
 		virtual void SetFloat(std::string_view name, float value) override;
 		virtual void SetFloat2(std::string_view name, const v2& value) override;
 		virtual void SetFloat3(std::string_view name, const v3& value) override;
@@ -29,6 +30,7 @@ namespace ORB {
 
 
 		void UploadUniformInt(std::string_view name, int value);
+		void UploadUniformIntArray(std::string_view name, int* values, uint32_t count);
 		
 		void UploadUniformFloat(std::string_view name, float value);
 		void UploadUniformFloat2(std::string_view name, const v2& value);
