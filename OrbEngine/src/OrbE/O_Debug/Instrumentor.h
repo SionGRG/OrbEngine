@@ -15,6 +15,7 @@ namespace ORB {
 	struct ProfileResult
 	{
 		std::string Name;
+		std::string Category;
 		FloatingPointMicroseconds Start;
 		std::chrono::microseconds ElapsedTime;
 		std::jthread::id ThreadID;
@@ -89,7 +90,7 @@ namespace ORB {
 
 			json << std::setprecision(3) << std::fixed;
 			json << ",{";
-			json << "\"cat\":\"function\",";
+			json << "\"cat\":\"" << result.Category << "\",";
 			json << "\"dur\":" << (result.ElapsedTime.count()) << ',';
 			json << "\"name\":\"" << name << "\",";
 			json << "\"ph\":\"X\",";
@@ -141,8 +142,8 @@ namespace ORB {
 	class InstrumentationTimer
 	{
 	public:
-		InstrumentationTimer(const char* name)
-			: m_Name(name), m_Stopped(false)
+		InstrumentationTimer(const char* name, const char* category = "Scope")
+			: m_Name(name), m_Category(category), m_Stopped(false)
 		{
 			m_StartTimepoint = std::chrono::steady_clock::now();
 		}
@@ -159,18 +160,19 @@ namespace ORB {
 			auto highResStart = FloatingPointMicroseconds{ m_StartTimepoint.time_since_epoch() };
 			auto elapsedTime = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch() - std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch();
 
-			Instrumentor::Get().WriteProfile({ m_Name, highResStart, elapsedTime, std::this_thread::get_id() });
+			Instrumentor::Get().WriteProfile({ m_Name, m_Category, highResStart, elapsedTime, std::this_thread::get_id() });
 
 			m_Stopped = true;
 		}
 	private:
 		const char* m_Name;
+		const char* m_Category;
 		std::chrono::time_point<std::chrono::steady_clock> m_StartTimepoint;
 		bool m_Stopped;
 	};
 }
 
-#define ORBE_PROFILE 1
+#define ORBE_PROFILE 0
 #if ORBE_PROFILE
 	// Resolve which function signature macro will be used. Note that this only
 	// is resolved when the (pre)compiler starts, so the syntax highlighting
@@ -196,10 +198,11 @@ namespace ORB {
 	#define ORBE_PROFILE_BEGIN_SESSION(name, filepath) ::ORB::Instrumentor::Get().BeginSession(name, filepath)
 	#define ORBE_PROFILE_BEGIN_SESSION_DIR(name, filepath, directory) ::ORB::Instrumentor::Get().BeginSession(name, filepath, directory)
 	#define ORBE_PROFILE_END_SESSION() ::ORB::Instrumentor::Get().EndSession()
-	#define ORBE_PROFILE_SCOPE(name) ::ORB::InstrumentationTimer timer##__LINE__(name);
-	#define ORBE_PROFILE_FUNCTION() ORBE_PROFILE_SCOPE(ORBE_FUNC_SIG)
+	#define ORBE_PROFILE_SCOPE(name) ::ORB::InstrumentationTimer timer##__LINE__(name, "Scope");
+	#define ORBE_PROFILE_FUNCTION() ::ORB::InstrumentationTimer timer##__LINE__(ORBE_FUNC_SIG, "Function");
 #else
 	#define ORBE_PROFILE_BEGIN_SESSION(name, filepath)
+	#define ORBE_PROFILE_BEGIN_SESSION_DIR(name, filepath, directory)
 	#define ORBE_PROFILE_END_SESSION()
 	#define ORBE_PROFILE_SCOPE(name)
 	#define ORBE_PROFILE_FUNCTION()

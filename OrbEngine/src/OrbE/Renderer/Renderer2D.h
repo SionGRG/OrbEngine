@@ -13,6 +13,7 @@ namespace ORB {
 
 		static void BeginScene(const OrthographicCamera& camera);
 		static void EndScene();
+		static void Flush();
 
 		// Primitives
 		static void DrawQuad(const v2& position, const v2& size, const v4& color);
