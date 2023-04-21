@@ -1,6 +1,8 @@
 #pragma once
 
-#include "OrbE.h"
+#include <OrbE.h>
+
+#include "ParticleSystem.h"
 
 class SandOrb2D : public ORB::Layer
 {
@@ -25,5 +27,8 @@ private:
 	ORB::Ref<ORB::Texture2D> m_CheckerboardTexture;
 
 	ORB::v4 m_SquareColor = { 0.4f, 0.9f, 0.9f, 1.0f };
+
+	ParticleSystem m_ParticleSystem;
+	ParticleProps m_Particle;
 };
 

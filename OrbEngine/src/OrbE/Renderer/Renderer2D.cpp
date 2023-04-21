@@ -291,7 +291,7 @@ namespace ORB {
 		float tilingFactor = 1.0f;
 
 		m4 transform = glm::translate(m4(1.0f), position)
-			* glm::rotate(m4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
+			* glm::rotate(m4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
 			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
@@ -360,7 +360,7 @@ namespace ORB {
 		}
 
 		m4 transform = glm::translate(m4(1.0f), position)
-			* glm::rotate(m4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
+			* glm::rotate(m4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
 			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];

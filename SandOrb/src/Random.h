@@ -1,0 +1,29 @@
+#pragma once
+
+#ifndef __RANDOM_H__
+#define __RANDOM_H__
+
+#include <random>
+
+class Random
+{
+public:
+	static void Init()
+	{
+		s_RandomEngine.seed(std::random_device()());
+	}
+
+	static float Float()
+	{
+		return (float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint32_t>::max();
+	}
+
+private:
+	static std::mt19937 s_RandomEngine;
+	static std::uniform_int_distribution<std::mt19937::result_type> s_Distribution;
+};
+
+std::mt19937 Random::s_RandomEngine;
+std::uniform_int_distribution<std::mt19937::result_type> Random::s_Distribution;
+
+#endif // !__RANDOM_H__
