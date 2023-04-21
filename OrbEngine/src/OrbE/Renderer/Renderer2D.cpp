@@ -21,24 +21,26 @@ namespace ORB {
 
 	struct Renderer2DData
 	{
-		const uint32_t        MaxQuads = 10000;
-		const uint32_t        MaxVertices = MaxQuads * 4;
-		const uint32_t        MaxIndices = MaxQuads * 6;
-		static const uint32_t MaxTextureSlots = 32; // TODO: RenderCaps
+		static const uint32_t  MaxQuads = 20000;
+		static const uint32_t  MaxVertices = MaxQuads * 4;
+		static const uint32_t  MaxIndices = MaxQuads * 6;
+		static const uint32_t  MaxTextureSlots = 32; // TODO: RenderCaps
 
-		Ref<VertexArray>      QuadVertexArray;
-		Ref<VertexBuffer>     QuadVertexBuffer;
-		Ref<Shader>           TextureShader;
-		Ref<Texture2D>        WhiteTexture;
+		Ref<VertexArray>       QuadVertexArray;
+		Ref<VertexBuffer>      QuadVertexBuffer;
+		Ref<Shader>            TextureShader;
+		Ref<Texture2D>         WhiteTexture;
 
-		uint32_t              QuadIndexCount = 0;
-		QuadVertex*           QuadVertexBufferBase = nullptr;
-		QuadVertex*           QuadVertexBufferPtr = nullptr;
+		uint32_t               QuadIndexCount = 0;
+		QuadVertex*            QuadVertexBufferBase = nullptr;
+		QuadVertex*            QuadVertexBufferPtr = nullptr;
 
 		std::array<Ref<Texture2D>, MaxTextureSlots>  TextureSlots;
-		uint32_t TextureSlotIndex = 1;	// Slot 0 = white texture
+		uint32_t               TextureSlotIndex = 1;	// Slot 0 = white texture
 
-		v4                    QuadVertexPositions[4];
+		v4                     QuadVertexPositions[4];
+
+		Renderer2D::Statistics Stats;
 	};
 
 	static Renderer2DData s_Data;
@@ -140,6 +142,18 @@ namespace ORB {
 			s_Data.TextureSlots[i]->Bind(i);
 		
 		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
+
+		s_Data.Stats.DrawCalls++;
+	}
+
+	void Renderer2D::FlushAndReset()
+	{
+		EndScene();
+
+		s_Data.QuadIndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureSlotIndex = 1;
 	}
 	
 	void Renderer2D::DrawQuad(const v2& position, const v2& size, const v4& color)
@@ -151,6 +165,9 @@ namespace ORB {
 	{
 		ORBE_PROFILE_FUNCTION();
 
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
+
 		float textureIndex = 0.0f;	// White Texture
 		float tilingFactor = 1.0f;
 
@@ -186,6 +203,8 @@ namespace ORB {
 		s_Data.QuadVertexBufferPtr++;
 		
 		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
 	}
 	
 	void Renderer2D::DrawQuad(const v2& position, const v2& size, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
@@ -197,6 +216,9 @@ namespace ORB {
 	{
 		ORBE_PROFILE_FUNCTION();
 
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
+
 		constexpr v4 color = { 1.0f,  1.0f,  1.0f,  1.0f };
 
 		float textureIndex = 0.0f;	// White Texture
@@ -249,6 +271,8 @@ namespace ORB {
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const v2& position, const v2& size, float rotation, const v4& color)
@@ -259,6 +283,9 @@ namespace ORB {
 	void Renderer2D::DrawRotatedQuad(const v3& position, const v2& size, float rotation, const v4& color)
 	{
 		ORBE_PROFILE_FUNCTION();
+
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		float textureIndex = 0.0f;	// White Texture
 		float tilingFactor = 1.0f;
@@ -295,7 +322,9 @@ namespace ORB {
 		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexBufferPtr++;
 
-		s_Data.QuadIndexCount += 6;;
+		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
 	}
 	
 	void Renderer2D::DrawRotatedQuad(const v2& position, const v2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
@@ -306,6 +335,9 @@ namespace ORB {
 	void Renderer2D::DrawRotatedQuad(const v3& position, const v2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
 	{
 		ORBE_PROFILE_FUNCTION();
+
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		constexpr v4 color = { 1.0f,  1.0f,  1.0f,  1.0f };
 
@@ -360,6 +392,18 @@ namespace ORB {
 		s_Data.QuadVertexBufferPtr++;
 
 		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::ResetStats()
+	{
+		memset(&s_Data.Stats, 0, sizeof(Statistics));
+	}
+
+	Renderer2D::Statistics Renderer2D::GetStats()
+	{
+		return s_Data.Stats;
 	}
 
 }
