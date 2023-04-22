@@ -60,12 +60,22 @@
 #endif // End of DLL support
 
 #ifdef ORBE_DEBUG
+	#if defined(ORBE_PLATFORM_WINDOWS)
+		#define ORBE_DEBUGBREAK() __debugbreak()
+	#elif defined(ORBE_PLATFORM_LINUX)
+		#include <signal.h>
+		#define ORBE_DEBUGBREAK() raise(SIGTRAP)
+	#else
+		#error "Platform doesn't support debugbreak yet!"
+	#endif
 	#define ORBE_ENABLE_ASSERTS
+#else
+	#define ORBE_DEBUGBREAK()
 #endif // ORBE_DEBUG
 
 #ifdef ORBE_ENABLE_ASSERTS
-	#define ORBE_ASSERT(x, ...) { if(!(x)) { ORBE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define ORBE_CORE_ASSERT(x, ...) { if(!(x)) { ORBE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define ORBE_ASSERT(x, ...) { if(!(x)) { ORBE_ERROR("Assertion Failed: {0}", __VA_ARGS__); ORBE_DEBUGBREAK(); } }
+	#define ORBE_CORE_ASSERT(x, ...) { if(!(x)) { ORBE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); ORBE_DEBUGBREAK(); } }
 #else
 	#define ORBE_ASSERT(x, ...)
 	#define ORBE_CORE_ASSERT(x, ...)

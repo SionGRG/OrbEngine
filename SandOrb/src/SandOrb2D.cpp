@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 SandOrb2D::SandOrb2D()
-	: Layer("SandOrb2D"), m_CameraController(1280.0f / 720.0f)
+	: Layer("SandOrb2D"), m_CameraController(1280.0f / 720.0f), m_SquareColor({ 0.4f, 0.8f, 0.8f, 1.0f })
 {
 }
 
@@ -56,7 +56,7 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 		ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		ORB::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, glm::radians(-rotation) * 0.2f, { 0.8f, 0.6f, 0.1f, 1.0f });
 		ORB::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		ORB::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, {0.4f, 0.8f, 0.8f, 1.0f});
+		ORB::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
 		ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
 		ORB::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(rotation), m_CheckerboardTexture, 20.0f);
 		ORB::Renderer2D::EndScene();

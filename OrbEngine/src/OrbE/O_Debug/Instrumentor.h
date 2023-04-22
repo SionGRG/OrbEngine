@@ -41,12 +41,14 @@ namespace ORB {
 		void BeginSession(const std::string& name, const std::string& filepath = "results.json", const std::string& directory = "")
 		{
 			std::lock_guard lock(m_Mutex);
-			if (m_CurrentSession) {
+			if (m_CurrentSession) 
+			{
 				// If there is already a current session, then close it before beginning new one.
 				// Subsequent profiling output meant for the original session will end up in the
 				// newly opened session instead.
 				// That's better than having badly formatted profiling output.
-				if (Log::GetCoreLogger()) { // Edge case: BeginSession() might be before Log::Init()
+				if (Log::GetCoreLogger()) // Edge case: BeginSession() might be before Log::Init()
+				{
 					ORBE_CORE_ERROR("Instrumentor::BeginSession('{0}') when session '{1}' already open.", name, m_CurrentSession->Name);
 				}
 				InternalEndSession();
@@ -64,12 +66,15 @@ namespace ORB {
 			else
 				m_OutputStream.open(filepath);
 
-			if (m_OutputStream.is_open()) {
+			if (m_OutputStream.is_open())
+			{
 				m_CurrentSession = new InstrumentationSession({ name });
 				WriteHeader();
 			}
-			else {
-				if (Log::GetCoreLogger()) { // Edge case: BeginSession() might be before Log::Init()
+			else 
+			{
+				if (Log::GetCoreLogger()) // Edge case: BeginSession() might be before Log::Init()
+				{
 					ORBE_CORE_ERROR("Instrumentor could not open results file '{0}'.", filepath);
 				}
 			}
@@ -85,14 +90,11 @@ namespace ORB {
 		{
 			std::stringstream json;
 
-			std::string name = result.Name;
-			std::replace(name.begin(), name.end(), '"', '\'');
-
 			json << std::setprecision(3) << std::fixed;
 			json << ",{";
 			json << "\"cat\":\"" << result.Category << "\",";
 			json << "\"dur\":" << (result.ElapsedTime.count()) << ',';
-			json << "\"name\":\"" << name << "\",";
+			json << "\"name\":\"" << result.Name << "\",";
 			json << "\"ph\":\"X\",";
 			json << "\"pid\":0,";
 			json << "\"tid\":" << result.ThreadID << ",";
@@ -113,6 +115,7 @@ namespace ORB {
 			static Instrumentor instance;
 			return instance;
 		}
+
 	private:
 
 		void WriteHeader()
@@ -129,8 +132,10 @@ namespace ORB {
 
 		// Note: you must already own lock on m_Mutex before
 		// calling InternalEndSession()
-		void InternalEndSession() {
-			if (m_CurrentSession) {
+		void InternalEndSession() 
+		{
+			if (m_CurrentSession)
+			{
 				WriteFooter();
 				m_OutputStream.close();
 				delete m_CurrentSession;
@@ -170,6 +175,35 @@ namespace ORB {
 		std::chrono::time_point<std::chrono::steady_clock> m_StartTimepoint;
 		bool m_Stopped;
 	};
+
+	namespace InstrumentorUtils {
+
+		template <size_t N>
+		struct ChangeResult
+		{
+			char Data[N];
+		};
+
+		template <size_t N, size_t K>
+		constexpr auto CleanupOutputString(const char(&expr)[N], const char(&remove)[K])
+		{
+			ChangeResult<N> result = {};
+
+			size_t srcIndex = 0;
+			size_t dstIndex = 0;
+			while (srcIndex < N)
+			{
+				size_t matchIndex = 0;
+				while (matchIndex < K - 1 && srcIndex + matchIndex < N - 1 && expr[srcIndex + matchIndex] == remove[matchIndex])
+					matchIndex++;
+				if (matchIndex == K - 1)
+					srcIndex += matchIndex;
+				result.Data[dstIndex++] = expr[srcIndex] == '"' ? '\'' : expr[srcIndex];
+				srcIndex++;
+			}
+			return result;
+		}
+	}
 }
 
 #define ORBE_PROFILE 0
@@ -181,7 +215,7 @@ namespace ORB {
 		#define ORBE_FUNC_SIG __PRETTY_FUNCTION__
 	#elif defined(__DMC__) && (__DMC__ >= 0x810)
 		#define ORBE_FUNC_SIG __PRETTY_FUNCTION__
-	#elif defined(__FUNCSIG__)
+	#elif (defined(__FUNCSIG__) || (_MSC_VER))
 		#define ORBE_FUNC_SIG __FUNCSIG__
 	#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
 		#define ORBE_FUNC_SIG __FUNCTION__
@@ -199,7 +233,7 @@ namespace ORB {
 	#define ORBE_PROFILE_BEGIN_SESSION_DIR(name, filepath, directory) ::ORB::Instrumentor::Get().BeginSession(name, filepath, directory)
 	#define ORBE_PROFILE_END_SESSION() ::ORB::Instrumentor::Get().EndSession()
 	#define ORBE_PROFILE_SCOPE(name) ::ORB::InstrumentationTimer timer##__LINE__(name, "Scope");
-	#define ORBE_PROFILE_FUNCTION() ::ORB::InstrumentationTimer timer##__LINE__(ORBE_FUNC_SIG, "Function");
+	#define ORBE_PROFILE_FUNCTION() ::ORB::InstrumentationTimer timer##__LINE__((::ORB::InstrumentorUtils::CleanupOutputString(ORBE_FUNC_SIG, "__cdecl ")).Data, "Function");
 #else
 	#define ORBE_PROFILE_BEGIN_SESSION(name, filepath)
 	#define ORBE_PROFILE_BEGIN_SESSION_DIR(name, filepath, directory)

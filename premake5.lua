@@ -56,7 +56,8 @@ project "OrbEngine"
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
 	}
 
 	includedirs
@@ -83,8 +84,7 @@ project "OrbEngine"
 
 		defines
 		{
-			"ORBE_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
+			"ORBE_BUILD_DLL"
 		}
 
 	filter "configurations:Debug"
