@@ -15,6 +15,7 @@ void SandOrb2D::OnAttach()
 	ORBE_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_SpaceShooterTexture = ORB::Texture2D::Create("Game/Textures/spaceshooter.png");
 	
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
@@ -50,6 +51,7 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 	{
 		ORBE_PROFILE_SCOPE("Renderer Draw");
 
+#if 0
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
 		
@@ -60,7 +62,9 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 		ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
 		ORB::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(rotation), m_CheckerboardTexture, 20.0f);
 		ORB::Renderer2D::EndScene();
+#endif // 0
 		
+		// Particles
 		ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		for (float y = -5.0f; y < 5.0f; y += 0.5f)
 		{
@@ -70,6 +74,10 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 				ORB::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
 			}
 		}
+		ORB::Renderer2D::EndScene();
+
+		ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f }, m_SpaceShooterTexture);
 		ORB::Renderer2D::EndScene();
 	}
 

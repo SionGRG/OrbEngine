@@ -208,8 +208,45 @@ namespace ORB {
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			FlushAndReset();
 
+		constexpr float x = 6.0f, y = 6.0f;
+		constexpr float gridColumns = 8.0f, GridRows = 8.0f;
+		float sheetWidth = texture->GetWidth(), sheetHeight = texture->GetHeight();
+		
+		constexpr float spriteWidth = 614.0f, spriteHeight = 768.0f;
+		struct RECTF {
+			float x = 817;
+			float y = -6 - spriteHeight;
+			float w = spriteWidth;
+			float h = spriteHeight;
+		} texDim;
+
 		constexpr size_t quadVertexCount = 4;
-		constexpr v2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+		const v2 textureCoords[] = {
+			// Bottom left
+			{ (texDim.x) / sheetWidth,
+			  (texDim.y) / sheetHeight },
+			// Bottom right
+			{ (texDim.x + texDim.w) / sheetWidth,
+			  (texDim.y) / sheetHeight },
+			// top right
+			{ (texDim.x + texDim.w) / sheetWidth,
+			  (texDim.y + texDim.h) / sheetHeight },
+			// top left
+			{ (texDim.x) / sheetWidth,
+			  (texDim.y + texDim.h) / sheetHeight },
+		};
+
+		const v2 textureCoords2[] = {
+			// Bottom left
+			{ (x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight },
+			// Bottom right
+			{ ((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight },
+			// top right
+			{ ((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight },
+			// top left
+			{ (x * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight }
+		};
+
 		float textureIndex = 0.0f;	// White Texture
 
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
