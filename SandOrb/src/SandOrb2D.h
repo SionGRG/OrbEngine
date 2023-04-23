@@ -26,6 +26,7 @@ private:
 
 	ORB::Ref<ORB::Texture2D> m_CheckerboardTexture;
 	ORB::Ref<ORB::Texture2D> m_SpaceShooterTexture;
+	ORB::Ref<ORB::SubTexture2D> m_SpaceShipsSubTexture, m_ExplosionSubTexture;
 
 	ORB::v4 m_SquareColor = { 0.4f, 0.9f, 0.9f, 1.0f };
 

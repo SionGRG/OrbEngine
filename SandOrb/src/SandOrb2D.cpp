@@ -17,6 +17,9 @@ void SandOrb2D::OnAttach()
 	m_CheckerboardTexture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_SpaceShooterTexture = ORB::Texture2D::Create("Game/Textures/spaceshooter.png");
 	
+	m_SpaceShipsSubTexture = ORB::SubTexture2D::CreateFromCoords(m_SpaceShooterTexture, { 817.0f, -6.0f - 768.0f }, { 614.0f, 768.0f });
+	m_ExplosionSubTexture = ORB::SubTexture2D::CreateFromCoords(m_SpaceShooterTexture, { 530.0f, -819.0f - 416.0f }, { 490.0f, 416.0f });
+
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
 	m_Particle.SizeBegin = 0.5f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 0.0f;
@@ -64,7 +67,7 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 		ORB::Renderer2D::EndScene();
 #endif // 0
 		
-		// Particles
+		// Grid
 		ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		for (float y = -5.0f; y < 5.0f; y += 0.5f)
 		{
@@ -77,10 +80,12 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 		ORB::Renderer2D::EndScene();
 
 		ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f }, m_SpaceShooterTexture);
+		ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_SpaceShipsSubTexture);
+		ORB::Renderer2D::DrawQuad({ 1.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_ExplosionSubTexture);
 		ORB::Renderer2D::EndScene();
 	}
 
+	// Particles
 	if (ORB::Input::IsMouseButtonPressed(ORBE_MOUSE_BUTTON_LEFT))
 	{
 		auto [x, y] = ORB::Input::GetMousePosition();

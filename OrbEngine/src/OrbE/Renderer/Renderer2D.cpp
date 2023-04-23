@@ -208,47 +208,64 @@ namespace ORB {
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			FlushAndReset();
 
-		constexpr float x = 6.0f, y = 6.0f;
-		constexpr float gridColumns = 8.0f, GridRows = 8.0f;
-		float sheetWidth = texture->GetWidth(), sheetHeight = texture->GetHeight();
-		
-		constexpr float spriteWidth = 614.0f, spriteHeight = 768.0f;
-		struct RECTF {
-			float x = 817;
-			float y = -6 - spriteHeight;
-			float w = spriteWidth;
-			float h = spriteHeight;
-		} texDim;
-
 		constexpr size_t quadVertexCount = 4;
-		const v2 textureCoords[] = {
-			// Bottom left
-			{ (texDim.x) / sheetWidth,
-			  (texDim.y) / sheetHeight },
-			// Bottom right
-			{ (texDim.x + texDim.w) / sheetWidth,
-			  (texDim.y) / sheetHeight },
-			// top right
-			{ (texDim.x + texDim.w) / sheetWidth,
-			  (texDim.y + texDim.h) / sheetHeight },
-			// top left
-			{ (texDim.x) / sheetWidth,
-			  (texDim.y + texDim.h) / sheetHeight },
-		};
-
-		const v2 textureCoords2[] = {
-			// Bottom left
-			{ (x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight },
-			// Bottom right
-			{ ((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight },
-			// top right
-			{ ((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight },
-			// top left
-			{ (x * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight }
-		};
-
+		constexpr v2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 		float textureIndex = 0.0f;	// White Texture
 
+		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		{
+			if (*s_Data.TextureSlots[i].get() == *texture.get())
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+
+		if (textureIndex == 0.0f)
+		{
+			if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
+				FlushAndReset();
+
+			textureIndex = (float)s_Data.TextureSlotIndex;
+			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+			s_Data.TextureSlotIndex++;
+		}
+
+		m4 transform = glm::translate(m4(1.0f), position)
+			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
+
+		for (size_t i = 0; i < quadVertexCount; i++)
+		{
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = tintColor;
+			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr++;
+		}
+
+		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::DrawQuad(const v2& position, const v2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
+	{
+		DrawQuad({ position.x, position.y, 0.0f}, size, subtexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const v3& position, const v2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
+	{
+		ORBE_PROFILE_FUNCTION();
+
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
+
+		constexpr size_t quadVertexCount = 4;
+		const v2* textureCoords = subtexture->GetTexCoords();
+		const Ref<Texture2D> texture = subtexture->GetTexture();
+
+		float textureIndex = 0.0f;	// White Texture
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			if (*s_Data.TextureSlots[i].get() == *texture.get())
@@ -340,6 +357,61 @@ namespace ORB {
 		
 		float textureIndex = 0.0f;	// White Texture
 
+		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		{
+			if (*s_Data.TextureSlots[i].get() == *texture.get())
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+
+		if (textureIndex == 0.0f)
+		{
+			if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
+				FlushAndReset();
+
+			textureIndex = (float)s_Data.TextureSlotIndex;
+			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+			s_Data.TextureSlotIndex++;
+		}
+
+		m4 transform = glm::translate(m4(1.0f), position)
+			* glm::rotate(m4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
+			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
+
+		for (size_t i = 0; i < quadVertexCount; i++)
+		{
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = tintColor;
+			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr++;
+		}
+
+		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::DrawRotatedQuad(const v2& position, const v2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f}, size, rotation, subtexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const v3& position, const v2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
+	{
+		ORBE_PROFILE_FUNCTION();
+
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
+
+		constexpr size_t quadVertexCount = 4;
+		const v2* textureCoords = subtexture->GetTexCoords();
+		const Ref<Texture2D> texture = subtexture->GetTexture();
+
+		float textureIndex = 0.0f;	// White Texture
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			if (*s_Data.TextureSlots[i].get() == *texture.get())
