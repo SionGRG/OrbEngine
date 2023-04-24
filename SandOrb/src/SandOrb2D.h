@@ -26,11 +26,16 @@ private:
 
 	ORB::Ref<ORB::Texture2D> m_CheckerboardTexture;
 	ORB::Ref<ORB::Texture2D> m_SpaceShooterTexture;
+	ORB::Ref<ORB::Texture2D> m_PacmanTexture;
 	ORB::Ref<ORB::SubTexture2D> m_SpaceShipsSubTexture, m_ExplosionSubTexture;
+	ORB::Ref<ORB::SubTexture2D> m_PacmanSubTexture, m_PacDotSubTexture, m_GhostDeadSubTexture, m_PacWorldSubTexture;
 
 	ORB::v4 m_SquareColor = { 0.4f, 0.9f, 0.9f, 1.0f };
 
 	ParticleSystem m_ParticleSystem;
 	ParticleProps m_Particle;
+
+	uint32_t m_PacmanMapWidth, m_PacmanMapHeight;
+	std::unordered_map<char, ORB::Ref<ORB::SubTexture2D>> m_PacmanTextureMap;
 };
 

@@ -5,6 +5,58 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
+static const uint32_t s_MapWidth = 24;
+static const char* s_MapTiles =
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAFFFFFFAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+"AAAAAAAAAAAAAAAAAAAAAAAA"
+;
+
+static const uint32_t s_PacmanMapWidth = 26;
+static const char* s_PacmanMapTiles =
+"............xx............"
+".xxxx.xxxxx.xx.xxxxx.xxxx."
+"ox--x.x---x.xx.x---x.x--xo"
+".xxxx.xxxxx.xx.xxxxx.xxxx."
+".........................."
+".xxxx.xx.xxxxxxxx.xx.xxxx."
+".xxxx.xx.xxxxxxxx.xx.xxxx."
+"......xx....xx....xx......"
+"xxxxx.xxxxx xx xxxxx.xxxxx"
+"----x.xxxxx xx xxxxx.x----"
+"----x.xx          xx.x----"
+"----x.xx xxx  xxx xx.x----"
+"xxxxx.xx x      x xx.xxxxx"
+"     .   x      x   .     "
+"xxxxx.xx x      x xx.xxxxx"
+"----x.xx xxxxxxxx xx.x----"
+"----x.xx          xx.x----"
+"----x.xx xxxxxxxx xx.x----"
+"xxxxx.xx xxxxxxxx xx.xxxxx"
+"............xx............"
+".xxxx.xxxxx.xx.xxxxx.xxxx."
+".xxxx.xxxxx.xx.xxxxx.xxxx."
+"...xx........p.......xx..."
+"xx.xx.xx.xxxxxxxx.xx.xx.xx"
+"xx.xx.xx.xxxxxxxx.xx.xx.xx"
+"......xx....xx....xx......"
+"oxxxxxxxxxx.xx.xxxxxxxxxxo"
+".xxxxxxxxxx.xx.xxxxxxxxxx."
+".........................."
+;
+
 SandOrb2D::SandOrb2D()
 	: Layer("SandOrb2D"), m_CameraController(1280.0f / 720.0f), m_SquareColor({ 0.4f, 0.8f, 0.8f, 1.0f })
 {
@@ -15,12 +67,29 @@ void SandOrb2D::OnAttach()
 	ORBE_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
-	m_SpaceShooterTexture = ORB::Texture2D::Create("Game/Textures/spaceshooter.png");
+	m_SpaceShooterTexture = ORB::Texture2D::Create("Game/Textures/SpaceShooterTextureAtlas.png");
+	m_PacmanTexture = ORB::Texture2D::Create("Game/Textures/PacmanTextureAtlas.png");
 	
 	m_SpaceShipsSubTexture = ORB::SubTexture2D::CreateFromCoords(m_SpaceShooterTexture, { 817.0f, -6.0f - 768.0f }, { 614.0f, 768.0f });
 	//m_ExplosionSubTexture = ORB::SubTexture2D::CreateFromCoords(m_SpaceShooterTexture, { 530.0f, -819.0f - 416.0f }, { 490.0f, 416.0f });
 	//m_ExplosionSubTexture = ORB::SubTexture2D::CreateFromRECT(m_SpaceShooterTexture, { 530.0f, -819.0f - 416.0f, 490.0f, 416.0f });
 	m_ExplosionSubTexture = ORB::SubTexture2D::CreateFromRECT_BL(m_SpaceShooterTexture, { 530.0f, 819.0f, 490.0f, 416.0f });
+
+	m_PacmanSubTexture = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, { 352.0f, 0.0f, 32.0f, 32.0f });
+	m_PacDotSubTexture = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, { 32.0f, 0.0f, 32.0f, 32.0f });
+	
+	// Pacman Texture Map
+	m_GhostDeadSubTexture = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, { 128.0f, 0.0f, 32.0f, 32.0f });
+	m_PacWorldSubTexture = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, { 0.0f, 32.0f, 1024.0f, 768.0f });
+
+	m_PacmanMapWidth = s_PacmanMapWidth;
+	m_PacmanMapHeight = strlen(s_PacmanMapTiles) / s_PacmanMapWidth;
+
+	m_PacmanTextureMap['.'] = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, {32.0f, 0.0f, 32.0f, 32.0f});
+	m_PacmanTextureMap['o'] = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, {0.0f, 0.0f, 32.0f, 32.0f});
+	m_PacmanTextureMap['p'] = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, { 352.0f, 0.0f, 32.0f, 32.0f });
+	m_PacmanTextureMap[' '] = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, { 544.0f, 0.0f, 32.0f, 32.0f });
+	m_PacmanTextureMap['-'] = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, { 544.0f, 0.0f, 32.0f, 32.0f });
 
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
@@ -30,6 +99,7 @@ void SandOrb2D::OnAttach()
 	m_Particle.VelocityVariation = { 3.0f, 1.0f };
 	m_Particle.Position = { 0.0f, 0.0f };
 
+	m_CameraController.SetZoomLevel(16.0f);
 }
 
 void SandOrb2D::OnDetach()
@@ -71,19 +141,44 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 		
 		// Grid
 		ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		for (float y = -5.0f; y < 5.0f; y += 0.5f)
+		//for (float y = -5.0f; y < 5.0f; y += 1.0f)
+		for (float y = -(float)(m_PacmanMapHeight / 2); y <= (float)(m_PacmanMapHeight / 2); y += 1.0f)
 		{
-			for (float x = -5.0f; x < 5.0f; x += 0.5f)
+			//for (float x = -5.0f; x < 5.0f; x += 1.0f)
+			for (float x = -(float)(m_PacmanMapWidth / 2); x < (float)(m_PacmanMapWidth / 2); x += 1.0f)
 			{
-				ORB::v4 color = { (x + 5.0f) / 10.0f, 0.3f, (y + 5.0f) / 10.0f, 0.7f };
-				ORB::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
+				//ORB::v4 color = { (x + 5.0f) / 10.0f, 0.3f, (y + 5.0f) / 10.0f, 0.7f };
+				ORB::v4 color = { (x + m_PacmanMapWidth) / (m_PacmanMapWidth * 2), 0.3f, (y + m_PacmanMapHeight) / (m_PacmanMapHeight * 2), 0.7f };
+				//ORB::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
+				ORB::Renderer2D::DrawQuad({ x, y + 0.5f }, { 0.9f, 0.9f }, color);
 			}
 		}
 		ORB::Renderer2D::EndScene();
 
 		ORB::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_SpaceShipsSubTexture);
-		ORB::Renderer2D::DrawQuad({ 1.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_ExplosionSubTexture);
+		
+		//ORB::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_SpaceShipsSubTexture);
+		//ORB::Renderer2D::DrawQuad({ 1.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_ExplosionSubTexture);
+		//ORB::Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.5f }, { 0.5f, 0.5f }, m_PacmanSubTexture);
+		//ORB::Renderer2D::DrawQuad({ -1.0f, 1.0f, 0.5f }, { 0.5f, 0.5f }, m_PacDotSubTexture);
+		
+		//ORB::Renderer2D::DrawQuad({ -0.5f, 0.5f, 0.4f }, { 46.0f, 35.0f }, m_PacWorldSubTexture);
+
+		for (uint32_t y = 0; y < m_PacmanMapHeight; y++)
+		{
+			for (uint32_t x = 0; x < m_PacmanMapWidth; x++)
+			{
+				char tileType = s_PacmanMapTiles[x + y * m_PacmanMapWidth];
+				ORB::Ref<ORB::SubTexture2D> subtexture;
+				if (m_PacmanTextureMap.find(tileType) != m_PacmanTextureMap.end())
+					subtexture = m_PacmanTextureMap[tileType];
+				else
+					subtexture = m_GhostDeadSubTexture;
+				
+				ORB::Renderer2D::DrawQuad({ x - m_PacmanMapWidth/2.0f, (m_PacmanMapHeight/2.0f) - y, 0.5f }, { 1.0f, 1.0f }, subtexture);
+			}
+		}
+
 		ORB::Renderer2D::EndScene();
 	}
 

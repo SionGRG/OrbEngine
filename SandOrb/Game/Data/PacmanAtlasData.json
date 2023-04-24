@@ -1,0 +1,423 @@
+{
+  "frames": [
+
+    {
+      "filename": "Dot_Big_32",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "Dot_Small_32",
+      "frame": {
+        "x": 32,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "ghost_Bage_32",
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "ghost_cyan_32",
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "Ghost_Dead_32",
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "ghost_orange_32",
+      "frame": {
+        "x": 160,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "ghost_pink_32",
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "ghost_red_32",
+      "frame": {
+        "x": 224,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "Ghost_Vulnerable_32",
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "Pacman_down_32",
+      "frame": {
+        "x": 288,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 32
+      },
+      "gridded": true,
+      "animated": true,
+      "loop": true,
+      "rate": 25,
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "Pacman_left_32",
+      "frame": {
+        "x": 352,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 32
+      },
+      "gridded": true,
+      "animated": true,
+      "loop": true,
+      "rate": 25,
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "Pacman_right_32",
+      "frame": {
+        "x": 416,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 32
+      },
+      "gridded": true,
+      "animated": true,
+      "loop": true,
+      "rate": 25,
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "Pacman_up_32",
+      "frame": {
+        "x": 480,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 32
+      },
+      "gridded": true,
+      "animated": true,
+      "loop": true,
+      "rate": 25,
+      "grid": {
+        "columns": 2,
+        "rows": 1
+      }
+    },
+    {
+      "filename": "Playfield",
+      "frame": {
+        "x": 0,
+        "y": 32,
+        "w": 1024,
+        "h": 768
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1024,
+        "h": 768
+      },
+      "sourceSize": {
+        "w": 1024,
+        "h": 768
+      },
+      "gridded": false,
+      "animated": false,
+      "loop": false,
+      "rate": 25,
+      "grid": {
+        "columns": 1,
+        "rows": 1
+      }
+    }
+  ],
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "PacmanTextureAtlas.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1024,
+      "h": 800
+    },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:519763265bbc276ad2ff30193e4068fb:f8af6cc974f452bc709be66674eff900:0a8e521d3ece3c38e6fffebf5e75223f$"
+  }
+}
