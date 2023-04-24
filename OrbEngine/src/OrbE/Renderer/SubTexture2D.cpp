@@ -1,5 +1,5 @@
 #include "OrbPCH.h"
-#include "SubTexture2D.h"
+#include "OrbE/Renderer/SubTexture2D.h"
 
 namespace ORB {
 
@@ -48,6 +48,27 @@ namespace ORB {
 		v2 min = { (coords.x) / texture->GetWidth(), (coords.y) / texture->GetHeight() };
 		// top right
 		v2 max = { (coords.x + spriteSize.x) / texture->GetWidth(), (coords.y + spriteSize.y) / texture->GetHeight() };
+
+		return CreateRef<SubTexture2D>(texture, min, max);
+	}
+
+	Ref<SubTexture2D> SubTexture2D::CreateFromRECT(const Ref<Texture2D>& texture, const RECTF& rect)
+	{
+		// Bottom left
+		v2 min = { (rect.x) / texture->GetWidth(), (rect.y) / texture->GetHeight() };
+		// top right
+		v2 max = { (rect.x + rect.width) / texture->GetWidth(), (rect.y + rect.height) / texture->GetHeight() };
+
+		return CreateRef<SubTexture2D>(texture, min, max);
+	}
+
+	Ref<SubTexture2D> SubTexture2D::CreateFromRECT_BL(const Ref<Texture2D>& texture, const RECTF& rect)
+	{
+		// Bottom left
+		v2 min = { (rect.x) / texture->GetWidth(), ((-rect.y - rect.height)) / texture->GetHeight() };
+		// top right
+		v2 max = { (rect.x + rect.width) / texture->GetWidth(), (-rect.y) / texture->GetHeight() };
+		//v2 max = { (rect.x + rect.width) / texture->GetWidth(), ((-rect.y - rect.height) + rect.height) / texture->GetHeight() };
 
 		return CreateRef<SubTexture2D>(texture, min, max);
 	}

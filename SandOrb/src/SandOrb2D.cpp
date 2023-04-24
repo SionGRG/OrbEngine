@@ -18,7 +18,9 @@ void SandOrb2D::OnAttach()
 	m_SpaceShooterTexture = ORB::Texture2D::Create("Game/Textures/spaceshooter.png");
 	
 	m_SpaceShipsSubTexture = ORB::SubTexture2D::CreateFromCoords(m_SpaceShooterTexture, { 817.0f, -6.0f - 768.0f }, { 614.0f, 768.0f });
-	m_ExplosionSubTexture = ORB::SubTexture2D::CreateFromCoords(m_SpaceShooterTexture, { 530.0f, -819.0f - 416.0f }, { 490.0f, 416.0f });
+	//m_ExplosionSubTexture = ORB::SubTexture2D::CreateFromCoords(m_SpaceShooterTexture, { 530.0f, -819.0f - 416.0f }, { 490.0f, 416.0f });
+	//m_ExplosionSubTexture = ORB::SubTexture2D::CreateFromRECT(m_SpaceShooterTexture, { 530.0f, -819.0f - 416.0f, 490.0f, 416.0f });
+	m_ExplosionSubTexture = ORB::SubTexture2D::CreateFromRECT_BL(m_SpaceShooterTexture, { 530.0f, 819.0f, 490.0f, 416.0f });
 
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };

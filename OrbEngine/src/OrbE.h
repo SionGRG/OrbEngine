@@ -28,6 +28,6 @@
 #include "OrbE/Renderer/SubTexture2D.h"
 #include "OrbE/Renderer/VertexArray.h"
 
-#include "OrbE/Maths/BasicMath.h"
+#include "OrbE/Utils/BasicMaths.h"
 #include "OrbE/Renderer/OrthographicCamera.h"
 // ----------------------------------------------

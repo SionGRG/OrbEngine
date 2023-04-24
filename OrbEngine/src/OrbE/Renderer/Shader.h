@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "OrbE/Maths/BasicMath.h"
+#include "OrbE/Utils/BasicMaths.h"
 
 namespace ORB {
 

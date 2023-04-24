@@ -14,6 +14,7 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <tuple>
 
 // Logging Class
 #include "OrbE/Core/Log.h"
