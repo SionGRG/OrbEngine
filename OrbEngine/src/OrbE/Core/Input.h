@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OrbE/Core/Core.h"
+#include "OrbE/Core/Base.h"
 #include "OrbE/Core/KeyCodes.h"
 #include "OrbE/Core/MouseCodes.h"
 

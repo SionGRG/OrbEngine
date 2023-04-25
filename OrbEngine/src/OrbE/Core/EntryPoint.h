@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OrbE/Core/Core.h"
+#include "OrbE/Core/Base.h"
 
 #ifdef ORBE_PLATFORM_WINDOWS
 

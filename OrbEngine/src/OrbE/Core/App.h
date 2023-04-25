@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OrbE/Core/Core.h"
+#include "OrbE/Core/Base.h"
 
 #include "OrbE/Core/Window.h"
 #include "OrbE/Core/LayerStack.h"

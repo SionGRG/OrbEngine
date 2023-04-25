@@ -83,7 +83,7 @@ void SandOrb2D::OnAttach()
 	m_PacWorldSubTexture = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, { 0.0f, 32.0f, 1024.0f, 768.0f });
 
 	m_PacmanMapWidth = s_PacmanMapWidth;
-	m_PacmanMapHeight = strlen(s_PacmanMapTiles) / s_PacmanMapWidth;
+	m_PacmanMapHeight = (uint32_t)(strlen(s_PacmanMapTiles)) / s_PacmanMapWidth;
 
 	m_PacmanTextureMap['.'] = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, {32.0f, 0.0f, 32.0f, 32.0f});
 	m_PacmanTextureMap['o'] = ORB::SubTexture2D::CreateFromRECT_BL(m_PacmanTexture, {0.0f, 0.0f, 32.0f, 32.0f});
