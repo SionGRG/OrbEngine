@@ -67,6 +67,11 @@ namespace ORB {
 		}
 	}
 
+	void App::Close()
+	{
+		m_Running = false;
+	}
+
 	void App::Run()
 	{
 		ORBE_PROFILE_FUNCTION();
