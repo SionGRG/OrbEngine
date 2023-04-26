@@ -24,6 +24,7 @@
 
 #include "OrbE/Renderer/Buffer.h"
 #include "OrbE/Renderer/Shader.h"
+#include "OrbE/Renderer/Framebuffer.h"
 #include "OrbE/Renderer/Texture.h"
 #include "OrbE/Renderer/SubTexture2D.h"
 #include "OrbE/Renderer/VertexArray.h"

@@ -67,6 +67,12 @@ void SandOrb2D::OnAttach()
 	ORBE_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = ORB::Texture2D::Create("assets/textures/Checkerboard.png");
+
+	ORB::FramebufferSpecification fbSpec;
+	fbSpec.Width = 1280;
+	fbSpec.Height = 720;
+	m_Framebuffer = ORB::Framebuffer::Create(fbSpec);
+
 	m_SpaceShooterTexture = ORB::Texture2D::Create("Game/Textures/SpaceShooterTextureAtlas.png");
 	m_PacmanTexture = ORB::Texture2D::Create("Game/Textures/PacmanTextureAtlas.png");
 	
@@ -119,6 +125,7 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 	ORB::Renderer2D::ResetStats();
 	{
 		ORBE_PROFILE_SCOPE("Renderer Prep");
+		m_Framebuffer->Bind();
 		ORB::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
 		ORB::RenderCommand::Clear();
 	}
@@ -200,6 +207,7 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 
 	m_ParticleSystem.OnUpdate(ts);
 	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
+	m_Framebuffer->Unbind();
 }
 
 void SandOrb2D::OnImGuiRender()
@@ -281,8 +289,8 @@ void SandOrb2D::OnImGuiRender()
 
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
-	uint32_t textureID = m_CheckerboardTexture->GetRendererID();
-	ImGui::Image((void*)textureID, ImVec2{ 256.0f,256.0f });
+	uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+	ImGui::Image((void*)textureID, ImVec2{ 1280.0f, 720.0f });
 	ImGui::End();
 
 	ImGui::End();

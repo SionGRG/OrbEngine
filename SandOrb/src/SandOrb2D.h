@@ -23,6 +23,7 @@ private:
 	// Temp
 	ORB::Ref<ORB::VertexArray> m_SquareVA;
 	ORB::Ref<ORB::Shader> m_FlatColorShader;
+	ORB::Ref<ORB::Framebuffer> m_Framebuffer;
 
 	ORB::Ref<ORB::Texture2D> m_CheckerboardTexture;
 	ORB::Ref<ORB::Texture2D> m_SpaceShooterTexture;
