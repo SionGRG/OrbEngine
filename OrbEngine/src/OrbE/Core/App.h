@@ -18,7 +18,7 @@ namespace ORB {
 	class App
 	{
 	public:
-		App();
+		App(std::string_view name = "Orb App");
 		virtual ~App();
 				
 		void OnEvent(Event& e);

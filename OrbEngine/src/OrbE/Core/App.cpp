@@ -11,14 +11,14 @@ namespace ORB {
 
 	App* App::s_Instance = nullptr;
 
-	App::App()
+	App::App(std::string_view name)
 	{
 		ORBE_PROFILE_FUNCTION();
 
 		ORBE_CORE_ASSERT(!s_Instance, "Application already exists!")
 		s_Instance = this;
 
-		m_Window = Window::Create();
+		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(ORBE_BIND_EVENT_FN(App::OnEvent));
 
 		Renderer::Init();

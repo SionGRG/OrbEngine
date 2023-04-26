@@ -12,7 +12,8 @@
 class SandOrb : public ORB::App
 {
 public:
-	SandOrb() 
+	SandOrb()
+		: App("Sand Orb")
 	{
 		//PushLayer(new ExampleLayer());
 		PushLayer(new SandOrb2D());

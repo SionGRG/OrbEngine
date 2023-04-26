@@ -148,3 +148,50 @@ project "SandOrb"
 		defines "ORBE_DIST"
 		runtime "Release"
 		optimize "on"
+
+project "OrbEditor"
+	location "OrbEditor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++20"
+	staticruntime "On"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"OrbEngine/vendor/spdlog/include",
+		"OrbEngine/src",
+		"OrbEngine/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"OrbEngine"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+	filter "configurations:Debug"
+		defines "ORBE_DEBUG"
+		runtime "Debug"
+		symbols "on"
+	
+	filter "configurations:Release"
+		defines "ORBE_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "ORBE_DIST"
+		runtime "Release"
+		optimize "on"
