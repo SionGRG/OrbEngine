@@ -50,6 +50,12 @@ namespace ORB {
 		dispatcher.Dispatch<MouseScrolledEvent>(ORBE_BIND_EVENT_FN(OrthographicCameraController::onMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(ORBE_BIND_EVENT_FN(OrthographicCameraController::onWindowResized));
 	}
+
+	void OrthographicCameraController::OnResize(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		CalculateView();
+	}
 	
 	void OrthographicCameraController::CalculateView()
 	{
@@ -72,8 +78,7 @@ namespace ORB {
 	{
 		ORBE_PROFILE_FUNCTION();
 
-		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight() ;
-		CalculateView();
+		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 		
 		return false;
 	}
