@@ -1,26 +1,26 @@
 #include "OrbPCH.h"
-#include "Platform/Windows/WindowsInput.h"
+#include "OrbE/Core/Input.h"
 #include "OrbE/Core/App.h"
 
 #include <GLFW/glfw3.h>
 
 namespace ORB {
 
-	bool WindowsInput::IsKeyPressedImpl(KeyCode key)
+	bool Input::IsKeyPressed(KeyCode key)
 	{
 		auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetKey(window, static_cast<int32_t>(key));
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedImpl(MouseCode button)
+	bool Input::IsMouseButtonPressed(MouseCode button)
 	{
 		auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetMouseButton(window, static_cast<int32_t>(button));
 		return state == GLFW_PRESS;
 	}
 
-	std::pair<float, float> WindowsInput::GetMousePositionImpl()
+	std::pair<float, float> Input::GetMousePosition()
 	{
 		auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
 		double xPos, yPos;
@@ -29,15 +29,15 @@ namespace ORB {
 		return { (float)xPos, (float)yPos };
 	}
 
-	float WindowsInput::GetMouseXImpl()
+	float Input::GetMouseX()
 	{
-		auto[x, y] = GetMousePositionImpl();
+		auto[x, y] = GetMousePosition();
 		return x;
 	}
 
-	float WindowsInput::GetMouseYImpl()
+	float Input::GetMouseY()
 	{
-		auto [x, y] = GetMousePositionImpl();
+		auto [x, y] = GetMousePosition();
 		return y;
 	}
 

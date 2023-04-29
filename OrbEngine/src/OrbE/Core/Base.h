@@ -73,6 +73,7 @@
 	#define ORBE_DEBUGBREAK()
 #endif // ORBE_DEBUG
 
+// TODO: Make this macro able to take in no arguments except condition
 #ifdef ORBE_ENABLE_ASSERTS
 	#define ORBE_ASSERT(x, ...) { if(!(x)) { ORBE_ERROR("Assertion Failed: {0}", __VA_ARGS__); ORBE_DEBUGBREAK(); } }
 	#define ORBE_CORE_ASSERT(x, ...) { if(!(x)) { ORBE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); ORBE_DEBUGBREAK(); } }

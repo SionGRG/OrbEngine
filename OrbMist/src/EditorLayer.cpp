@@ -36,8 +36,18 @@ namespace ORB {
 	{
 		ORBE_PROFILE_FUNCTION();
 
+		// Resize
+		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
+			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
+			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
+		{
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+		}
+
 		// Update --------------------------------------------------------------
-		m_CameraController.OnUpdate(ts);
+		if (m_ViewportFocused)
+			m_CameraController.OnUpdate(ts);
 
 		// Render --------------------------------------------------------------
 		ORB::Renderer2D::ResetStats();
@@ -161,14 +171,22 @@ namespace ORB {
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
+
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		App::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *((v2*)&viewportPanelSize))
+		/*
+		if (m_ViewportSize != *((v2*)&viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
 		{
+			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 
 			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
-		}
+		}*/
+		
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{0, 1}, ImVec2{1, 0});
 		ImGui::End();

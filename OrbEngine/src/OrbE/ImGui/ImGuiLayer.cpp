@@ -56,7 +56,6 @@ namespace ORB {
 	void ImGuiLayer::OnDetach()
 	{
         ORBE_PROFILE_FUNCTION();
-        
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
@@ -66,9 +65,12 @@ namespace ORB {
     {
         ORBE_PROFILE_FUNCTION();
         
-        ImGuiIO& io = ImGui::GetIO();
-        e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
-        e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+        if (m_BlockEvents)
+        {
+            ImGuiIO& io = ImGui::GetIO();
+            e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+            e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+        }
     }
 
     void ImGuiLayer::Begin()
