@@ -1,6 +1,6 @@
 workspace "OrbEngine"
 	architecture "x86_64"
-	startproject "OrbMist"
+	startproject "Orbit"
 	
 	configurations
 	{
@@ -149,8 +149,8 @@ project "SandOrb"
 		runtime "Release"
 		optimize "on"
 
-project "OrbMist"
-	location "OrbMist"
+project "Orbit"
+	location "Orbit"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"

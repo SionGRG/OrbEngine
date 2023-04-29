@@ -10,20 +10,20 @@
 
 namespace ORB {
 
-	class OrbMist : public App
+	class Orbit : public App
 	{
 	public:
-		OrbMist()
-			: App("OrbMist")
+		Orbit()
+			: App("Orbit")
 		{
 			PushLayer(new EditorLayer());
 		}
-		~OrbMist() {}
+		~Orbit() {}
 
 	};
 
 	App* CreateApplication()
 	{
-		return new OrbMist();
+		return new Orbit();
 	}
 }
