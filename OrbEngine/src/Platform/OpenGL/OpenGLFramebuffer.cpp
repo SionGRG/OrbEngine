@@ -65,7 +65,7 @@ namespace ORB {
 
 	void OpenGLFramebuffer::Resize(uint32_t width, uint32_t height)
 	{
-		if (width <= 0 || height <= 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
+		if (width == 0 || height == 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
 		{
 			ORBE_CORE_WARN("Attempted to resize framebuffer to {0}, {1}", width, height);
 			return;

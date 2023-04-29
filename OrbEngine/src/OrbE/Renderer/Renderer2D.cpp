@@ -169,6 +169,46 @@ namespace ORB {
 	void Renderer2D::DrawQuad(const v3& position, const v2& size, const v4& color)
 	{
 		ORBE_PROFILE_FUNCTION();
+		
+		m4 transform = glm::translate(m4(1.0f), position)
+			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, color);
+	}
+	
+	void Renderer2D::DrawQuad(const v2& position, const v2& size, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
+	{
+		DrawQuad({ position.x, position.y, 0.0f}, size, texture, tilingFactor, tintColor);
+	}
+	
+	void Renderer2D::DrawQuad(const v3& position, const v2& size, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
+	{
+		ORBE_PROFILE_FUNCTION();
+
+		m4 transform = glm::translate(m4(1.0f), position)
+			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
+		
+		DrawQuad(transform, texture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const v2& position, const v2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
+	{
+		DrawQuad({ position.x, position.y, 0.0f}, size, subtexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const v3& position, const v2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
+	{
+		ORBE_PROFILE_FUNCTION();
+
+		m4 transform = glm::translate(m4(1.0f), position)
+			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, subtexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const m4& transform, const v4& color)
+	{
+		ORBE_PROFILE_FUNCTION();
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			FlushAndReset();
@@ -177,9 +217,6 @@ namespace ORB {
 		float textureIndex = 0.0f;	// White Texture
 		constexpr v2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 		float tilingFactor = 1.0f;
-
-		m4 transform = glm::translate(m4(1.0f), position)
-			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
 
 		for (size_t i = 0; i < quadVertexCount; i++)
 		{
@@ -190,18 +227,13 @@ namespace ORB {
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 			s_Data.QuadVertexBufferPtr++;
 		}
-		
+
 		s_Data.QuadIndexCount += 6;
 
 		s_Data.Stats.QuadCount++;
 	}
-	
-	void Renderer2D::DrawQuad(const v2& position, const v2& size, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
-	{
-		DrawQuad({ position.x, position.y, 0.0f}, size, texture, tilingFactor, tintColor);
-	}
-	
-	void Renderer2D::DrawQuad(const v3& position, const v2& size, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
+
+	void Renderer2D::DrawQuad(const m4& transform, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
 	{
 		ORBE_PROFILE_FUNCTION();
 
@@ -231,9 +263,6 @@ namespace ORB {
 			s_Data.TextureSlotIndex++;
 		}
 
-		m4 transform = glm::translate(m4(1.0f), position)
-			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
-
 		for (size_t i = 0; i < quadVertexCount; i++)
 		{
 			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
@@ -249,12 +278,7 @@ namespace ORB {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const v2& position, const v2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
-	{
-		DrawQuad({ position.x, position.y, 0.0f}, size, subtexture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawQuad(const v3& position, const v2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
+	void Renderer2D::DrawQuad(const m4& transform, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
 	{
 		ORBE_PROFILE_FUNCTION();
 
@@ -284,9 +308,6 @@ namespace ORB {
 			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 			s_Data.TextureSlotIndex++;
 		}
-
-		m4 transform = glm::translate(m4(1.0f), position)
-			* glm::scale(m4(1.0f), { size.x, size.y, 1.0f });
 
 		for (size_t i = 0; i < quadVertexCount; i++)
 		{

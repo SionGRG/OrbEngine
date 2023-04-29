@@ -17,6 +17,10 @@
 
 #include "OrbE/ImGui/ImGuiLayer.h"
 
+// ----------------- Scene -------------------
+#include "OrbE/Scene/Scene.h"
+#include "OrbE/Scene/Components.h"
+
 // ----------------- Renderer -------------------
 #include "OrbE/Renderer/Renderer.h"
 #include "OrbE/Renderer/Renderer2D.h"

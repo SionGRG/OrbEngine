@@ -23,6 +23,7 @@ IncludeDir["Glad"] = "OrbEngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "OrbEngine/vendor/ImGui"
 IncludeDir["glm"] = "OrbEngine/vendor/glm"
 IncludeDir["stb_image"] = "OrbEngine/vendor/stb_image"
+IncludeDir["EnTT"] = "OrbEngine/vendor/EnTT/include"
 
 group "Dependencies"
 	include "OrbEngine/vendor/GLFW"
@@ -68,7 +69,8 @@ project "OrbEngine"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.EnTT}"
 	}
 
 	links 
@@ -123,7 +125,8 @@ project "SandOrb"
 		"OrbEngine/vendor/spdlog/include",
 		"OrbEngine/src",
 		"OrbEngine/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.EnTT}"
 	}
 
 	links
@@ -170,7 +173,8 @@ project "Orbit"
 		"OrbEngine/vendor/spdlog/include",
 		"OrbEngine/src",
 		"OrbEngine/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.EnTT}"
 	}
 
 	links
