@@ -1,6 +1,7 @@
 #include "OrbPCH.h"
 #include "OrbE/Scene/Scene.h"
 
+#include "OrbE/Scene/Entity.h"
 #include "OrbE/Scene/Components.h"
 #include "OrbE/Renderer/Renderer2D.h"
 
@@ -25,7 +26,7 @@ namespace ORB {
 		m_Registry.on_construct<TransformComponent>().connect<&OnTransformConstruct>();
 
 		//m_Registry.
-		// if (m_Registry.has<TransformComponent>(entity))
+		// if (m_Registry.all_of<TransformComponent>(entity))
 		// 	TransformComponent& tranform = m_Registry.get<TransformComponent>(entity);
 
 
@@ -48,9 +49,13 @@ namespace ORB {
 	{
 	}
 
-	entt::entity Scene::CreateEntity()
+	Entity Scene::CreateEntity(std::string_view name)
 	{
-		return m_Registry.create();
+		Entity entity =  { m_Registry.create(), this };
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Entity" : name;
+		return entity;
 	}
 
 	void Scene::OnUpdate(Timestep ts)

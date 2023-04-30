@@ -4,32 +4,42 @@
 
 namespace ORB {
 
-		struct TransformComponent
-		{
-			m4 Transform{ 1.0f };
+	struct TagComponent
+	{
+		std::string Tag;
 
-			TransformComponent() = default;
-			TransformComponent(const TransformComponent&) = default;
-			TransformComponent(const m4& transform)
-				: Transform(transform) {}
+		TagComponent() = default;
+		TagComponent(const TagComponent&) = default;
+		TagComponent(std::string_view tag)
+			:Tag(tag) {}
+	};
 
-			operator m4& () { return Transform; }
-			operator const m4& () const { return Transform; }
-		};
+	struct TransformComponent
+	{
+		m4 Transform{ 1.0f };
 
-		struct MeshComponent 
-		{
-			bool data;
-			MeshComponent() = default;
-		};
+		TransformComponent() = default;
+		TransformComponent(const TransformComponent&) = default;
+		TransformComponent(const m4& transform)
+			: Transform(transform) {}
 
-		struct SpriteRendererComponent
-		{
-			v4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		operator m4& () { return Transform; }
+		operator const m4& () const { return Transform; }
+	};
 
-			SpriteRendererComponent() = default;
-			SpriteRendererComponent(const SpriteRendererComponent&) = default;
-			SpriteRendererComponent(const v4& color)
-				: Color(color) {}
-		};
+	struct MeshComponent 
+	{
+		bool data;
+		MeshComponent() = default;
+	};
+
+	struct SpriteRendererComponent
+	{
+		v4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+
+		SpriteRendererComponent() = default;
+		SpriteRendererComponent(const SpriteRendererComponent&) = default;
+		SpriteRendererComponent(const v4& color)
+			: Color(color) {}
+	};
 }
