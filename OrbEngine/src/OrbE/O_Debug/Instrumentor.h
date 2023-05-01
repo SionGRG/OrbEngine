@@ -28,15 +28,9 @@ namespace ORB {
 
 	class Instrumentor
 	{
-	private:
-		std::mutex m_Mutex;
-		InstrumentationSession* m_CurrentSession;
-		std::ofstream m_OutputStream;
 	public:
-		Instrumentor()
-			: m_CurrentSession(nullptr)
-		{
-		}
+		Instrumentor(const Instrumentor&) = delete;
+		Instrumentor(Instrumentor&&) = delete;
 
 		void BeginSession(const std::string& name, const std::string& filepath = "results.json", const std::string& directory = "")
 		{
@@ -117,6 +111,15 @@ namespace ORB {
 		}
 
 	private:
+		Instrumentor()
+			: m_CurrentSession(nullptr)
+		{
+		}
+
+		~Instrumentor()
+		{
+			EndSession();
+		}
 
 		void WriteHeader()
 		{
@@ -142,6 +145,11 @@ namespace ORB {
 				m_CurrentSession = nullptr;
 			}
 		}
+
+	private:
+		std::mutex m_Mutex;
+		InstrumentationSession* m_CurrentSession;
+		std::ofstream m_OutputStream;
 	};
 
 	class InstrumentationTimer
@@ -232,8 +240,14 @@ namespace ORB {
 	#define ORBE_PROFILE_BEGIN_SESSION(name, filepath) ::ORB::Instrumentor::Get().BeginSession(name, filepath)
 	#define ORBE_PROFILE_BEGIN_SESSION_DIR(name, filepath, directory) ::ORB::Instrumentor::Get().BeginSession(name, filepath, directory)
 	#define ORBE_PROFILE_END_SESSION() ::ORB::Instrumentor::Get().EndSession()
-	#define ORBE_PROFILE_SCOPE(name) ::ORB::InstrumentationTimer timer##__LINE__(name, "Scope");
-	#define ORBE_PROFILE_FUNCTION() ::ORB::InstrumentationTimer timer##__LINE__((::ORB::InstrumentorUtils::CleanupOutputString(ORBE_FUNC_SIG, "__cdecl ")).Data, "Function");
+
+	#define ORBE_PROFILE_SCOPE_LINE2(name, line) ::ORB::InstrumentationTimer timer##line(name, "Scope");
+	#define ORBE_PROFILE_SCOPE_LINE(name, line) ORBE_PROFILE_SCOPE_LINE2(name, line)
+	#define ORBE_PROFILE_SCOPE(name) ORBE_PROFILE_SCOPE_LINE(name, __LINE__)
+
+	#define ORBE_PROFILE_FUNCTION_LINE2(line) ::ORB::InstrumentationTimer timer##line((::ORB::InstrumentorUtils::CleanupOutputString(ORBE_FUNC_SIG, "__cdecl ")).Data, "Function");
+	#define ORBE_PROFILE_FUNCTION_LINE(line) ORBE_PROFILE_FUNCTION_LINE2(line)
+	#define ORBE_PROFILE_FUNCTION() ORBE_PROFILE_FUNCTION_LINE(__LINE__)
 #else
 	#define ORBE_PROFILE_BEGIN_SESSION(name, filepath)
 	#define ORBE_PROFILE_BEGIN_SESSION_DIR(name, filepath, directory)
