@@ -1,5 +1,6 @@
 #pragma once
 
+#include "OrbE/Renderer/Camera.h"
 #include "OrbE/Renderer/OrthographicCamera.h"
 #include "OrbE/Renderer/Texture.h"
 #include "OrbE/Renderer/SubTexture2D.h"
@@ -12,7 +13,8 @@ namespace ORB {
 		static void Init();
 		static void Terminate();
 
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera, m4 transform);
+		static void BeginScene(const OrthographicCamera& camera); // TODO: Remove
 		static void EndScene();
 		static void Flush();
 

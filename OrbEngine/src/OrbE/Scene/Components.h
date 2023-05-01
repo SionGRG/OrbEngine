@@ -2,6 +2,8 @@
 
 #include "OrbE/Utils/BasicMaths.h"
 
+#include "OrbE/Renderer/Camera.h"
+
 namespace ORB {
 
 	struct TagComponent
@@ -41,5 +43,16 @@ namespace ORB {
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const v4& color)
 			: Color(color) {}
+	};
+
+	struct CameraComponent
+	{
+		ORB::Camera Camera;
+		bool Primary = true; // TODO: Think about moving to scene
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const m4& projection)
+			: Camera(projection) {}
 	};
 }
