@@ -2,7 +2,7 @@
 
 #include "OrbE/Utils/BasicMaths.h"
 
-#include "OrbE/Renderer/Camera.h"
+#include "OrbE/Scene/SceneCamera.h"
 
 namespace ORB {
 
@@ -47,12 +47,11 @@ namespace ORB {
 
 	struct CameraComponent
 	{
-		ORB::Camera Camera;
+		SceneCamera Camera;
 		bool Primary = true; // TODO: Think about moving to scene
+		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const m4& projection)
-			: Camera(projection) {}
 	};
 }
