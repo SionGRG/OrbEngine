@@ -20,6 +20,7 @@
 // ----------------- Scene -------------------
 #include "OrbE/Scene/Scene.h"
 #include "OrbE/Scene/Entity.h"
+#include "OrbE/Scene/ScriptableEntity.h"
 #include "OrbE/Scene/Components.h"
 
 // ----------------- Renderer -------------------
