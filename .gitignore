@@ -5,6 +5,7 @@
 [Bb]in/
 [Bb]in-int/
 [Ii]ntermediates/
+!vendor/[Pp]remake/[Bb]in/
 
 # De Orb Engine files
 *.log
@@ -50,8 +51,6 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
-[Bb]in-int/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
