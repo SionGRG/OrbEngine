@@ -158,14 +158,14 @@ void ExampleLayer::OnUpdate(ORB::Timestep ts)
 	m_CameraController.OnUpdate(ts);
 
 	// Triangle Position Movement controls
-	if (ORB::Input::IsKeyPressed(ORBE_KEY_J))
+	if (ORB::Input::IsKeyPressed(ORB::Key::J))
 		m_TrianglePosition.x -= m_TriangleMoveSpeed * ts;
-	else if (ORB::Input::IsKeyPressed(ORBE_KEY_L))
+	else if (ORB::Input::IsKeyPressed(ORB::Key::L))
 		m_TrianglePosition.x += m_TriangleMoveSpeed * ts;
 
-	if (ORB::Input::IsKeyPressed(ORBE_KEY_K))
+	if (ORB::Input::IsKeyPressed(ORB::Key::K))
 		m_TrianglePosition.y -= m_TriangleMoveSpeed * ts;
-	else if (ORB::Input::IsKeyPressed(ORBE_KEY_I))
+	else if (ORB::Input::IsKeyPressed(ORB::Key::I))
 		m_TrianglePosition.y += m_TriangleMoveSpeed * ts;
 
 	// Render --------------------------------------------------------------

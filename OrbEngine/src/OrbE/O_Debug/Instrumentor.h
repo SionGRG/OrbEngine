@@ -7,6 +7,10 @@
 #include <iomanip>
 #include <string>
 #include <thread>
+#include <mutex>
+#include <sstream>
+
+#include "OrbE/Core/Log.h"
 
 namespace ORB {
 

@@ -1,5 +1,14 @@
 #pragma once
 
+#include "OrbE/Core/PlatformDetection.h"
+
+#ifdef ORBE_PLATFORM_WINDOWS
+	#ifndef NOMINMAX
+		// See https://github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
+		#define NOMINMAX
+	#endif
+#endif
+
 #include <iostream>
 #include <memory>
 #include <utility>
@@ -16,7 +25,8 @@
 #include <unordered_set>
 #include <tuple>
 
-// Logging Class
+// De Orb Class
+#include "OrbE/Core/Base.h"
 #include "OrbE/Core/Log.h"
 #include "OrbE/O_Debug/Instrumentor.h"
 

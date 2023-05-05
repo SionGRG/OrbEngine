@@ -1,8 +1,8 @@
 #pragma once
 
-#include "OrbE/Core/Base.h"
 #include "OrbE/Core/KeyCodes.h"
 #include "OrbE/Core/MouseCodes.h"
+#include "OrbE/Utils/BasicMaths.h"
 
 namespace ORB {
 
@@ -11,7 +11,7 @@ namespace ORB {
 	public:
 		static bool IsKeyPressed(KeyCode key);
 		static bool IsMouseButtonPressed(MouseCode buttoncode);
-		static std::pair<float, float> GetMousePosition();
+		static v2 GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
 		
