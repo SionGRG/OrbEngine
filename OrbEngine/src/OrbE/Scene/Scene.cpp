@@ -17,9 +17,9 @@ namespace ORB {
 
 	Entity Scene::CreateEntity(std::string_view name)
 	{
-		Entity entity =  { m_Registry.create(), this };
+		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<TransformComponent>();
-		auto tag = entity.AddComponent<TagComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
 		return entity;
 	}

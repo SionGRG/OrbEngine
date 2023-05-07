@@ -77,17 +77,17 @@ void SandOrb2D::OnUpdate(ORB::Timestep ts)
 	}
 
 	// Particles
-	if (ORB::Input::IsMouseButtonPressed(ORBE_MOUSE_BUTTON_LEFT))
+	if (ORB::Input::IsMouseButtonPressed(ORB::Mouse::ButtonLeft))
 	{
-		auto [x, y] = ORB::Input::GetMousePosition();
+		auto mousePos = ORB::Input::GetMousePosition();
 		auto width = ORB::App::Get().GetWindow().GetWidth();
 		auto height = ORB::App::Get().GetWindow().GetHeight();
 
 		auto bounds = m_CameraController.GetBounds();
 		auto pos = m_CameraController.GetCamera().GetPosition();
-		x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
-		y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
-		m_Particle.Position = { x + pos.x, y + pos.y };
+		mousePos.x = (mousePos.x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
+		mousePos.y = bounds.GetHeight() * 0.5f - (mousePos.y / height) * bounds.GetHeight();
+		m_Particle.Position = { mousePos.x + pos.x, mousePos.y + pos.y };
 		for (int i = 0; i < 5; i++)
 			m_ParticleSystem.Emit(m_Particle);
 	}
