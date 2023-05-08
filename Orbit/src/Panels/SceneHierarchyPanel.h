@@ -1,7 +1,6 @@
 #pragma once
 
 #include "OrbE/Core/Base.h"
-#include "OrbE/Core/Log.h"
 #include "OrbE/Scene/Scene.h"
 #include "OrbE/Scene/Entity.h"
 

@@ -7,6 +7,7 @@
 #include "OrbE/Core/App.h"
 #include "OrbE/Core/Layer.h"
 #include "OrbE/Core/Log.h"
+#include "OrbE/Core/Assert.h"
 
 #include "OrbE/Core/Timestep.h"
 

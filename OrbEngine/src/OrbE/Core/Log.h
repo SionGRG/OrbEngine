@@ -2,8 +2,12 @@
 
 #include "OrbE/Core/Base.h"
 
+// This ignores all warnings raise inside the spdlog External headers
+#pragma warning(push, 0)
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
+#pragma warning(pop)
+
 
 namespace ORB {
 
