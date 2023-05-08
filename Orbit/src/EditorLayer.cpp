@@ -27,9 +27,12 @@ namespace ORB {
 
 		m_ActiveScene = CreateRef<Scene>();
 
-		// Entity
+		// Entities
 		auto square = m_ActiveScene->CreateEntity("Cyan Square");
 		square.AddComponent<SpriteRendererComponent>(v4{ 0.4f, 0.9f, 0.9f, 1.0f });
+		
+		auto orangeSquare = m_ActiveScene->CreateEntity("Orange Square");
+		orangeSquare.AddComponent<SpriteRendererComponent>(v4{ 1.0f, 0.7f, 0.2f, 1.0f });
 
 		m_SquareEntity = square;
 
