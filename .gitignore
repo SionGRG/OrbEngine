@@ -11,7 +11,7 @@
 *.log
 
 # other files
-*.ini
+#*.ini
 
 # Visual Studio files and folders
 **.sln

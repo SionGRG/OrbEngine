@@ -19,6 +19,7 @@ namespace ORB {
 
 	private:
 		void DrawEntityNode(Entity entity);
+		void DrawComponent(Entity entity);
 
 	private:
 		Ref<Scene> m_Context;
