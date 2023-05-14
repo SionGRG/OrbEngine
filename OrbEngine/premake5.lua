@@ -35,7 +35,8 @@ project "OrbEngine"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.EnTT}"
+		"%{IncludeDir.EnTT}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links 
@@ -43,6 +44,7 @@ project "OrbEngine"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"yaml-cpp",
 		"opengl32.lib"
 	}
 

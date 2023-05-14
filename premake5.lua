@@ -31,13 +31,14 @@ IncludeDir["ImGui"] = "%{wks.location}/OrbEngine/vendor/ImGui"
 IncludeDir["glm"] = "%{wks.location}/OrbEngine/vendor/glm"
 IncludeDir["stb_image"] = "%{wks.location}/OrbEngine/vendor/stb_image"
 IncludeDir["EnTT"] = "%{wks.location}/OrbEngine/vendor/EnTT/include"
+IncludeDir["yaml_cpp"] = "%{wks.location}/OrbEngine/vendor/yaml-cpp/include"
 
 group "Dependencies"
 	include "vendor/premake"
 	include "OrbEngine/vendor/GLFW"
 	include "OrbEngine/vendor/Glad"
 	include "OrbEngine/vendor/ImGui"
-
+	include "OrbEngine/vendor/yaml-cpp"
 group ""
 
 include "OrbEngine"

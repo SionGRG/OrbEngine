@@ -5,6 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "OrbE/Scene/SceneSerializer.h"
+
 namespace ORB {
 
 	EditorLayer::EditorLayer()
@@ -27,6 +29,7 @@ namespace ORB {
 
 		m_ActiveScene = CreateRef<Scene>();
 
+#if 0
 		// Entities
 		auto square = m_ActiveScene->CreateEntity("Cyan Square");
 		square.AddComponent<SpriteRendererComponent>(v4{ 0.4f, 0.9f, 0.9f, 1.0f });
@@ -78,6 +81,7 @@ namespace ORB {
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
@@ -183,6 +187,18 @@ namespace ORB {
 		{
 			if (ImGui::BeginMenu("File"))
 			{
+				if (ImGui::MenuItem("Serialize"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Serialize("assets/scenes/Example.orb");
+				}
+				
+				if (ImGui::MenuItem("Deserialize"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Deserialize("assets/scenes/Example.orb");
+				}
+
 				if (ImGui::MenuItem("Exit"))
 					App::Get().Close();
 
