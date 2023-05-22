@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OrbE/Utils/BasicMaths.h"
+#include "OrbE/Math/Math.h"
 
 namespace ORB {
 

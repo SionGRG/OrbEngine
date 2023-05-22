@@ -9,6 +9,8 @@
 
 #include "OrbE/Utils/PlatformUtils.h"
 
+#include <ImGuizmo.h>
+
 namespace ORB {
 
 	EditorLayer::EditorLayer()
@@ -225,13 +227,61 @@ namespace ORB {
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		App::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+		App::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+		// Gizmos
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity(); // TODO: updated after including mouse picking
+
+		if (selectedEntity)
+		{
+			ImGuizmo::SetOrthographic(false);	// TEMPORARY
+			ImGuizmo::SetDrawlist();
+			
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+			auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			const m4& cameraProjection = camera.GetProjection();
+			m4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+			// Entity tranform
+			auto& tc = selectedEntity.GetComponent<TransformComponent>();
+			m4 transform = tc.GetTransform();
+
+			// Snapping
+			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			float snapValue = 0.5f; // Snap to 0.5m for tanslation/scale
+			// Snap to 45 degrees for rotation
+			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+				snapValue = 45.0f;
+
+			float snapValues[3] = { snapValue, snapValue, snapValue };
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+				nullptr, snap ? snapValues : nullptr);
+
+			// Draw the Gizmo
+			if (ImGuizmo::IsUsing() && m_GizmoType != -1)
+			{
+				v3 translation(0), rotation(0), scale(1);
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+
+				v3 deltaRotation = rotation - tc.Rotation;
+				tc.Translation = translation;
+				tc.Rotation += deltaRotation;
+				tc.Scale = scale;
+			}
+		}
+
 		ImGui::End();
 		ImGui::PopStyleVar();
 
@@ -278,6 +328,20 @@ namespace ORB {
 			
 				break;
 			}
+
+			// Gizmos
+			case Key::Q:
+				m_GizmoType = -1;
+				break;
+			case Key::W:
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+				break;
+			case Key::E:
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+				break;
+			case Key::R:
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+				break;
 		}
 	}
 	

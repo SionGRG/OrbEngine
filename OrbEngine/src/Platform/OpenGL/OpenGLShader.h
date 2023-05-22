@@ -1,7 +1,7 @@
 #pragma once
 
 #include "OrbE/Renderer/Shader.h"
-#include "OrbE/Utils/BasicMaths.h"
+#include "OrbE/Math/Math.h"
 
 // TODO: REMOVE!
 typedef unsigned int GLenum;

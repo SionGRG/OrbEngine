@@ -2,7 +2,7 @@
 
 #include "OrbE/Core/KeyCodes.h"
 #include "OrbE/Core/MouseCodes.h"
-#include "OrbE/Utils/BasicMaths.h"
+#include "OrbE/Math/Math.h"
 
 namespace ORB {
 

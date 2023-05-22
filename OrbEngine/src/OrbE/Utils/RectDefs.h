@@ -2,7 +2,7 @@
 
 #include <tuple>
 
-#include "OrbE/Utils/BasicMaths.h"
+#include "OrbE/Math/Math.h"
 
 namespace ORB {
 

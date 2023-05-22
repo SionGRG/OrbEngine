@@ -18,6 +18,7 @@ project "Orbit"
 		"%{wks.location}/OrbEngine/vendor/spdlog/include",
 		"%{wks.location}/OrbEngine/src",
 		"%{wks.location}/OrbEngine/vendor",
+		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.EnTT}"
 	}

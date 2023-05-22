@@ -47,6 +47,8 @@ namespace ORB {
 
 		v4 m_SquareColor = { 0.4f, 0.9f, 0.9f, 1.0f };
 
+		int m_GizmoType = -1;
+
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};

@@ -17,3 +17,6 @@
 [submodule "OrbEngine/vendor/yaml-cpp"]
 	path = OrbEngine/vendor/yaml-cpp
 	url = https://github.com/SionGRG/yaml-cpp
+[submodule "OrbEngine/vendor/ImGuizmo"]
+	path = OrbEngine/vendor/ImGuizmo
+	url = https://github.com/SionGRG/ImGuizmo
