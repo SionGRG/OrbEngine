@@ -14,7 +14,9 @@ De Orb Game Engine.<br>
 >* **[GLFW](https://github.com/glfw/GLFW)**: an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan application development.
 >* **[Glad](https://glad.dav1d.de/)**: a multi-language Vulkan/GL/GLES/EGL/GLX/WGL loader-generator based on the official specifications.
 >* **[Dear ImGui](https://github.com/ocornut/imgui)**: Graphical User interface for C++.
+>* **[ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo)**: Immediate mode 3D gizmo for scene editing and other controls based on Dear Imgui.
 >* **[glm](https://github.com/g-truc/glm)**: Math library.
 >* **[stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)** from **[stb](https://github.com/nothings/stb/tree/master)**: Image file loader.
 >* **[EnTT](https://github.com/skypjack/entt)**: Entity Component System.
+>* **[yaml-cpp](https://github.com/jbeder/yaml-cpp)**: A YAML parser and emitter in C++.
 >***
