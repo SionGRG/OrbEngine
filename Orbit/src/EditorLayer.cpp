@@ -307,25 +307,23 @@ namespace ORB {
 
 		switch (e.GetKeyCode())
 		{
+			// Serialization
 			case Key::N:
 			{
 				if (control)
 					NewScene();
-		
 				break;
 			}
 			case Key::O:
 			{
 				if (control)
 					OpenScene();
-			
 				break;
 			}
 			case Key::S:
 			{
 				if (control && shift)
 					SaveSceneAs();
-			
 				break;
 			}
 
@@ -342,6 +340,10 @@ namespace ORB {
 			case Key::R:
 				m_GizmoType = ImGuizmo::OPERATION::SCALE;
 				break;
+
+			// Unset keys
+			default:
+				break;
 		}
 	}
 	
@@ -354,27 +356,27 @@ namespace ORB {
 	
 	void EditorLayer::OpenScene()
 	{
-		std::string filepath = FileDialogs::OpenFile("Orb Scene (*.orb)\0*.orb\0");
+		std::optional<std::string> filepath = FileDialogs::OpenFile("Orb Scene (*.orb)\0*.orb\0");
 
-		if (!filepath.empty())
+		if (filepath)
 		{
 			m_ActiveScene = CreateRef<Scene>();
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
 			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(filepath);
+			serializer.Deserialize(*filepath);
 		}
 	}
 
 	void EditorLayer::SaveSceneAs()
 	{
-		std::string filepath = FileDialogs::SaveFile("Orb Scene (*.orb)\0*.orb\0");
+		std::optional<std::string> filepath = FileDialogs::SaveFile("Orb Scene (*.orb)\0*.orb\0");
 
-		if (!filepath.empty())
+		if (filepath)
 		{
 			SceneSerializer serializer(m_ActiveScene);
-			serializer.Serialize(filepath);
+			serializer.Serialize(*filepath);
 		}
 	}
 }

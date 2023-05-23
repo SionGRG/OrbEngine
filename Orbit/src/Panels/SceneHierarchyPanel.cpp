@@ -233,13 +233,21 @@ namespace ORB {
 		{
 			if (ImGui::MenuItem("Camera"))
 			{
-				m_SelectionContext.AddComponent<CameraComponent>();
+				if (!m_SelectionContext.HasComponent<CameraComponent>())
+					m_SelectionContext.AddComponent<CameraComponent>();
+				else
+					ORBE_CORE_WARN("This entity already has a Camera Component!");
+				
 				ImGui::CloseCurrentPopup();
 			}
 
 			if (ImGui::MenuItem("Sprite Renderer"))
 			{
-				m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
+					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				else
+					ORBE_CORE_WARN("This entity already has a Sprite Renderer Component!");
+				
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -319,7 +327,19 @@ namespace ORB {
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{
-			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+			ImGui::PushID("Color");
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100.0f);
+			ImGui::Text("Color");
+			ImGui::NextColumn();
+ 
+			ImGui::PushItemWidth(ImGui::CalcItemWidth() + 70.0f);
+			ImGui::ColorEdit4("##Color", glm::value_ptr(component.Color));
+			ImGui::PopItemWidth();
+
+			ImGui::Columns(1);
+			ImGui::PopID();
 		});
 	}
 }
