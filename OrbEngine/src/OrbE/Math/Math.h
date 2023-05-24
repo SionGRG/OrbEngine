@@ -15,6 +15,8 @@ namespace ORB {
 	typedef glm::mat3 m3;
 	typedef glm::mat4 m4;
 
+	typedef glm::quat q4;
+
 	namespace Math {
 
 		bool DecomposeTransform(const m4& transform, v3& outTranslation, v3& outRotation, v3& outScale);

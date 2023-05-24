@@ -33,6 +33,8 @@ namespace ORB {
 
 		m_ActiveScene = CreateRef<Scene>();
 
+		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
 #if 0
 		// Entities
 		auto square = m_ActiveScene->CreateEntity("Cyan Square");
@@ -108,13 +110,16 @@ namespace ORB {
 			//m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			//m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 			
+			m_EditorCamera.SetViewport(m_ViewportSize.x, m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
 		// Update --------------------------------------------------------------
 		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(ts);
-
+		
+		m_EditorCamera.OnUpdate(ts);
+		
 		// Render --------------------------------------------------------------
 		Renderer2D::ResetStats();
 		m_Framebuffer->Bind();
@@ -122,7 +127,7 @@ namespace ORB {
 		RenderCommand::Clear();
 
 		// Update Scene
-		m_ActiveScene->OnUpdate(ts);
+		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 		
 		m_Framebuffer->Unbind();
 	}
@@ -247,10 +252,17 @@ namespace ORB {
 			float windowHeight = (float)ImGui::GetWindowHeight();
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-			auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-			const m4& cameraProjection = camera.GetProjection();
-			m4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			// Camera
+
+			// Runtime Camera from an entity
+			// auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			// const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			// const m4& cameraProjection = camera.GetProjection();
+			// m4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			
+			// Editor Camera
+			const m4& cameraProjection = m_EditorCamera.GetProjection();
+			m4 cameraView = m_EditorCamera.GetViewMatrix();
 
 			// Entity tranform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
@@ -291,6 +303,7 @@ namespace ORB {
 	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
+		m_EditorCamera.OnEvent(e);
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(ORBE_BIND_EVENT_FN(EditorLayer::OnKeyPressed));

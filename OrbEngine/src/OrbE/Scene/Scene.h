@@ -1,7 +1,9 @@
 #pragma once
 
-#include <entt.hpp>
 #include "OrbE/Core/Timestep.h"
+#include "OrbE/Renderer/EditorCamera.h"
+
+#include <entt.hpp>
 
 namespace ORB {
 
@@ -16,7 +18,8 @@ namespace ORB {
 		Entity CreateEntity(std::string_view name = "");
 		void DestroyEntity(Entity entity);
 
-		void OnUpdate(Timestep ts);
+		void OnUpdateRuntime(Timestep ts);
+		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 		Entity GetPrimaryCameraEntity();

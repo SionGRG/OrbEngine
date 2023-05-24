@@ -3,6 +3,8 @@
 #include <OrbE.h>
 #include "Panels/SceneHierarchyPanel.h"
 
+#include "OrbE/Renderer/EditorCamera.h"
+
 namespace ORB {
 
 	class EditorLayer : public Layer
@@ -39,6 +41,8 @@ namespace ORB {
 		Entity m_SecondCamera;
 
 		bool m_PrimaryCamera = true;
+
+		EditorCamera m_EditorCamera;
 
 		Ref<Texture2D> m_CheckerboardTexture;
 
