@@ -48,6 +48,7 @@ namespace ORB {
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		v2 m_ViewportSize = { 0.0f, 0.0f };
+		v2 m_ViewportBounds[2];
 
 		v4 m_SquareColor = { 0.4f, 0.9f, 0.9f, 1.0f };
 
