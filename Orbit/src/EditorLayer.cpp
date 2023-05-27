@@ -127,6 +127,9 @@ namespace ORB {
 		RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
 		RenderCommand::Clear();
 
+		// Clear our entity ID attachment to -1
+		m_Framebuffer->ClearAttachment(1, -1);
+
 		// Update Scene
 		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 		

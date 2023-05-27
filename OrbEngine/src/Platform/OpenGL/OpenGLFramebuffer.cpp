@@ -79,6 +79,21 @@ namespace ORB {
 			return false;
 		}
 
+		static GLenum ORBFBTextureFormatToGL(FramebufferTextureFormat format)
+		{
+			switch (format)
+			{
+				case ORB::FramebufferTextureFormat::RGBA8:             return GL_RGBA8;
+				case ORB::FramebufferTextureFormat::RED_INTEGER:       return GL_RED_INTEGER;
+				case ORB::FramebufferTextureFormat::DEPTH24STENCIL8:   return GL_DEPTH24_STENCIL8;
+				
+				default: break;
+			}
+
+			ORBE_CORE_ASSERT(false);
+			return 0;
+		}
+
 	}
 
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
@@ -215,5 +230,14 @@ namespace ORB {
 		int pixelData;
 		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
 		return pixelData;
+	}
+	
+	void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value)
+	{
+		ORBE_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size());
+
+		auto& spec = m_ColorAttachmentSpecifications[attachmentIndex];
+		glClearTexImage(m_ColorAttachments[attachmentIndex], 0, 
+			Utils::ORBFBTextureFormatToGL(spec.TextureFormat), GL_INT, &value);
 	}
 }
