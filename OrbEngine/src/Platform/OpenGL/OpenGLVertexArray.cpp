@@ -70,46 +70,56 @@ namespace ORB {
 		{
 			switch (element.Type)
 			{
-				case ShaderDataType::Float:
-				case ShaderDataType::Float2:
-				case ShaderDataType::Float3:
-				case ShaderDataType::Float4:
-				case ShaderDataType::Int:
-				case ShaderDataType::Int2:
-				case ShaderDataType::Int3:
-				case ShaderDataType::Int4:
-				case ShaderDataType::Bool:
+			case ShaderDataType::Float:
+			case ShaderDataType::Float2:
+			case ShaderDataType::Float3:
+			case ShaderDataType::Float4:
+			{
+				glEnableVertexAttribArray(vertexBufferIndex);
+				glVertexAttribPointer(vertexBufferIndex,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.Type),
+					element.Normalized ? GL_TRUE : GL_FALSE,
+					layout.GetStride(),
+					(const void*)element.Offset);
+				vertexBufferIndex++;
+				break;
+			}
+			case ShaderDataType::Int:
+			case ShaderDataType::Int2:
+			case ShaderDataType::Int3:
+			case ShaderDataType::Int4:
+			case ShaderDataType::Bool:
+			{
+				glEnableVertexAttribArray(vertexBufferIndex);
+				glVertexAttribIPointer(vertexBufferIndex,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.Type),
+					layout.GetStride(),
+					(const void*)element.Offset);
+				vertexBufferIndex++;
+				break;
+			}
+			case ShaderDataType::Mat3:
+			case ShaderDataType::Mat4:
+			{
+				uint8_t count = element.GetComponentCount();
+				for (uint8_t i = 0; i < count; i++)
 				{
 					glEnableVertexAttribArray(vertexBufferIndex);
 					glVertexAttribPointer(vertexBufferIndex,
-						element.GetComponentCount(),
+						count,
 						ShaderDataTypeToOpenGLBaseType(element.Type),
 						element.Normalized ? GL_TRUE : GL_FALSE,
 						layout.GetStride(),
-						(const void*)element.Offset);
+						(const void*)(element.Offset + sizeof(float) * count * i));
+					glVertexAttribDivisor(vertexBufferIndex, 1);
 					vertexBufferIndex++;
-					break;
 				}
-				case ShaderDataType::Mat3:
-				case ShaderDataType::Mat4:
-				{
-					uint8_t count = element.GetComponentCount();
-					for (uint8_t i = 0; i < count; i++)
-					{
-						glEnableVertexAttribArray(vertexBufferIndex);
-						glVertexAttribPointer(vertexBufferIndex,
-							count,
-							ShaderDataTypeToOpenGLBaseType(element.Type),
-							element.Normalized ? GL_TRUE : GL_FALSE,
-							layout.GetStride(),
-							(const void*)(element.Offset + sizeof(float) * count * i));
-						glVertexAttribDivisor(vertexBufferIndex, 1);
-						vertexBufferIndex++;
-					}
-					break;
-				}
-				default:
-					ORBE_CORE_ASSERT(false, "Unknown ShaderDataType!");
+				break;
+			}
+			default:
+				ORBE_CORE_ASSERT(false, "Unknown ShaderDataType!");
 			}
 		}
 
