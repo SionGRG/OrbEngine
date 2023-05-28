@@ -17,6 +17,9 @@ namespace ORB {
 		float    TexIndex;
 		float    TilingFactor;
 		// TODO: maskid
+
+		// Editor-only
+		int EntityID;
 	};
 
 	struct Renderer2DData
@@ -54,11 +57,12 @@ namespace ORB {
 
 		s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
 		s_Data.QuadVertexBuffer->SetLayout({
-			{ ShaderDataType::Float3, "a_Posision" },
-			{ ShaderDataType::Float4, "a_Color" },
-			{ ShaderDataType::Float2, "a_TexCoord" },
-			{ ShaderDataType::Float, "a_TexIndex" },
-			{ ShaderDataType::Float, "a_TillingFactor" }
+			{ ShaderDataType::Float3, "a_Posision"      },
+			{ ShaderDataType::Float4, "a_Color"         },
+			{ ShaderDataType::Float2, "a_TexCoord"      },
+			{ ShaderDataType::Float,  "a_TexIndex"      },
+			{ ShaderDataType::Float,  "a_TillingFactor" },
+			{ ShaderDataType::Int,    "a_EntityID"      }
 			});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -231,7 +235,7 @@ namespace ORB {
 		DrawQuad(transform, subtexture, tilingFactor, tintColor);
 	}
 
-	void Renderer2D::DrawQuad(const m4& transform, const v4& color)
+	void Renderer2D::DrawQuad(const m4& transform, const v4& color, int entityID)
 	{
 		ORBE_PROFILE_FUNCTION();
 
@@ -250,6 +254,7 @@ namespace ORB {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -258,7 +263,7 @@ namespace ORB {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const m4& transform, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor)
+	void Renderer2D::DrawQuad(const m4& transform, const Ref<Texture2D>& texture, float tilingFactor, const v4& tintColor, int entityID)
 	{
 		ORBE_PROFILE_FUNCTION();
 
@@ -295,6 +300,7 @@ namespace ORB {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -303,7 +309,7 @@ namespace ORB {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const m4& transform, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor)
+	void Renderer2D::DrawQuad(const m4& transform, const Ref<SubTexture2D>& subtexture, float tilingFactor, const v4& tintColor, int entityID)
 	{
 		ORBE_PROFILE_FUNCTION();
 
@@ -341,6 +347,7 @@ namespace ORB {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -494,6 +501,12 @@ namespace ORB {
 		s_Data.QuadIndexCount += 6;
 
 		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::DrawSprite(const m4& transform, SpriteRendererComponent& src, int entityID)
+	{
+		ORBE_PROFILE_FUNCTION();
+		DrawQuad(transform, src.Color, entityID);
 	}
 
 	void Renderer2D::ResetStats()

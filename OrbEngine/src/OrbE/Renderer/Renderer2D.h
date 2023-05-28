@@ -7,6 +7,8 @@
 #include "OrbE/Renderer/Texture.h"
 #include "OrbE/Renderer/SubTexture2D.h"
 
+#include "OrbE/Scene/Components.h"
+
 namespace ORB {
 
 	class Renderer2D
@@ -30,9 +32,9 @@ namespace ORB {
 		static void DrawQuad(const v3& position, const v2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f, const v4& tintColor = v4(1.0f));
 
 		// With Matrix transforms
-		static void DrawQuad(const m4& transform, const v4& color);
-		static void DrawQuad(const m4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const v4& tintColor = v4(1.0f));
-		static void DrawQuad(const m4& transform, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f, const v4& tintColor = v4(1.0f));
+		static void DrawQuad(const m4& transform, const v4& color, int entityID = -1);
+		static void DrawQuad(const m4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const v4& tintColor = v4(1.0f), int entityID = -1);
+		static void DrawQuad(const m4& transform, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f, const v4& tintColor = v4(1.0f), int entityID = -1);
 
 		// Rotation is in radians
 		static void DrawRotatedQuad(const v2& position, const v2& size, float rotation, const v4& color);
@@ -41,6 +43,9 @@ namespace ORB {
 		static void DrawRotatedQuad(const v3& position, const v2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const v4& tintColor = v4(1.0f));
 		static void DrawRotatedQuad(const v2& position, const v2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f, const v4& tintColor = v4(1.0f));
 		static void DrawRotatedQuad(const v3& position, const v2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f, const v4& tintColor = v4(1.0f));
+
+		// With sprite renderer component
+		static void DrawSprite(const m4& transform, SpriteRendererComponent& src, int entityID);
 
 		// Stats
 		struct Statistics

@@ -13,7 +13,7 @@ namespace ORB {
 		uint32_t Width, Height;
 
 		WindowProps(std::string_view title = "De Orb Engine",
-						uint32_t width = 1680,
+						uint32_t width = 1600,
 						uint32_t height = 900)
 			: Title(title), Width(width), Height(height)
 		{

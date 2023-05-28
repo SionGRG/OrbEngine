@@ -99,12 +99,12 @@ namespace ORB {
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
 		: m_Specification(spec)
 	{
-		for (auto format : m_Specification.Attachments.Attachments)
+		for (auto spec : m_Specification.Attachments.Attachments)
 		{
-			if (!Utils::IsDepthFormat(format.TextureFormat))
-				m_ColorAttachmentSpecifications.emplace_back(format);
+			if (!Utils::IsDepthFormat(spec.TextureFormat))
+				m_ColorAttachmentSpecifications.emplace_back(spec);
 			else
-				m_DepthAttachmentSpecification = format ;
+				m_DepthAttachmentSpecification = spec ;
 		}
 
 		Invalidate();
@@ -227,7 +227,7 @@ namespace ORB {
 		ORBE_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size());
 		
 		glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
-		int pixelData;
+		int pixelData = -1;
 		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
 		return pixelData;
 	}
