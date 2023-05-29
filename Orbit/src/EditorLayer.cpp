@@ -145,11 +145,15 @@ namespace ORB {
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
 		{
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			/*ORBE_CORE_WARN("pixel data = {0} --- Mouse Pos: x({1}), y({2})", pixelData, mouseX, mouseY);
+			
+			/*
+			ORBE_CORE_WARN("pixel data = {0} --- Mouse Pos: x({1}), y({2})", pixelData, mouseX, mouseY);
+			ORBE_CORE_WARN("Bounds: min({0}, {1}), max({2}, {3})", m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x, m_ViewportBounds[1].y);
 			if (pixelData == -404)
-				int g = pixelData;*/
+				int g = pixelData;
+			ORBE_CORE_WARN("pixel data = {0}", pixelData);
+			*/
 
-			//ORBE_CORE_WARN("pixel data = {0}", pixelData);
 			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
 		}
 
@@ -344,6 +348,7 @@ namespace ORB {
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(ORBE_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(ORBE_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -407,6 +412,16 @@ namespace ORB {
 			default:
 				break;
 		}
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		if (e.GetMouseButton() == Mouse::ButtonLeft)
+		{
+			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+		}
+		return false;
 	}
 	
 	void EditorLayer::NewScene()
