@@ -108,8 +108,8 @@ namespace ORB {
 			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
 			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
-			//m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			//m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 			
 			m_EditorCamera.SetViewport(m_ViewportSize.x, m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
@@ -149,6 +149,12 @@ namespace ORB {
 			/*
 			ORBE_CORE_WARN("pixel data = {0} --- Mouse Pos: x({1}), y({2})", pixelData, mouseX, mouseY);
 			ORBE_CORE_WARN("Bounds: min({0}, {1}), max({2}, {3})", m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x, m_ViewportBounds[1].y);
+			
+			if (pixelData != -404)
+				ORBE_CORE_WARN("pixel data = {0} -- Mouse Pos: x({1}), y({2}) -- Bounds: min({3}, {4}), max({5}, {6})", pixelData, mouseX, mouseY, m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x, m_ViewportBounds[1].y);
+			else
+				ORBE_CORE_ERROR("pixel data = {0} -- Mouse Pos: x({1}), y({2}) -- Bounds: min({3}, {4}), max({5}, {6})", pixelData, mouseX, mouseY, m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x, m_ViewportBounds[1].y);
+
 			if (pixelData == -404)
 				int g = pixelData;
 			ORBE_CORE_WARN("pixel data = {0}", pixelData);

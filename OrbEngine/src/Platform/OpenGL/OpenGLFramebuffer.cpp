@@ -99,7 +99,9 @@ namespace ORB {
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
 		: m_Specification(spec)
 	{
-		for (auto spec : m_Specification.Attachments.Attachments)
+		ORBE_PROFILE_FUNCTION();
+
+		for (auto& spec : m_Specification.Attachments.Attachments)
 		{
 			if (!Utils::IsDepthFormat(spec.TextureFormat))
 				m_ColorAttachmentSpecifications.emplace_back(spec);
@@ -112,6 +114,8 @@ namespace ORB {
 	
 	OpenGLFramebuffer::~OpenGLFramebuffer()
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		glDeleteFramebuffers(1, &m_RendererID);
 		glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
 		glDeleteTextures(1, &m_DepthAttachment);
@@ -122,6 +126,8 @@ namespace ORB {
 
 	void OpenGLFramebuffer::Invalidate()
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		if (m_RendererID)
 		{
 			glDeleteFramebuffers(1, &m_RendererID);
@@ -210,6 +216,8 @@ namespace ORB {
 
 	void OpenGLFramebuffer::Resize(uint32_t width, uint32_t height)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		if (width == 0 || height == 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
 		{
 			ORBE_CORE_WARN("Attempted to resize framebuffer to {0}, {1}", width, height);
@@ -224,16 +232,20 @@ namespace ORB {
 
 	int OpenGLFramebuffer::ReadPixel(uint32_t attachmentIndex, int x, int y)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		ORBE_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size());
 		
 		glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
-		int pixelData = -1;
+		int pixelData = -404;
 		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
 		return pixelData;
 	}
 	
 	void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value)
 	{
+		ORBE_PROFILE_FUNCTION();
+
 		ORBE_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size());
 
 		auto& spec = m_ColorAttachmentSpecifications[attachmentIndex];
