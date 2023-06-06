@@ -2,6 +2,7 @@
 
 #include <OrbE.h>
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
 #include "OrbE/Renderer/EditorCamera.h"
 
@@ -59,5 +60,6 @@ namespace ORB {
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 }
