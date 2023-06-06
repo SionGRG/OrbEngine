@@ -2,6 +2,8 @@
 
 #include <filesystem>
 
+#include "OrbE/Renderer/Texture.h"
+
 namespace ORB {
 	
 	class ContentBrowserPanel
@@ -13,5 +15,7 @@ namespace ORB {
 
 	private:
 		std::filesystem::path m_CurrentDirectory;
+		Ref<Texture2D> m_DirectoryIcon;
+		Ref<Texture2D> m_FileIcon;
 	};
 }
