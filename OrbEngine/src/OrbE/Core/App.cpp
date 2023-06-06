@@ -11,7 +11,8 @@ namespace ORB {
 
 	App* App::s_Instance = nullptr;
 
-	App::App(std::string_view name)
+	App::App(std::string_view name, AppCommandLineArgs args)
+		: m_CommandLineArgs(args)
 	{
 		ORBE_PROFILE_FUNCTION();
 

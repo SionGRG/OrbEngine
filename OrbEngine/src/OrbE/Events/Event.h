@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "OrbE/O_Debug/Instrumentor.h"
+#include "OrbE/ODebug/Instrumentor.h"
 #include "OrbE/Core/Base.h"
 
 namespace ORB {

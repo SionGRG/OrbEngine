@@ -15,10 +15,22 @@ int main(int argc, char** argv);
 
 namespace ORB {
 
+	struct AppCommandLineArgs
+	{
+		int Count = 0;
+		char** Args = nullptr;
+
+		const char* operator[](int index) const
+		{
+			ORBE_CORE_ASSERT(index < Count);
+			return Args[index];
+		}
+	};
+
 	class App
 	{
 	public:
-		App(std::string_view name = "Orb App");
+		App(std::string_view name = "Orb App", AppCommandLineArgs args = AppCommandLineArgs());
 		virtual ~App();
 				
 		void OnEvent(Event& e);
@@ -28,6 +40,8 @@ namespace ORB {
 
 		Window& GetWindow() { return *m_Window; }
 		static App& Get() { return *s_Instance; }
+
+		AppCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
 
 		void Close();
 
@@ -39,6 +53,7 @@ namespace ORB {
 		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
+		AppCommandLineArgs m_CommandLineArgs;
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
@@ -52,7 +67,6 @@ namespace ORB {
 	};
 
 	// To be defined in CLIENT
-	App* CreateApplication();
-
+	App* CreateApplication(AppCommandLineArgs args);
 
 }

@@ -4,12 +4,13 @@
 #include "OrbE/Core/Input.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_QUAT_DATA_WXYZ
 #include <glm/gtx/quaternion.hpp>
 
 namespace ORB {
 	
 	EditorCamera::EditorCamera(float fov, float aspectRatio, float nearClip, float farClip)
-		:m_FOV(fov), m_AspecRatio(aspectRatio), m_NearClip(nearClip), m_FarClip(farClip),
+		: m_FOV(fov), m_AspectRatio(aspectRatio), m_NearClip(nearClip), m_FarClip(farClip),
 		Camera(glm::perspective(glm::radians(fov), aspectRatio, nearClip, farClip))
 	{
 		UpdateView();
@@ -17,8 +18,8 @@ namespace ORB {
 	
 	void EditorCamera::UpdateProjection()
 	{
-		m_AspecRatio = m_ViewportWidth / m_ViewportHeight;
-		m_Projection = glm::perspective(glm::radians(m_FOV), m_AspecRatio, m_NearClip, m_FarClip);
+		m_AspectRatio = m_ViewportWidth / m_ViewportHeight;
+		m_Projection = glm::perspective(glm::radians(m_FOV), m_AspectRatio, m_NearClip, m_FarClip);
 	}
 	
 	void EditorCamera::UpdateView()
@@ -36,7 +37,7 @@ namespace ORB {
 		float x = std::min(m_ViewportWidth / 1000.0f, 2.4f); // max = 2.4f
 		float xFactor = 0.0366f * (x * x) - 0.1778f * x + 0.3021f;
 
-		float y = std::min(m_ViewportWidth / 1000.0f, 2.4f); // max = 2.4f
+		float y = std::min(m_ViewportHeight / 1000.0f, 2.4f); // max = 2.4f
 		float yFactor = 0.0366f * (y * y) - 0.1778f * y + 0.3021f;
 
 		return { xFactor, yFactor };
@@ -52,7 +53,7 @@ namespace ORB {
 		float distance = m_Distance * 0.2f;
 		distance = std::max(distance, 0.0f);
 		float speed = distance * distance;
-		speed = std::min(speed, 100.0f); // max spped = 100.0f
+		speed = std::min(speed, 100.0f); // max speed = 100.0f
 		return speed;
 	}
 	

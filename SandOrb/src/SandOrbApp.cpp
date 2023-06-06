@@ -12,8 +12,8 @@
 class SandOrb : public ORB::App
 {
 public:
-	SandOrb()
-		: App("Sand Orb")
+	SandOrb(ORB::AppCommandLineArgs args)
+		: App("Sand Orb", args)
 	{
 		//PushLayer(new ExampleLayer());
 		PushLayer(new SandOrb2D());
@@ -22,7 +22,7 @@ public:
 
 };
 
-ORB::App* ORB::CreateApplication()
+ORB::App* ORB::CreateApplication(ORB::AppCommandLineArgs args)
 {
-	return new SandOrb();
+	return new SandOrb(args);
 }

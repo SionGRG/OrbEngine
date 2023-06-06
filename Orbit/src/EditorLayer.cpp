@@ -34,6 +34,14 @@ namespace ORB {
 
 		m_ActiveScene = CreateRef<Scene>();
 
+		auto commandLineArgs = App::Get().GetCommandLineArgs();
+		if (commandLineArgs.Count > 1)
+		{
+			auto sceneFilePath = commandLineArgs[1];
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Deserialize(sceneFilePath);
+		}
+
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 #if 0
@@ -264,6 +272,12 @@ namespace ORB {
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
+		ImGui::NewLine();
+		ImGui::Separator();
+		ImGui::Text("Editor Camera:");
+		auto position = m_EditorCamera.GetPosition();
+		ImGui::Text("Position:  x:%d, y:%d, z:%d", position.x, position.y, position.z);
+
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
@@ -277,7 +291,7 @@ namespace ORB {
 		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 		
 		// Display the viewport edges
-		ImGui::GetForegroundDrawList()->AddRect(ImVec2(m_ViewportBounds[0].x, m_ViewportBounds[0].y), ImVec2(m_ViewportBounds[1].x, m_ViewportBounds[1].y), IM_COL32(255, 166, 77, 250));
+		// ImGui::GetForegroundDrawList()->AddRect(ImVec2(m_ViewportBounds[0].x, m_ViewportBounds[0].y), ImVec2(m_ViewportBounds[1].x, m_ViewportBounds[1].y), IM_COL32(255, 166, 77, 250));
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
@@ -302,10 +316,10 @@ namespace ORB {
 			// Camera
 
 			// Runtime Camera from an entity
-			// auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-			// const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-			// const m4& cameraProjection = camera.GetProjection();
-			// m4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			/*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			const m4& cameraProjection = camera.GetProjection();
+			m4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());*/
 			
 			// Editor Camera
 			const m4& cameraProjection = m_EditorCamera.GetProjection();
@@ -439,27 +453,27 @@ namespace ORB {
 	
 	void EditorLayer::OpenScene()
 	{
-		std::optional<std::string> filepath = FileDialogs::OpenFile("Orb Scene (*.orb)\0*.orb\0");
+		std::string filepath = FileDialogs::OpenFile("Orb Scene (*.orb)\0*.orb\0");
 
-		if (filepath)
+		if (!filepath.empty())
 		{
 			m_ActiveScene = CreateRef<Scene>();
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
 			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(*filepath);
+			serializer.Deserialize(filepath);
 		}
 	}
 
 	void EditorLayer::SaveSceneAs()
 	{
-		std::optional<std::string> filepath = FileDialogs::SaveFile("Orb Scene (*.orb)\0*.orb\0");
+		std::string filepath = FileDialogs::SaveFile("Orb Scene (*.orb)\0*.orb\0");
 
-		if (filepath)
+		if (!filepath.empty())
 		{
 			SceneSerializer serializer(m_ActiveScene);
-			serializer.Serialize(*filepath);
+			serializer.Serialize(filepath);
 		}
 	}
 }

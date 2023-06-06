@@ -9,7 +9,7 @@ namespace ORB {
 	public:
 		Camera() = default;
 		Camera(const m4& projection)
-			:m_Projection(projection) {}
+			: m_Projection(projection) {}
 
 		virtual ~Camera() = default;
 

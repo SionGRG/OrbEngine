@@ -28,7 +28,7 @@
 // De Orb Class
 #include "OrbE/Core/Base.h"
 #include "OrbE/Core/Log.h"
-#include "OrbE/O_Debug/Instrumentor.h"
+#include "OrbE/ODebug/Instrumentor.h"
 
 #ifdef ORBE_PLATFORM_WINDOWS
 	#include <Windows.h>

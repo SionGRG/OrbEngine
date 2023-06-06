@@ -19,6 +19,11 @@
 **.vcxproj.filters
 **.vcxproj.user
 
+# Directories
+OrbEngine/vendor/VulkanSDK
+Orbit/assets/cache
+scripts/__pycache__
+
 ## =============================================================================================
 ## Visual Studio Default Ignore List 
 

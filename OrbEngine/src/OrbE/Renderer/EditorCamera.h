@@ -51,7 +51,7 @@ namespace ORB {
 		float ZoomSpeed() const;
 
 	private:
-		float m_FOV = 45.0f, m_AspecRatio = 1.778f, m_NearClip = 0.1f, m_FarClip = 1000.0f;
+		float m_FOV = 45.0f, m_AspectRatio = 1.778f, m_NearClip = 0.1f, m_FarClip = 1000.0f;
 		
 		m4 m_ViewMatrix = m4(1.0f);
 		v3 m_Position = { 0.0f, 0.0f, 0.0f };

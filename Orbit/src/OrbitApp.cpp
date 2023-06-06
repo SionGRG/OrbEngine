@@ -13,8 +13,8 @@ namespace ORB {
 	class Orbit : public App
 	{
 	public:
-		Orbit()
-			: App("Orbit")
+		Orbit(AppCommandLineArgs args)
+			: App("Orbit", args)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -22,8 +22,8 @@ namespace ORB {
 
 	};
 
-	App* CreateApplication()
+	App* CreateApplication(AppCommandLineArgs args)
 	{
-		return new Orbit();
+		return new Orbit(args);
 	}
 }
