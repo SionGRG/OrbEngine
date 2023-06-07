@@ -9,6 +9,25 @@
 
 namespace ORB {
 
+	extern const std::filesystem::path g_AssetPath;
+
+	namespace Utils {
+
+		bool HasSuffix(const std::wstring& path, const std::vector<std::wstring>& suffixes)
+		{
+			// Account for capital suffixes in the path
+			std::wstring path_lower = path;
+			std::transform(path_lower.begin(), path_lower.end(), path_lower.begin(), towlower);
+
+			for (const auto& suffix : suffixes)
+			{
+				if (path_lower.length() >= suffix.length() && path_lower.compare(path_lower.length() - suffix.length(), suffix.length(), suffix) == 0)
+					return true;
+			}
+			return false;
+		}
+	}
+
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
 	{
 		SetContext(context);
@@ -332,6 +351,7 @@ namespace ORB {
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{
+			/* Color */
 			ImGui::PushID("Color");
 
 			ImGui::Columns(2);
@@ -345,6 +365,33 @@ namespace ORB {
 
 			ImGui::Columns(1);
 			ImGui::PopID();
+
+			/* Texture */
+
+			// Load a dragged in image/texture file from the Content Browser
+			ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+
+					// check if it's an image/texture file being dragged in
+					std::wstring wstr(path);
+					std::vector<std::wstring> suffixes = { L"png", L"jpg", L"jpeg" };	// Only supports PNG and JPG/JPEG at the moment
+					if (Utils::HasSuffix(wstr, suffixes))
+					{
+						// Load the texture file
+						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+						component.Texture = Texture2D::Create(texturePath.string());
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+			// Tilling Factor
+			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
+
 		});
 	}
 }

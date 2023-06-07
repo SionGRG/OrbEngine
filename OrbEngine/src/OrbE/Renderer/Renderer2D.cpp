@@ -513,7 +513,11 @@ namespace ORB {
 	void Renderer2D::DrawSprite(const m4& transform, SpriteRendererComponent& src, int entityID)
 	{
 		ORBE_PROFILE_FUNCTION();
-		DrawQuad(transform, src.Color, entityID);
+
+		if (src.Texture)
+			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+		else
+			DrawQuad(transform, src.Color, entityID);
 	}
 
 	void Renderer2D::ResetStats()

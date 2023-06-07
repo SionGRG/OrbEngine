@@ -8,6 +8,7 @@
 
 #include "OrbE/Scene/SceneCamera.h"
 #include "OrbE/Scene/ScriptableEntity.h"
+#include "OrbE/Renderer/Texture.h"
 
 namespace ORB {
 
@@ -51,6 +52,8 @@ namespace ORB {
 	struct SpriteRendererComponent
 	{
 		v4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
