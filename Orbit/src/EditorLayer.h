@@ -30,6 +30,12 @@ namespace ORB {
 		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
 
+		void OnScenePlay();
+		void OnSceneStop();
+
+		// UI Panels
+		void UI_Toolbar();
+
 	private:
 		OrthographicCameraController m_CameraController;
 	
@@ -59,8 +65,18 @@ namespace ORB {
 
 		int m_GizmoType = -1;
 
+		enum class SceneState
+		{
+			Edit = 0, Play = 1
+		};
+
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
+
+		// Editor Resources
+		Ref<Texture2D> m_IconPlay, m_IconStop;
+
+		SceneState m_SceneState = SceneState::Edit;
 	};
 }
