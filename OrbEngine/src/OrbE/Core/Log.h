@@ -2,12 +2,16 @@
 
 #include "OrbE/Core/Base.h"
 
+/* TODO: causing an error with the Editor camera, look for a fix 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
+*/
+
 // This ignores all warnings raise inside the spdlog External headers
 #pragma warning(push, 0)
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 #pragma warning(pop)
-
 
 namespace ORB {
 
@@ -24,6 +28,26 @@ namespace ORB {
 	};
 
 }
+
+/* TODO: Uncomment after finding the fix
+template<typename OStream, glm::length_t L, typename T, glm::qualifier Q>
+inline OStream& operator<<(OStream& os, const glm::vec<L, T, Q>& vector)
+{
+	return os << glm::to_string(vector);
+}
+
+template<typename OStream, glm::length_t C, glm::length_t R, typename T, glm::qualifier Q>
+inline OStream& operator<<(OStream& os, const glm::mat<C, R, T, Q>& matrix)
+{
+	return os << glm::to_string(matrix);
+}
+
+template<typename OStream, typename T, glm::qualifier Q>
+inline OStream& operator<<(OStream& os, glm::qua<T, Q> quaternion)
+{
+	return os << glm::to_string(quaternion);
+}
+*/
 
 // Core Log macros
 #define ORBE_CORE_TRACE(...)        ::ORB::Log::GetCoreLogger()->trace(__VA_ARGS__)
