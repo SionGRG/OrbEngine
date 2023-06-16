@@ -3,9 +3,10 @@
 #include "OrbE/Core/Base.h"
 
 /* TODO: causing an error with the Editor camera, look for a fix 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
 */
+#define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_QUAT_DATA_WXYZ
+#include <glm/gtx/string_cast.hpp>
 
 // This ignores all warnings raise inside the spdlog External headers
 #pragma warning(push, 0)
@@ -29,7 +30,6 @@ namespace ORB {
 
 }
 
-/* TODO: Uncomment after finding the fix
 template<typename OStream, glm::length_t L, typename T, glm::qualifier Q>
 inline OStream& operator<<(OStream& os, const glm::vec<L, T, Q>& vector)
 {
@@ -47,7 +47,6 @@ inline OStream& operator<<(OStream& os, glm::qua<T, Q> quaternion)
 {
 	return os << glm::to_string(quaternion);
 }
-*/
 
 // Core Log macros
 #define ORBE_CORE_TRACE(...)        ::ORB::Log::GetCoreLogger()->trace(__VA_ARGS__)

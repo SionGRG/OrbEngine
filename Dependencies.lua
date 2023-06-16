@@ -8,6 +8,7 @@ IncludeDir = {}
 IncludeDir["ImGui"] = "%{wks.location}/OrbEngine/vendor/ImGui"
 IncludeDir["ImGuizmo"] = "%{wks.location}/OrbEngine/vendor/ImGuizmo"
 IncludeDir["glm"] = "%{wks.location}/OrbEngine/vendor/glm"
+IncludeDir["Box2D"] = "%{wks.location}/OrbEngine/vendor/Box2D/include"
 IncludeDir["stb_image"] = "%{wks.location}/OrbEngine/vendor/stb_image"
 IncludeDir["EnTT"] = "%{wks.location}/OrbEngine/vendor/EnTT/include"
 IncludeDir["yaml_cpp"] = "%{wks.location}/OrbEngine/vendor/yaml-cpp/include"

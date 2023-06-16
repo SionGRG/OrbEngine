@@ -20,3 +20,6 @@
 [submodule "OrbEngine/vendor/ImGuizmo"]
 	path = OrbEngine/vendor/ImGuizmo
 	url = https://github.com/SionGRG/ImGuizmo
+[submodule "OrbEngine/vendor/Box2D"]
+	path = OrbEngine/vendor/Box2D
+	url = https://github.com/SionGRG/box2d

@@ -35,6 +35,7 @@ project "OrbEngine"
 	{
 		"src",
 		"vendor/spdlog/include",
+		"%{IncludeDir.Box2D}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.VulkanSDK}",
@@ -48,6 +49,7 @@ project "OrbEngine"
 
 	links 
 	{ 
+		"Box2D",
 		"GLFW",
 		"Glad",
 		"ImGui",

@@ -26,6 +26,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
 	include "vendor/premake"
+	include "OrbEngine/vendor/Box2D"
 	include "OrbEngine/vendor/GLFW"
 	include "OrbEngine/vendor/Glad"
 	include "OrbEngine/vendor/ImGui"
