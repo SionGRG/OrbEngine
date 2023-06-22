@@ -1,16 +1,27 @@
 #pragma once
 
+#include "OrbE/Scene/SceneCamera.h"
+#include "OrbE/Core/UUID.h"
+#include "OrbE/Renderer/Texture.h"
+
 #include "OrbE/Math/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_QUAT_DATA_WXYZ
 #include <glm/gtx/quaternion.hpp>
 
-#include "OrbE/Scene/SceneCamera.h"
-#include "OrbE/Scene/ScriptableEntity.h"
-#include "OrbE/Renderer/Texture.h"
-
 namespace ORB {
+
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+		IDComponent(const UUID& uuid) 
+			: ID(uuid) {}
+	};
 
 	struct TagComponent
 	{
@@ -70,6 +81,9 @@ namespace ORB {
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};
+
+	// Forward Declaration
+	class ScriptableEntity;
 
 	struct NativeScriptComponent
 	{

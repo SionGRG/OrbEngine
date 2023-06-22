@@ -3,6 +3,7 @@
 
 #include "OrbE/Scene/Entity.h"
 #include "OrbE/Scene/Components.h"
+#include "OrbE/Scene/ScriptableEntity.h"
 #include "OrbE/Renderer/Renderer2D.h"
 
 // Box2D
@@ -36,7 +37,13 @@ namespace ORB {
 
 	Entity Scene::CreateEntity(std::string_view name)
 	{
+		return CreateEntityWithUUID(UUID(), name);
+	}
+
+	Entity Scene::CreateEntityWithUUID(UUID uuid, std::string_view name)
+	{
 		Entity entity = { m_Registry.create(), this };
+		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
@@ -215,6 +222,11 @@ namespace ORB {
 	{
 		//static_assert(false);
 		ORBE_CORE_ASSERT(false);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
+	{
 	}
 
 	template<>

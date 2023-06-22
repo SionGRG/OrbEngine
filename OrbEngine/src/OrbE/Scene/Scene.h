@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OrbE/Core/Timestep.h"
+#include "OrbE/Core/UUID.h"
 #include "OrbE/Renderer/EditorCamera.h"
 
 #include <entt.hpp>
@@ -18,6 +19,7 @@ namespace ORB {
 		~Scene();
 
 		Entity CreateEntity(std::string_view name = "");
+		Entity CreateEntityWithUUID(UUID uuid, std::string_view name = "");
 		void DestroyEntity(Entity entity);
 
 		void OnRuntimeStart();
