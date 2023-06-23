@@ -268,7 +268,15 @@ namespace ORB {
 	
 	bool SceneSerializer::Deserialize(std::string_view filepath)
 	{
-		YAML::Node data = YAML::LoadFile(filepath.data());
+		YAML::Node data;
+		try
+		{
+			data = YAML::LoadFile(filepath.data());
+		}
+		catch (YAML::ParserException e)
+		{
+			return false;
+		}
 		
 		if (!data["Scene"])
 			return false;

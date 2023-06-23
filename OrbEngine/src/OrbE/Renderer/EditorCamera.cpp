@@ -65,9 +65,9 @@ namespace ORB {
 			v2 delta = (mouse - m_InitialMousePosition) * 0.003f;
 			m_InitialMousePosition = mouse;
 
-			if (Input::IsMouseButtonPressed(Mouse::ButtonLeft))
+			if (Input::IsMouseButtonPressed(Mouse::ButtonRight))
 				MousePan(delta);
-			else if (Input::IsMouseButtonPressed(Mouse::ButtonRight))
+			else if (Input::IsMouseButtonPressed(Mouse::ButtonLeft))
 				MouseRotate(delta);
 			else if (Input::IsMouseButtonPressed(Mouse::ButtonMiddle))
 				MouseZoom(delta.y);

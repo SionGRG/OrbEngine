@@ -399,7 +399,11 @@ namespace ORB {
 					{
 						// Load the texture file
 						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
-						component.Texture = Texture2D::Create(texturePath.string());
+						Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
+						if (texture->IsLoaded())
+							component.Texture = texture;
+						else
+							ORBE_WARN("Could not load texture {0}", texturePath.filename().string());
 					}
 				}
 				ImGui::EndDragDropTarget();
