@@ -18,6 +18,8 @@ namespace ORB {
 		Scene();
 		~Scene();
 
+		static Ref<Scene> Copy(Ref<Scene> other);
+
 		Entity CreateEntity(std::string_view name = "");
 		Entity CreateEntityWithUUID(UUID uuid, std::string_view name = "");
 		void DestroyEntity(Entity entity);
@@ -28,6 +30,8 @@ namespace ORB {
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
+
+		void DuplicateEntity(Entity entity);
 
 		Entity GetPrimaryCameraEntity();
 
