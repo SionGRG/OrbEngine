@@ -72,6 +72,17 @@ namespace ORB {
 			: Color(color) {}
 	};
 
+	struct CircleRendererComponent
+	{
+		v4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		// float Radius = 0.5f;
+		float Thickness = 1.0f;		// Circle Outline Thickness
+		float Fade = 0.005f;		// Circle Edges Fade
+
+		CircleRendererComponent() = default;
+		CircleRendererComponent(const CircleRendererComponent&) = default;
+	};
+
 	struct CameraComponent
 	{
 		SceneCamera Camera;

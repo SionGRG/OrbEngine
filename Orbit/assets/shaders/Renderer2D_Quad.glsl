@@ -42,7 +42,7 @@ void main()
 #version 450 core
 
 layout(location = 0) out vec4 o_Color;
-layout(location = 1) out int o_Color2;
+layout(location = 1) out int o_EntityID;
 
 struct VertexOutput
 {
@@ -61,5 +61,5 @@ void main()
 {
 	o_Color = texture(u_Textures[int(v_TexIndex)], Input.TexCoord * Input.TilingFactor) * Input.Color;
 
-	o_Color2 = v_EntityID; // placeholder for the entity ID
+	o_EntityID= v_EntityID; // placeholder for the entity ID
 }

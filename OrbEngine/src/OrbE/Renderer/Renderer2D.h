@@ -23,6 +23,7 @@ namespace ORB {
 		static void EndScene();
 		static void Flush();
 
+		/* Sprites */
 		// Primitives
 		static void DrawQuad(const v2& position, const v2& size, const v4& color);
 		static void DrawQuad(const v3& position, const v2& size, const v4& color);
@@ -47,14 +48,18 @@ namespace ORB {
 		// With sprite renderer component
 		static void DrawSprite(const m4& transform, SpriteRendererComponent& src, int entityID);
 
+		/* Circles */
+		static void DrawCircle(const m4& transform, const v4& color, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
+
 		// Stats
 		struct Statistics
 		{
 			uint32_t DrawCalls = 0;
 			uint32_t QuadCount = 0;
+			uint32_t CircleCount = 0;
 
-			uint32_t GetTotalVertexCount() const { return QuadCount * 4; }
-			uint32_t GetTotalIndexCount() const { return QuadCount * 6; }
+			uint32_t GetTotalVertexCount() const { return (QuadCount + CircleCount) * 4; }
+			uint32_t GetTotalIndexCount() const { return (QuadCount + CircleCount) * 6; }
 		};
 
 		static void ResetStats();

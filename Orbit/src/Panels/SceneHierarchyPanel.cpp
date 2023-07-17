@@ -276,6 +276,15 @@ namespace ORB {
 				}
 			}
 
+			if (!m_SelectionContext.HasComponent<CircleRendererComponent>())
+			{
+				if (ImGui::MenuItem("Circle Renderer"))
+				{
+					m_SelectionContext.AddComponent<CircleRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
 			if (!m_SelectionContext.HasComponent<Rigidbody2DComponent>())
 			{
 				if (ImGui::MenuItem("Rigidbody 2D"))
@@ -414,6 +423,31 @@ namespace ORB {
 
 			// Tilling Factor
 			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
+		});
+
+		DrawComponent<CircleRendererComponent>("Circle Renderer", entity, [](auto& component)
+		{
+			/* Color */
+			ImGui::PushID("Color");
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100.0f);
+			ImGui::Text("Color");
+			ImGui::NextColumn();
+ 
+			ImGui::PushItemWidth(ImGui::CalcItemWidth() + 70.0f);
+			ImGui::ColorEdit4("##Color", glm::value_ptr(component.Color));
+			ImGui::PopItemWidth();
+
+			ImGui::Columns(1);
+			ImGui::PopID();
+
+			// Circle Radius
+			// ImGui::DragFloat("Radius", &component.Radius, 0.025f, 0.0f, 1.0f);
+			// Circle Outline Thickness
+			ImGui::DragFloat("Thickness", &component.Thickness, 0.025f, 0.0f, 1.0f);
+			// Circle Edges Fade
+			ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
 		});
 
 		DrawComponent<Rigidbody2DComponent>("Rigidbody 2D", entity, [](auto& component)
