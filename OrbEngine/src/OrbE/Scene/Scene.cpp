@@ -256,6 +256,8 @@ namespace ORB {
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
 				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				//TODO: Remove 
+				// Renderer2D::DrawRect(transform.GetTransform(), v4(1.0f) , (int)entity);
 			}
 		}
 		
@@ -269,6 +271,11 @@ namespace ORB {
 				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
 			}
 		}
+
+		// Draw Lines : TODO: Remove
+		// Renderer2D::DrawLine(v3(2.0f), v3(5.0f), v4(1, 0, 1, 1));
+		// Draw Rects : TODO: Remove
+		// Renderer2D::DrawRect(v3(0.0f), v2(1.0f), v4(1, 1, 1, 1));
 
 		Renderer2D::EndScene();
 	}

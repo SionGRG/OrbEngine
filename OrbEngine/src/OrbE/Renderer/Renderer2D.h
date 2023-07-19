@@ -50,6 +50,16 @@ namespace ORB {
 
 		/* Circles */
 		static void DrawCircle(const m4& transform, const v4& color, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
+		
+		/* Lines */
+		static void DrawLine(const v3& p0, const v3& p1, const v4& color, int entityID = -1);
+		
+		static float GetLineWidth();
+		static void SetLineWidth(float width);
+		
+		/* Rects */
+		static void DrawRect(const v3& position, const v2& size, const v4& color, int entityID = -1);
+		static void DrawRect(const m4& transform, const v4& color, int entityID = -1);
 
 		// Stats
 		struct Statistics
