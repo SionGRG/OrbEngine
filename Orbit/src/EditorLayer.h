@@ -25,6 +25,8 @@ namespace ORB {
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
+		void OnOverlayRender();
+
 		void NewScene();
 		void OpenScene();
 		void OpenScene(const std::filesystem::path& path);
@@ -71,6 +73,8 @@ namespace ORB {
 		v4 m_SquareColor = { 0.4f, 0.9f, 0.9f, 1.0f };
 
 		int m_GizmoType = -1;
+
+		bool m_ShowPhysicsColliders = false;
 
 		enum class SceneState
 		{

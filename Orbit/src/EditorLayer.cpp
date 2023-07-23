@@ -170,7 +170,7 @@ namespace ORB {
 		{
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
 			
-			/*
+			/* TODO: Remove
 			ORBE_CORE_WARN("pixel data = {0} --- Mouse Pos: x({1}), y({2})", pixelData, mouseX, mouseY);
 			ORBE_CORE_WARN("Bounds: min({0}, {1}), max({2}, {3})", m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x, m_ViewportBounds[1].y);
 			
@@ -186,6 +186,8 @@ namespace ORB {
 
 			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
 		}
+
+		OnOverlayRender();
 
 		m_Framebuffer->Unbind();
 	}
@@ -299,6 +301,10 @@ namespace ORB {
 		auto position = m_EditorCamera.GetPosition();
 		ImGui::Text("Position:  x:%d, y:%d, z:%d", position.x, position.y, position.z);
 
+		ImGui::End();
+
+		ImGui::Begin("Settings");
+		ImGui::Checkbox("Show physics colliders", &m_ShowPhysicsColliders);
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
@@ -499,6 +505,57 @@ namespace ORB {
 				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
 		}
 		return false;
+	}
+
+	void EditorLayer::OnOverlayRender()
+	{
+		// TODO: for testing, so remove after for the runtime
+		if (m_SceneState == SceneState::Play)
+		{
+			Entity camera = m_ActiveScene->GetPrimaryCameraEntity();
+			Renderer2D::BeginScene(camera.GetComponent<CameraComponent>().Camera, camera.GetComponent<TransformComponent>().GetTransform());
+		}
+		else
+		{
+			Renderer2D::BeginScene(m_EditorCamera);
+		}
+		// Physics Collider Visualisation
+		if (m_ShowPhysicsColliders)
+		{
+			{	// Box Colliders
+				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, BoxCollider2DComponent>();
+				for (auto entity : view)
+				{
+					auto [tc, bc2d] = view.get<TransformComponent, BoxCollider2DComponent>(entity);
+
+					v3 translation = tc.Translation + v3(bc2d.Offset, 0.001f);
+					v3 scale = tc.Scale * v3(bc2d.Size * 2.0f, 1.0f);
+
+					m4 transform = glm::translate(m4(1.0f), translation) 
+						* glm::rotate(m4(1.0f), tc.Rotation.z, v3(0.0f, 0.0f, 1.0f))
+						* glm::scale(m4(1.0f), scale);
+
+					Renderer2D::DrawRect(transform, v4(0, 1, 0, 1), 0.005f);
+				}
+			}
+		
+			{	// Circle Colliders
+				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, CircleCollider2DComponent>();
+				for (auto entity : view)
+				{
+					auto [tc, cc2d] = view.get<TransformComponent, CircleCollider2DComponent>(entity);
+
+					v3 translation = tc.Translation + v3(cc2d.Offset, 0.001f);
+					v3 scale = tc.Scale * v3(cc2d.Radius * 2.0f);
+
+					m4 transform = glm::translate(m4(1.0f), translation) * glm::scale(m4(1.0f), scale);
+
+					Renderer2D::DrawCircle(transform, v4(0, 1, 0, 1), 0.05f);
+				}
+			}
+		}
+
+		Renderer2D::EndScene();
 	}
 	
 	void EditorLayer::NewScene()
