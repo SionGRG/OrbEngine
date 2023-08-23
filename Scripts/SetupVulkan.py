@@ -24,6 +24,7 @@ class VulkanConfiguration:
 
         # if (not cls.CheckVulkanSDKDebugLibs()):
         #     print("\nNo Vulkan SDK debug libs found. Install Vulkan SDK with debug libs.")
+        #     print("(see https://github.com/SionGRG/OrbEngine and checkout the ReadMe for more info).")
         #     print("Debug configuration disabled.")
 
     @classmethod

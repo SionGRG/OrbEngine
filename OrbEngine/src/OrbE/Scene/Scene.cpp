@@ -45,10 +45,6 @@ namespace ORB {
 				auto view = src.view<Component>();
 				for (auto srcEntity : view)
 				{
-					// UUID uuid = src.get<IDComponent>(srcEntity).ID;
-					// ORBE_CORE_ASSERT(enttMap.find(uuid) != enttMap.end());
-					//entt::entity dstEnttID = enttMap.at(uuid);
-
 					entt::entity dstEntity= enttMap.at(src.get<IDComponent>(srcEntity).ID);
 
 					auto& srcComponent = src.get<Component>(srcEntity);
@@ -398,8 +394,7 @@ namespace ORB {
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
-		//static_assert(false);
-		ORBE_CORE_ASSERT(false);
+		static_assert(sizeof(T) == 0);
 	}
 
 	template<>

@@ -20,6 +20,9 @@ namespace ORB {
 		void SetSelectedEntity(Entity entity);
 
 	private:
+		template<typename T>
+		void DisplayAddComponentEntry(std::string_view entryName);
+
 		void DrawEntityNode(Entity entity);
 		void DrawComponents(Entity entity);
 

@@ -304,6 +304,7 @@ namespace ORB {
 		}
 		catch (YAML::ParserException e)
 		{
+			ORBE_CORE_ERROR("Failed to load .orb file '{0}'\n     {1}", filepath, e.what());
 			return false;
 		}
 		

@@ -4,8 +4,7 @@
 #include "OrbE/Renderer/Renderer.h"
 
 #include "OrbE/Core/Input.h"
-
-#include <GLFW/glfw3.h>
+#include "OrbE/Utils/PlatformUtils.h"
 
 namespace ORB {
 
@@ -81,7 +80,7 @@ namespace ORB {
 		{
 			ORBE_PROFILE_SCOPE("Run Loop");
 			
-			float time = (float)glfwGetTime();
+			float time = Time::GetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
