@@ -27,10 +27,17 @@ namespace ORB {
 		}
 	};
 
+	struct AppSpecification
+	{
+		std::string Name = "Orb App";
+		std::string WorkingDirectory;
+		AppCommandLineArgs CommandLineArgs;
+	};
+
 	class App
 	{
 	public:
-		App(std::string_view name = "Orb App", AppCommandLineArgs args = AppCommandLineArgs());
+		App(const AppSpecification& specification);
 		virtual ~App();
 				
 		void OnEvent(Event& e);
@@ -41,7 +48,7 @@ namespace ORB {
 		Window& GetWindow() { return *m_Window; }
 		static App& Get() { return *s_Instance; }
 
-		AppCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
+		const AppSpecification& GetSpecification() const { return m_Specification; }
 
 		void Close();
 
@@ -53,7 +60,7 @@ namespace ORB {
 		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
-		AppCommandLineArgs m_CommandLineArgs;
+		AppSpecification m_Specification;
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;

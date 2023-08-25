@@ -59,6 +59,9 @@ layout(binding = 0) uniform sampler2D u_Textures[32];
 
 void main()
 {
+	if (texColor.a == 0.0)
+		discard;
+
 	o_Color = texture(u_Textures[int(v_TexIndex)], Input.TexCoord * Input.TilingFactor) * Input.Color;
 
 	o_EntityID= v_EntityID; // placeholder for the entity ID

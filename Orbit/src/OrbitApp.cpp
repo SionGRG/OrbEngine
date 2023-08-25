@@ -13,8 +13,8 @@ namespace ORB {
 	class Orbit : public App
 	{
 	public:
-		Orbit(AppCommandLineArgs args)
-			: App("Orbit", args)
+		Orbit(AppSpecification specification)
+			: App(specification)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -24,6 +24,11 @@ namespace ORB {
 
 	App* CreateApplication(AppCommandLineArgs args)
 	{
-		return new Orbit(args);
+		AppSpecification spec;
+		spec.Name = "Orbit";
+		spec.WorkingDirectory = "../Orbit";
+		spec.CommandLineArgs = args;
+
+		return new Orbit(spec);
 	}
 }

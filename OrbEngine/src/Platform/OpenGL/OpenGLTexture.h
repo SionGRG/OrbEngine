@@ -17,6 +17,8 @@ namespace ORB {
 		virtual uint32_t GetHeight() const override { return m_Height; }
 		virtual uint32_t GetRendererID() const { return m_RendererID; }
 
+		virtual std::string_view GetPath() const override { return m_Path; }
+		
 		virtual void SetData(void* data, uint32_t size) override;
 
 		virtual void Bind(uint32_t slot) const override;

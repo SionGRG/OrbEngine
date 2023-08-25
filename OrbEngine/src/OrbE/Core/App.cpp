@@ -10,15 +10,19 @@ namespace ORB {
 
 	App* App::s_Instance = nullptr;
 
-	App::App(std::string_view name, AppCommandLineArgs args)
-		: m_CommandLineArgs(args)
+	App::App(const AppSpecification& specification)
+		: m_Specification(specification)
 	{
 		ORBE_PROFILE_FUNCTION();
 
 		ORBE_CORE_ASSERT(!s_Instance, "Application already exists!")
 		s_Instance = this;
 
-		m_Window = Window::Create(WindowProps(name));
+		// Set working directory
+		if (!m_Specification.WorkingDirectory.empty())
+			std::filesystem::current_path(m_Specification.WorkingDirectory);
+
+		m_Window = Window::Create(WindowProps(m_Specification.Name));
 		m_Window->SetEventCallback(ORBE_BIND_EVENT_FN(App::OnEvent));
 
 		Renderer::Init();

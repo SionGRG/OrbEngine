@@ -12,8 +12,8 @@
 class SandOrb : public ORB::App
 {
 public:
-	SandOrb(ORB::AppCommandLineArgs args)
-		: App("Sand Orb", args)
+	SandOrb(const ORB::AppSpecification& specification)
+		: App(specification)
 	{
 		//PushLayer(new ExampleLayer());
 		PushLayer(new SandOrb2D());
@@ -24,5 +24,10 @@ public:
 
 ORB::App* ORB::CreateApplication(ORB::AppCommandLineArgs args)
 {
-	return new SandOrb(args);
+	AppSpecification spec;
+	spec.Name = "Sand Orb";
+	spec.WorkingDirectory = "../Orbit";
+	spec.CommandLineArgs = args;
+	
+	return new SandOrb(spec);
 }
