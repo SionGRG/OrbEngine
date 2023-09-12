@@ -57,6 +57,9 @@ namespace ORB {
 		static float GetLineWidth();
 		static void SetLineWidth(float width);
 		
+		/* Poly Lines */
+		static void DrawPolyLine(const m4& transform, const v3& p0, const v3& p1, const v4& color, float thickness, int entityID = -1);
+		
 		/* Rects */
 		static void DrawRect(const v3& position, const v2& size, const v4& color, int entityID = -1);
 		static void DrawRect(const m4& transform, const v4& color, int entityID = -1);
@@ -67,9 +70,10 @@ namespace ORB {
 			uint32_t DrawCalls = 0;
 			uint32_t QuadCount = 0;
 			uint32_t CircleCount = 0;
+			uint32_t PolyLineCount = 0;
 
-			uint32_t GetTotalVertexCount() const { return (QuadCount + CircleCount) * 4; }
-			uint32_t GetTotalIndexCount() const { return (QuadCount + CircleCount) * 6; }
+			uint32_t GetTotalVertexCount() const { return (QuadCount + CircleCount + PolyLineCount) * 4; }
+			uint32_t GetTotalIndexCount() const { return (QuadCount + CircleCount + PolyLineCount) * 6; }
 		};
 
 		static void ResetStats();

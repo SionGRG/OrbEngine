@@ -42,6 +42,11 @@ namespace ORB {
 			s_RendererAPI->SetLineWidth(width);
 		}
 
+		static void DrawPolyLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount)
+		{
+			s_RendererAPI->DrawPolyLines(vertexArray, vertexCount);
+		}
+
 	private:
 		static Scope<RendererAPI> s_RendererAPI;
 	};

@@ -77,4 +77,10 @@ namespace ORB {
 		glLineWidth(width);
 	}
 
+	void OpenGLRendererAPI::DrawPolyLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount)
+	{
+		vertexArray->Bind();
+		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+	}
+
 }

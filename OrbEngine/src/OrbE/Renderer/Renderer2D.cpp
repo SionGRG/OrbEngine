@@ -45,6 +45,19 @@ namespace ORB {
 		int EntityID;
 	};
 
+	struct PolyLineVertex
+	{
+		v3       WorldPosition;
+		v3       LocalPosition;
+		v3       StartPosition;
+		v3       EndPosition;
+		v4       Color;
+		float    Thickness;
+
+		// Editor-only
+		int EntityID;
+	};
+
 	struct Renderer2DData
 	{
 		static const uint32_t  MaxQuads = 20000;
@@ -64,6 +77,10 @@ namespace ORB {
 		Ref<VertexArray>       LineVertexArray;
 		Ref<VertexBuffer>      LineVertexBuffer;
 		Ref<Shader>            LineShader;
+		
+		Ref<VertexArray>       PolyLineVertexArray;
+		Ref<VertexBuffer>      PolyLineVertexBuffer;
+		Ref<Shader>            PolyLineShader;
 
 		uint32_t               QuadIndexCount = 0;
 		QuadVertex*            QuadVertexBufferBase = nullptr;
@@ -76,8 +93,15 @@ namespace ORB {
 		uint32_t               LineVertexCount = 0;
 		LineVertex*            LineVertexBufferBase = nullptr;
 		LineVertex*            LineVertexBufferPtr = nullptr;
-
+		
 		float                  LineWidth = 1.0f;
+
+		uint32_t               PolyLineIndexCount = 0;
+		PolyLineVertex*        PolyLineVertexBufferBase = nullptr;
+		PolyLineVertex*        PolyLineVertexBufferPtr = nullptr;
+
+		v2                     PolyLineResolution = v2(1920.0f, 1080.0f); // Default to 1920x1080p
+		float                  PolyLineThickness = 4.0f;
 
 		std::array<Ref<Texture2D>, MaxTextureSlots>  TextureSlots;
 		uint32_t               TextureSlotIndex = 1;	// Slot 0 = white texture
@@ -157,12 +181,28 @@ namespace ORB {
 
 		s_Data.LineVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(LineVertex));
 		s_Data.LineVertexBuffer->SetLayout({
-			{ ShaderDataType::Float3, "Posision"    },
+			{ ShaderDataType::Float3, "a_Posision"  },
 			{ ShaderDataType::Float4, "a_Color"     },
 			{ ShaderDataType::Int,    "a_EntityID"  }
 			});
 		s_Data.LineVertexArray->AddVertexBuffer(s_Data.LineVertexBuffer);
 		s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxVertices];
+		
+		// PolyLines
+		s_Data.PolyLineVertexArray = VertexArray::Create();
+
+		s_Data.PolyLineVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(PolyLineVertex));
+		s_Data.PolyLineVertexBuffer->SetLayout({
+			{ ShaderDataType::Float3, "a_WorldPosision"   },
+			{ ShaderDataType::Float3, "a_LocalPosision"   },
+			{ ShaderDataType::Float3, "a_StartPosision"   },
+			{ ShaderDataType::Float3, "a_EndPosision"     },
+			{ ShaderDataType::Float4, "a_Color"           },
+			{ ShaderDataType::Float,  "a_Thickness"       },
+			{ ShaderDataType::Int,    "a_EntityID"        }
+			});
+		s_Data.PolyLineVertexArray->AddVertexBuffer(s_Data.PolyLineVertexBuffer);
+		s_Data.PolyLineVertexBufferBase = new PolyLineVertex[s_Data.MaxVertices];
 
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
@@ -175,6 +215,7 @@ namespace ORB {
 		s_Data.QuadShader = Shader::Create("assets/shaders/Renderer2D_Quad.glsl");
 		s_Data.CircleShader = Shader::Create("assets/shaders/Renderer2D_Circle.glsl");
 		s_Data.LineShader = Shader::Create("assets/shaders/Renderer2D_Line.glsl");
+		s_Data.PolyLineShader = Shader::Create("assets/shaders/Renderer2D_PolyLine.glsl");
 
 		// Reserving the first texture slot [slot 0] for the white texture
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
@@ -272,6 +313,17 @@ namespace ORB {
 
 			s_Data.Stats.DrawCalls++;
 		}
+
+		if (s_Data.PolyLineIndexCount)
+		{
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.PolyLineVertexBufferPtr - (uint8_t*)s_Data.PolyLineVertexBufferBase);
+			s_Data.PolyLineVertexBuffer->SetData(s_Data.PolyLineVertexBufferBase, dataSize);
+			
+			s_Data.PolyLineShader->Bind();
+			RenderCommand::DrawPolyLines(s_Data.PolyLineVertexArray, s_Data.PolyLineIndexCount);
+
+			s_Data.Stats.DrawCalls++;
+		}
 	}
 
 	void Renderer2D::StartBatch()
@@ -284,6 +336,9 @@ namespace ORB {
 		
 		s_Data.LineVertexCount = 0;
 		s_Data.LineVertexBufferPtr = s_Data.LineVertexBufferBase;
+		
+		s_Data.PolyLineIndexCount = 0;
+		s_Data.PolyLineVertexBufferPtr = s_Data.PolyLineVertexBufferBase;
 
 		s_Data.TextureSlotIndex = 1;
 	}
@@ -664,6 +719,78 @@ namespace ORB {
 	void Renderer2D::SetLineWidth(float width)
 	{
 		s_Data.LineWidth = width;
+	}
+
+	void Renderer2D::DrawPolyLine(const m4& transform, const v3& p0, const v3& p1, const v4& color, float thickness, int entityID)
+	{
+
+		s_Data.PolyLineVertexBufferPtr->LocalPosition = p0;
+		s_Data.PolyLineVertexBufferPtr->StartPosition = p0;
+		s_Data.PolyLineVertexBufferPtr->Color = color;
+		s_Data.PolyLineVertexBufferPtr->EntityID = entityID;
+		s_Data.PolyLineVertexBufferPtr++;
+
+		s_Data.PolyLineVertexBufferPtr->LocalPosition = p1;
+		s_Data.PolyLineVertexBufferPtr->EndPosition = p1;
+		s_Data.PolyLineVertexBufferPtr->Color = color;
+		s_Data.PolyLineVertexBufferPtr->EntityID = entityID;
+		s_Data.PolyLineVertexBufferPtr++;
+
+		s_Data.PolyLineIndexCount += 2;
+
+		/*
+		s_Data.PolyLineVertexBufferPtr->WorldPosition = transform * s_Data.QuadVertexPositions[2];
+		//s_Data.PolyLineVertexBufferPtr->WorldPosition = transform * v4(1.0f);
+		//s_Data.PolyLineVertexBufferPtr->WorldPosition = p1;
+		s_Data.PolyLineVertexBufferPtr->StartPosition = p0;
+		s_Data.PolyLineVertexBufferPtr->EndPosition = p1;
+		s_Data.PolyLineVertexBufferPtr->Color = color;
+		s_Data.PolyLineVertexBufferPtr->Thickness = thickness;
+		s_Data.PolyLineVertexBufferPtr->EntityID = entityID;
+		s_Data.PolyLineVertexBufferPtr++;
+
+		for (size_t i = 0; i < 4; i++)
+			s_Data.PolyLineVertexBufferPtr->LocalPosition = s_Data.QuadVertexPositions[i] * 2.0f;
+
+		s_Data.PolyLineIndexCount += 2;
+
+		s_Data.PolyLineVertexBufferPtr->WorldPosition = transform * s_Data.QuadVertexPositions[0];
+		//s_Data.PolyLineVertexBufferPtr->WorldPosition = transform * v4(1.0f);
+		//s_Data.PolyLineVertexBufferPtr->WorldPosition = p0;
+		s_Data.PolyLineVertexBufferPtr->StartPosition = p0;
+		s_Data.PolyLineVertexBufferPtr->Color = color;
+		s_Data.PolyLineVertexBufferPtr->Thickness = thickness;
+		s_Data.PolyLineVertexBufferPtr->EntityID = entityID;
+		s_Data.PolyLineVertexBufferPtr++;
+
+		s_Data.PolyLineVertexBufferPtr->WorldPosition = transform * s_Data.QuadVertexPositions[2];
+		//s_Data.PolyLineVertexBufferPtr->WorldPosition = transform * v4(1.0f);
+		//s_Data.PolyLineVertexBufferPtr->WorldPosition = p1;
+		s_Data.PolyLineVertexBufferPtr->EndPosition = p1;
+		s_Data.PolyLineVertexBufferPtr->Color = color;
+		s_Data.PolyLineVertexBufferPtr->Thickness = thickness;
+		s_Data.PolyLineVertexBufferPtr->EntityID = entityID;
+		s_Data.PolyLineVertexBufferPtr++;
+
+		s_Data.PolyLineIndexCount += 2;
+		s_Data.PolyLineVertexCount += 2;
+
+		for (size_t i = 0; i < 4; i++)
+		{
+			s_Data.PolyLineVertexBufferPtr->WorldPosition = transform * s_Data.QuadVertexPositions[i];
+			s_Data.PolyLineVertexBufferPtr->LocalPosition = s_Data.QuadVertexPositions[i] * 2.0f;
+			s_Data.PolyLineVertexBufferPtr->StartPosition = p0;// *s_Data.QuadVertexPositions[i] * 2.0f;
+			s_Data.PolyLineVertexBufferPtr->EndPosition = p1;// *s_Data.QuadVertexPositions[i] * 2.0f;
+			s_Data.PolyLineVertexBufferPtr->Color = color;
+			s_Data.PolyLineVertexBufferPtr->Thickness = thickness;
+			s_Data.PolyLineVertexBufferPtr->EntityID = entityID;
+			s_Data.PolyLineVertexBufferPtr++;
+		}
+
+		s_Data.PolyLineIndexCount += 6;
+		*/
+
+		s_Data.Stats.PolyLineCount++;
 	}
 
 	void Renderer2D::DrawRect(const v3& position, const v2& size, const v4& color, int entityID)

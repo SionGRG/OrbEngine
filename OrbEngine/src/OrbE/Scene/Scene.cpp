@@ -385,7 +385,25 @@ namespace ORB {
 				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
 
 				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+				// Renderer2D::DrawPolyLine(transform.GetTransform(), v3(0.0f), v3(5.0f), v4(0.0f, 1.0f, 1.0f, 1.0f), 12.5f);
 			}
+		}
+
+		// Draw Poly lines
+		{
+			m4 transform = m4(1.0f);
+			v4 color = v4(0.0f, 1.0f, 1.0f, 1.0f);
+			v4 color1 = v4(1.0f, 0.0f, 1.0f, 1.0f);
+			float thickness = 5.5f;
+			float fade = 1.0f;
+			v3 p0 = v3(0.0f);
+			v3 p1 = v3(5.0f);
+			v3 p2 = v3(1.2f);
+
+			//Renderer2D::DrawCircle(transform, color, thickness, fade);
+			Renderer2D::SetLineWidth(1.0f);
+			//Renderer2D::DrawLine(p0, p2, color1);
+			Renderer2D::DrawPolyLine(transform, p0, p1, color, thickness);
 		}
 
 		Renderer2D::EndScene();
