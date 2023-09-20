@@ -2,6 +2,7 @@
 #include "OrbE/Core/App.h"
 
 #include "OrbE/Renderer/Renderer.h"
+#include "OrbE/Scripting/ScriptEngine.h"
 
 #include "OrbE/Core/Input.h"
 #include "OrbE/Utils/PlatformUtils.h"
@@ -26,6 +27,7 @@ namespace ORB {
 		m_Window->SetEventCallback(ORBE_BIND_EVENT_FN(App::OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -35,6 +37,7 @@ namespace ORB {
 	{
 		ORBE_PROFILE_FUNCTION();
 		
+		ScriptEngine::Terminate();
 		Renderer::Terminate();
 	}
 

@@ -9,8 +9,9 @@ IncludeDir["ImGui"] = "%{wks.location}/OrbEngine/vendor/ImGui"
 IncludeDir["ImGuizmo"] = "%{wks.location}/OrbEngine/vendor/ImGuizmo"
 IncludeDir["glm"] = "%{wks.location}/OrbEngine/vendor/glm"
 IncludeDir["Box2D"] = "%{wks.location}/OrbEngine/vendor/Box2D/include"
-IncludeDir["stb_image"] = "%{wks.location}/OrbEngine/vendor/stb_image"
 IncludeDir["EnTT"] = "%{wks.location}/OrbEngine/vendor/EnTT/include"
+IncludeDir["mono"] = "%{wks.location}/OrbEngine/vendor/mono/include"
+IncludeDir["stb_image"] = "%{wks.location}/OrbEngine/vendor/stb_image"
 IncludeDir["yaml_cpp"] = "%{wks.location}/OrbEngine/vendor/yaml-cpp/include"
 IncludeDir["GLFW"] = "%{wks.location}/OrbEngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "%{wks.location}/OrbEngine/vendor/Glad/include"
@@ -21,8 +22,12 @@ IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
 LibraryDir = {}
 
 LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
+LibraryDir["mono"] = "%{wks.location}/OrbEngine/vendor/mono/lib/%{cfg.buildcfg}"
 
 Library = {}
+
+Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"
+
 Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
 Library["VulkanUtils"] = "%{LibraryDir.VulkanSDK}/VkLayer_utils.lib"
 
@@ -34,3 +39,10 @@ Library["SPIRV_Tools_Debug"] = "%{LibraryDir.VulkanSDK}/SPIRV-Toolsd.lib"
 Library["ShaderC_Release"] = "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
 Library["SPIRV_Cross_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
 Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
+
+
+-- Windows
+Library["WinSock"] = "Ws2_32.lib"
+Library["WinMM"] = "Winmm.lib"
+Library["WinVersion"] = "Version.lib"
+Library["BCrypt"] = "BCrypt.lib"

@@ -33,6 +33,15 @@ group "Dependencies"
 	include "OrbEngine/vendor/yaml-cpp"
 group ""
 
-include "OrbEngine"
-include "SandOrb"
-include "Orbit"
+group "Core"
+	include "OrbEngine"
+	include "OrbScriptCore"
+group ""
+
+group "Tools"
+	include "Orbit"
+group ""
+
+group "Misc"
+	include "SandOrb"
+group ""

@@ -44,6 +44,7 @@ project "OrbEngine"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.EnTT}",
+		"%{IncludeDir.mono}",
 		"%{IncludeDir.yaml_cpp}"
 	}
 
@@ -54,7 +55,9 @@ project "OrbEngine"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
-		"opengl32.lib"
+		"opengl32.lib",
+
+		"%{Library.mono}"
 	}
 
 	filter "files:vendor/ImGuizmo/**.cpp"
@@ -66,6 +69,14 @@ project "OrbEngine"
 		defines
 		{
 			"ORBE_BUILD_DLL"
+		}
+
+		links
+		{
+			"%{Library.WinSock}",
+			"%{Library.WinMM}",
+			"%{Library.WinVersion}",
+			"%{Library.BCrypt}"
 		}
 
 	filter "configurations:Debug"
