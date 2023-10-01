@@ -6,6 +6,8 @@
 #include "OrbE/Scene/ScriptableEntity.h"
 #include "OrbE/Renderer/Renderer2D.h"
 
+#include "OrbE/Scripting/ScriptEngine.h"
+
 // Box2D
 #include <box2d/b2_world.h>
 #include <box2d/b2_body.h>
@@ -114,22 +116,42 @@ namespace ORB {
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
+
+		m_EntityMap[uuid] = entity;
+
 		return entity;
 	}
 
 	void Scene::DestroyEntity(Entity entity)
 	{
 		m_Registry.destroy(entity);
+		m_EntityMap.erase(entity.GetUUID());
 	}
 
 	void Scene::OnRuntimeStart()
 	{
 		OnPhysics2DStart();
+
+		// Scripting
+		{
+			ScriptEngine::OnRuntimeStart(this);
+			
+			// Instantiate all script entities
+			auto view = m_Registry.view<ScriptComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e, this };
+				ScriptEngine::OnCreateEntity(entity);
+			}
+		}
 	}
 
 	void Scene::OnRuntimeStop()
 	{
 		OnPhysics2DStop();
+
+		// Scripts
+		ScriptEngine::OnRuntimeStop();
 	}
 	
 	void Scene::OnSimulationStart()
@@ -144,8 +166,17 @@ namespace ORB {
 
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
-		// Update Scripts
+		// Scripting
 		{
+			// C# Entity OnUpdate
+			auto view = m_Registry.view<ScriptComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e, this };
+				ScriptEngine::OnUpdateEntity(entity, ts);
+			}
+		
+			// Native Scripts
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) 
 			{
 				// TODO: Move to Scene::OnScenePlay
@@ -299,6 +330,15 @@ namespace ORB {
 		CopyComponentIfExists(AllComponents{}, newEntity, entity);
 	}
 
+	Entity Scene::GetEntityByUUID(UUID uuid)
+	{
+		// TODO: MAybe should be an assert
+		if (m_EntityMap.find(uuid) != m_EntityMap.end())
+			return { m_EntityMap.at(uuid), this };
+
+		return {}; 
+	}
+
 	void Scene::OnPhysics2DStart()
 	{
 		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });
@@ -419,6 +459,11 @@ namespace ORB {
 			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 	}
 
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+	}
+	
 	template<>
 	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
 	{

@@ -38,6 +38,7 @@ namespace ORB {
 		Entity GetPrimaryCameraEntity();
 
 		void DuplicateEntity(Entity entity);
+		Entity GetEntityByUUID(UUID uuid);
 
 		template<typename... Components>
 		auto GetAllEntitiesWith()
@@ -52,6 +53,9 @@ namespace ORB {
 		void OnPhysics2DStart();
 		void OnPhysics2DStop();
 
+		void OnScriptingStart();
+		void OnScriptingStop();
+
 		void RenderScene(EditorCamera& camera);
 
 	private:
@@ -59,6 +63,8 @@ namespace ORB {
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 
 		b2World* m_PhysicsWorld = nullptr;
+
+		std::unordered_map<UUID, entt::entity> m_EntityMap;
 
 		friend class Entity;
 		friend class SceneHierarchyPanel;

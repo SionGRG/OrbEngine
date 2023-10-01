@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "OrbE/Scene/Components.h"
+#include "OrbE/Scripting/ScriptEngine.h"
 
 namespace ORB {
 
@@ -272,6 +273,7 @@ namespace ORB {
 		if (ImGui::BeginPopup("AddComponent"))
 		{
 			DisplayAddComponentEntry<CameraComponent>("Camera");
+			DisplayAddComponentEntry<ScriptComponent>("Script");
 			DisplayAddComponentEntry<SpriteRendererComponent>("Sprite Renderer");
 			DisplayAddComponentEntry<CircleCollider2DComponent>("Circle Renderer");
 			DisplayAddComponentEntry<Rigidbody2DComponent>("Rigidbody 2D");
@@ -350,6 +352,38 @@ namespace ORB {
 
 				ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
 			}
+		});
+		
+		DrawComponent<ScriptComponent>("Script", entity, [](auto& component)
+		{
+			/* Class */
+			ImGui::PushID("Class");
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100.0f);
+			ImGui::Text("Class");
+			ImGui::NextColumn();
+ 
+			ImGui::PushItemWidth(ImGui::CalcItemWidth() + 70.0f);
+
+			bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
+
+			static char buffer[64];
+			strcpy(buffer, component.ClassName.c_str());
+
+			if (!scriptClassExists)
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
+
+			if (ImGui::InputText("##Class", buffer, sizeof(buffer)))
+				component.ClassName = buffer;
+			
+			if (!scriptClassExists)
+				ImGui::PopStyleColor();
+
+			ImGui::PopItemWidth();
+
+			ImGui::Columns(1);
+			ImGui::PopID();
 		});
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
