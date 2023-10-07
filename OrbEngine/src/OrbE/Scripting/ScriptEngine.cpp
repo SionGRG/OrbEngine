@@ -113,7 +113,10 @@ namespace ORB {
 		InitMono();
 		LoadAssembly("Resources/Scripts/OrbScriptCore.dll");
 		LoadAssemblyClasses(s_Data->CoreAssembly);
-		auto& classes = s_Data->EntityClasses;
+		
+		// TODO: delete // auto& classes = s_Data->EntityClasses;
+		
+		ScriptGlue::RegisterComponents();
 		ScriptGlue::RegisterFunctions();
 
 		//MonoObject* instance = s_Data->EntityClass.Instantiate();
@@ -283,6 +286,11 @@ namespace ORB {
 		}
 	}
 
+	MonoImage* ORB::ScriptEngine::GetCoreAssemblyImage()
+	{
+		return s_Data->CoreAssemblyImage;
+	}
+
 	MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass)
 	{
 		MonoObject* instance = mono_object_new(s_Data->AppDomain, monoClass);
@@ -335,14 +343,18 @@ namespace ORB {
 	
 	void ScriptInstance::InvokeOnCreate()
 	{
-		m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+		if (m_OnCreateMethod)
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
 	}
 
 	void ScriptInstance::InvokeOnUpdate(float ts)
 	{
-		void* param = &ts;
-		m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
+		if (m_OnUpdateMethod)
+		{
+			void* param = &ts;
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
+		}
 	}
-	
+	 
 #pragma endregion
 }

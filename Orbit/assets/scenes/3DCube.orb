@@ -1,11 +1,11 @@
 Scene: Untitled Scene
 Entities:
-  - Entity: 9484063270954201313
+  - Entity: 1146541733110628987
     TagComponent:
-      Tag: Camera A
+      Tag: Camera
     TransformComponent:
-      Translation: [0, 1.70000005, 4]
-      Rotation: [-0.404916406, 0, 0]
+      Translation: [0, 1.10000002, 2.75]
+      Rotation: [-0.34906584, 0.0174532924, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
@@ -13,11 +13,11 @@ Entities:
         PerspectiveFOV: 0.785398185
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
-        OrthographicSize: 8
-        OrthographicNear: -2
-        OrthographicFar: 5
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
       Primary: true
-      FixedAspectRatio: true
+      FixedAspectRatio: false
   - Entity: 1325794812157036109
     TagComponent:
       Tag: Top
@@ -27,6 +27,7 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0.030888021, 1, 0.876522303, 1]
+      TilingFactor: 1
   - Entity: 5598260471429551312
     TagComponent:
       Tag: Left
@@ -36,6 +37,7 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0.180617481, 0.899613917, 0.857973278, 1]
+      TilingFactor: 1
   - Entity: 2956139805947026150
     TagComponent:
       Tag: Right
@@ -43,5 +45,8 @@ Entities:
       Translation: [0.351999998, 0, 0.349999994]
       Rotation: [0, 0.785398185, 0]
       Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: SandOrb.Player
     SpriteRendererComponent:
       Color: [0, 0.810810804, 0.763852715, 1]
+      TilingFactor: 1

@@ -70,6 +70,8 @@ namespace ORB {
 
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
 
+		static MonoImage* GetCoreAssemblyImage();
+
 	private:
 		static void InitMono();
 		static void TerminateMono();
@@ -78,5 +80,6 @@ namespace ORB {
 		static void LoadAssemblyClasses(MonoAssembly* assembly);
 
 		friend class ScriptClass;
+		friend class ScriptGlue;
 	};
 }
