@@ -33,6 +33,8 @@ group "Dependencies"
 	include "OrbEngine/vendor/yaml-cpp"
 group ""
 
+OrbRootDir = "../"
+
 group "Core"
 	include "OrbEngine"
 	include "OrbScriptCore"

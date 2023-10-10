@@ -21,7 +21,7 @@ namespace ORB {
 	public:
 		ScriptClass() = default;
 
-		ScriptClass(std::string_view classNamespace, std::string_view className);
+		ScriptClass(std::string_view classNamespace, std::string_view className, bool isCore = false);
 
 		MonoObject* Instantiate();
 		MonoMethod* GetMethod(std::string_view name, int parameterCount);
@@ -58,6 +58,7 @@ namespace ORB {
 		static void Terminate();
 
 		static void LoadAssembly(const std::filesystem::path& filepath);
+		static void LoadAppAssembly(const std::filesystem::path& filepath);
 
 		static void OnRuntimeStart(Scene* scene);
 		static void OnRuntimeStop();
@@ -77,7 +78,7 @@ namespace ORB {
 		static void TerminateMono();
 
 		static MonoObject* InstantiateClass(MonoClass* monoClass);
-		static void LoadAssemblyClasses(MonoAssembly* assembly);
+		static void LoadAssemblyClasses();
 
 		friend class ScriptClass;
 		friend class ScriptGlue;

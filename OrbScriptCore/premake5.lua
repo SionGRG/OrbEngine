@@ -3,8 +3,8 @@ project "OrbScriptCore"
 	language "C#"
 	dotnetframework "4.7.2"
 
-	targetdir ("%{wks.location}/Orbit/Resources/Scripts")
-	objdir ("%{wks.location}/Orbit/Resources/Scripts/Intermediates")
+	targetdir ("../Orbit/Resources/Scripts")
+	objdir ("../Orbit/Resources/Scripts/Intermediates")
 
 	pchheader "OrbPCH.h"
 	pchsource "src/OrbPCH.cpp"
