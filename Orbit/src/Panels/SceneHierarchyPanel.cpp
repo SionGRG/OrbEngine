@@ -354,7 +354,7 @@ namespace ORB {
 			}
 		});
 		
-		DrawComponent<ScriptComponent>("Script", entity, [](auto& component)
+		DrawComponent<ScriptComponent>("Script", entity, [entity](auto& component) mutable
 		{
 			/* Class */
 			ImGui::PushID("Class");
@@ -376,7 +376,7 @@ namespace ORB {
 
 			if (ImGui::InputText("##Class", buffer, sizeof(buffer)))
 				component.ClassName = buffer;
-			
+
 			if (!scriptClassExists)
 				ImGui::PopStyleColor();
 
@@ -384,6 +384,43 @@ namespace ORB {
 
 			ImGui::Columns(1);
 			ImGui::PopID();
+
+			// Fields
+			Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity.GetUUID());
+			if (scriptInstance)
+			{
+				const auto& fields = scriptInstance->GetScriptClass()->GetFields();
+
+				for (const auto& [name, field] : fields)
+				{
+					if (field.Type == ScriptFieldType::Float)
+					{
+						ImGui::PushID(name.c_str());
+
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Text(name.c_str());
+						ImGui::NextColumn();
+
+						ImGui::PushItemWidth(ImGui::CalcItemWidth() + 70.0f);
+						
+						// ----						
+
+						float data = scriptInstance->GetFieldValue<float>(name);
+						std::string labelID = "##";
+						if (ImGui::DragFloat(labelID.append(name).c_str(), &data))
+						{
+							scriptInstance->SetFieldValue(name, data);
+						}
+
+						// ----
+						ImGui::PopItemWidth();
+
+						ImGui::Columns(1);
+						ImGui::PopID();
+					}
+				}
+			}
 		});
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)

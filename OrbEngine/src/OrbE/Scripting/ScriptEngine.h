@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <map>
 
 extern "C" {
 	typedef struct _MonoClass MonoClass;
@@ -8,13 +9,33 @@ extern "C" {
 	typedef struct _MonoMethod MonoMethod;
 	typedef struct _MonoAssembly MonoAssembly;
 	typedef struct _MonoImage MonoImage;
+	typedef struct _MonoClassField MonoClassField;
 }
 
 namespace ORB {
 
 	class Scene;
 	class Entity;
+	class UUID;
 	class Timestep;
+
+	enum class ScriptFieldType
+	{
+		None = 0,
+		Float, Double, Bool, Char,
+		Short, Int, Long,
+		Byte, UShort, UInt, ULong,
+		Vector2, Vector3, Vector4,
+		Entity
+	};
+
+	struct ScriptField
+	{
+		ScriptFieldType Type;
+		std::string Name;
+
+		MonoClassField* ClassField;
+	};
 
 	class ScriptClass
 	{
@@ -27,11 +48,17 @@ namespace ORB {
 		MonoMethod* GetMethod(std::string_view name, int parameterCount);
 		MonoObject* InvokeMethod(MonoObject* instance, MonoMethod* method, void** params = nullptr);
 
+		const std::map<std::string, ScriptField>& GetFields() const { return m_Fields; }
+
 	private:
 		std::string m_ClassNamespace;
 		std::string m_ClassName;
 
+		std::map<std::string, ScriptField> m_Fields;
+
 		MonoClass* m_MonoClass = nullptr;
+
+		friend class ScriptEngine;
 	};
 
 	class ScriptInstance
@@ -42,6 +69,28 @@ namespace ORB {
 		void InvokeOnCreate();
 		void InvokeOnUpdate(float ts);
 
+		Ref<ScriptClass> GetScriptClass() { return m_ScriptClass; }
+
+		template<typename T>
+		T GetFieldValue(std::string_view name)
+		{
+			bool success = GetFieldValueInternal(name, s_FieldValueBuffer);
+			if (!success)
+				return T();
+
+			return *(T*)s_FieldValueBuffer;
+		}
+		
+		template<typename T>
+		void SetFieldValue(std::string_view name, const T& value)
+		{
+			bool success = SetFieldValueInternal(name, &value);
+		}
+
+	private:
+		bool GetFieldValueInternal(std::string_view name, void* buffer);
+		bool SetFieldValueInternal(std::string_view name, const void* value);
+
 	private:
 		Ref<ScriptClass> m_ScriptClass;
 
@@ -49,6 +98,8 @@ namespace ORB {
 		MonoMethod* m_OnConstructor = nullptr;
 		MonoMethod* m_OnCreateMethod = nullptr;
 		MonoMethod* m_OnUpdateMethod = nullptr;
+		
+		inline static char s_FieldValueBuffer[8];
 	};
 
 	class ScriptEngine
@@ -68,6 +119,7 @@ namespace ORB {
 		static void OnUpdateEntity(Entity entity, Timestep ts);
 
 		static Scene* GetSceneContext();
+		static Ref<ScriptInstance> GetEntityScriptInstance(UUID entityID);
 
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
 

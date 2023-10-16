@@ -12,6 +12,10 @@ namespace SandOrb
 	{
 		private TransformComponent m_Transform;
 		private Rigidbody2DComponent m_Rigidbody;
+
+		public float Speed;
+		public float Time;
+
 		void OnCreate()
 		{
 			Console.WriteLine($"Player.OnCreate - {ID}");
@@ -21,9 +25,11 @@ namespace SandOrb
 		}
 		void OnUpdate(float ts)
 		{
+			Time += ts;
 			//Console.WriteLine($"Player.OnUpdate: {ts}");
 
-			float speed = 0.05f;
+			//float speed = 0.05f;
+			float speed = Speed;
 			Vector3 velocity = Vector3.Zero;
 
 			if (Input.IsKeyDown(KeyCode.W))

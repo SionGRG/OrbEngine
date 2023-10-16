@@ -10,6 +10,8 @@ namespace SandOrb
 {
 	internal class Camera : Entity
 	{
+		public Entity OtherEntity;
+
 		void OnUpdate(float ts)
 		{
 			float speed = 5.0f;
